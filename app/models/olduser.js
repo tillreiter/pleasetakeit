@@ -5,7 +5,6 @@
  */
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId,
     crypto = require('crypto');
 
 /**
@@ -13,33 +12,22 @@ var mongoose = require('mongoose'),
  */
 var UserSchema = new Schema({
     name: {
-        first: {type: String, required: true },
-        last: {type: String, required: true }
+        type: String,
+        required: true
     },
     email: String,
     username: {
         type: String,
         unique: true
     },
-    wantItems: [{
-        type: Schema.Types.ObjectId,
-        ref: "Item"
-    }],
-    giveItems: [{
-        type: Schema.Types.ObjectId,
-        ref: "Item"
-    }],
-    location: {
-        address: String,
-        city: String,
-        state: String
-    },
     hashed_password: String,
     provider: String,
     salt: String,
-    // facebook: {
-
-    // }
+    facebook: {},
+    twitter: {},
+    github: {},
+    google: {},
+    linkedin: {}
 });
 
 /**
@@ -60,13 +48,12 @@ var validatePresenceOf = function(value) {
     return value && value.length;
 };
 
-// // The 4 validations below only apply if you are signing up traditionally.
-UserSchema.path('name.first').validate(function(name) {
+// The 4 validations below only apply if you are signing up traditionally.
+UserSchema.path('name').validate(function(name) {
     // If you are authenticating by any of the oauth strategies, don't validate.
     if (!this.provider) return true;
-    return (typeof name.first === 'string' && name.length > 0);
+    return (typeof name === 'string' && name.length > 0);
 }, 'Name cannot be blank');
-console.log(UserSchema.paths);
 
 UserSchema.path('email').validate(function(email) {
     // If you are authenticating by any of the oauth strategies, don't validate.

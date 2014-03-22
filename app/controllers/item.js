@@ -4,38 +4,45 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    Article = mongoose.model('Article'),
+    Item = mongoose.model('Item'),
     _ = require('lodash');
 
 
 /**
- * Find article by id
- //this allows us to use "article" without having to runthe query again. The "article" refers to routes/articles.js line 24 (articles.article)
+ * Find item by id
  */
-exports.article = function(req, res, next, id) {
-    Article.load(id, function(err, article) {
+exports.item = function(req, res, next, id) {
+    Item.load(id, function(err, item) {
         if (err) return next(err);
-        if (!article) return next(new Error('Failed to load article ' + id));
-        req.article = article;
+        if (!item) return next(new Error('Failed to load item ' + id));
+        req.item = item;
         next();
     });
 };
 
 /**
- * Create an article
+ * Create an item
  */
 exports.create = function(req, res) {
-    var article = new Article(req.body);
-    article.user = req.user;
+    var item = new Item(req.body);
+    item.active: true;
+    item.pic_url: req.item_pic_url;
+    item.title: req.item_title;
+    item.category: req.item_category;
+    item.location: req.item_location;
+    item.time: req.item_time;
+    item.owner: req.owned_by;
 
-    article.save(function(err) {
+
+    item.save(function(err) {
         if (err) {
+            //not sure where to send user if failed to save item.
             return res.send('users/signup', {
                 errors: err.errors,
-                article: article
+                item: item
             });
         } else {
-            res.jsonp(article);
+            res.jsonp(item);
         }
     });
 };
