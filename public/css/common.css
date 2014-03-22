@@ -23,3 +23,37 @@ footer {
 footer p {
     padding:5px 0 12px 10px
 }
+
+/*Isotope styling*/
+.kindling {
+    width: 250px;
+    height: 300px;
+    margin: 5px;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    background: #FFFFFF;
+    color: #222;
+}
+
+.main-background {
+    background-color: #F6F3F3
+}
+
+.kindling.picture {
+    width: 250px;
+    height: 150px;
+    background-color: #2E75A5;
+}
+
+.kindling.purple {
+    width: 250px;
+    height: 250px;
+    background-color: #D14E4E;
+}
+
+.kindling.green {
+    width: 250px;
+    height: 200px;
+    background-color: #48690B;
+}

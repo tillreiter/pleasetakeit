@@ -1,3 +1,69 @@
-<section data-ng-controller="IndexController">
+<section data-ng-controller="IndexController" class="main-background">
 	<h1>This is the home view</h1>
+
+  <img src="http://images.craigslist.org/00o0o_izwThDCf8Hn_600x450.jpg">
+
+  <div class="container">
+    <div>
+      <div ng-init=
+        "xList=[
+        {name:'a', number:'1', date:'1360413309421', class:'purple'}
+        ,{name:'b', number:'5', date:'1360213309421', class:'picture'}
+        ,{name:'c', number:'10', date:'1360113309421', class:'blue'}
+        ,{name:'d', number:'2', date:'1360113309421', class:'green'}
+        ,{name:'e', number:'6', date:'1350613309421', class:'green'}
+        ,{name:'f', number:'21', date:'1350613309421', class:'picture'}
+        ,{name:'g', number:'3', date:'1340613309421', class:'blue'}
+        ,{name:'h', number:'7', date:'1330613309001', class:'purple'}
+        ,{name:'i', number:'22', date:'1360412309421', class:'blue'}
+        ] ">
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <div class="btn-group" opt-kind ok-key="sortBy" ok-publish="my-iso-opts" ok-active-class="active">
+            <button type="button" class="btn btn-default" ok-sel=".name">Name</button>
+            <button type="button" class="btn btn-default active" ok-sel="[number]" ok-type="integer">Number</button>
+            <button type="button" class="btn btn-default" ok-sel="[date]" ok-type="integer">Date</button>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="btn-group" opt-kind ok-key="filter" ok-publish="my-iso-opts">
+              <button type='button' class='btn btn-default active' ok-sel="*">Show All</button>
+              <button type='button' class='btn btn-default' ok-sel=".purple">Purple</button>
+              <button type='button' class='btn btn-default' ok-sel=".orange">Orange</button>
+              <button type='button' class='btn btn-default' ok-sel=".blue">Blue</button>
+              <button type='button' class='btn btn-default' ok-sel=".green">Green</button>
+              <button type='button' class='btn btn-default' ok-sel=":not(.blue)">Not Blue</button>
+              <button type='button' class='btn btn-default' ok-sel="#extra">Extra Only</button>
+          </div>
+        </div>
+      </div>
+      <br>
+
+      <div class="clearfix"/>
+        <h4></h4>
+        <ul id="isotopeContainer" isotope-container iso-options-subscribe="my-iso-opts" iso-method-subscribe="my-iso-method" ng-cloak class="ng-cloak">
+          <li ng-repeat="x in xList" isotope-item class="kindling {{x.class}}">
+             <div class="symbol"<img src="http://images.craigslist.org/00o0o_izwThDCf8Hn_600x450.jpg">>{{x.name}}</div>
+             <div class="weight" date="{{x.date}}">{{x.date | date}}</div>
+             <div class="number" number="{{x.number}}">{{x.number}}</div>
+          </li>
+
+          <li id="extra" isotope-item class="kindling green">
+             <div class="symbol">extra</div>
+             <div class="weight" date="1360313309421">{{'1360313309421' | date}}</div>
+             <div class="number" number="20">Twenty</div>
+          </li>
+
+          <li id="extra" isotope-item class="kindling green">
+             <div class="symbol">extra</div>
+             <div class="weight" date="1310613309421">{{'1310613309421' | date}}</div>
+             <div class="number" number="9">Nine</div>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
 </section>

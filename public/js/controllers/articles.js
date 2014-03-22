@@ -57,4 +57,14 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
             $scope.article = article;
         });
     };
+
+// testing isotope
+
+    // $scope.addToList = function() {
+    //   var s=angular.element('#isotopeContainer').scope();
+    //   s.count = s.count || 0;
+    //   var newItem={name:'add', number:s.count--, date: Date.now(), class:'purple'};
+    //   s.$apply(s.xList.push(newItem));
+    // };
+
 }]);
