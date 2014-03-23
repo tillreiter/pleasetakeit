@@ -166,3 +166,14 @@ h3.highlight  {
     padding-left:27px;
     padding-right:27px;
 }
+
+/*Masonry-styling*/
+
+.masonry-brick {
+    margin: 1em;
+    display: none;
+}
+
+.masonry-brick.loaded {
+    display: block;
+}
