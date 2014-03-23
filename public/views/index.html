@@ -3,18 +3,19 @@
 
     <div class="container">
         <div class="hero-unit">
-            <h1>angular-masonry</h1>
-        <hr>
         <div class="row">
             <div class="span12">
-                <h2>In Action</h2>
                 <div class="btn-group">
                     <button class="btn btn-primary" ng-click="add()">Add</button>
                     <button class="btn btn-danger" ng-click="remove()">Remove</button>
                 </div>
                 <div masonry>
-                    <div class="masonry-brick" ng-repeat="brick in bricks">
-                        <img ng-src="{{ brick.src }}" alt="A masonry brick">
+                    <div class="masonry-brick loaded" ng-repeat="brick in bricks">
+<!--                         <img ng-src="{{ brick.src }}" alt="A masonry brick"> -->
+                        <h1>--PIC--</h1>
+                        <h4>{{brick.text}}</h4>
+                        <p>Distance: {{brick.distance}}</p>
+                        <p>Time left: {{brick.time_left}}</p>
                     </div>
                 </div>
 

@@ -67,9 +67,45 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
   };
 
   $scope.bricks = [
-      genBrick(),
-      genBrick(),
-      genBrick()
+      {src: '../img/cat.jpg',
+      text: "Beautiful cat to give away - she's so sweet!!!",
+      distance: "1/2 mile",
+      time_left: "1 day"},
+
+      {src: '../img/couch.jpg',
+      text: "This couch needs a new person to take care of",
+      distance: "2 miles",
+      time_left: "7 days"},
+
+      {src: '../img/shrimp.jpg',
+      text: "Fishfood - my fish don't like it ;-(",
+      distance: "1 mile",
+      time_left: "4 days"},
+
+      {src: '../img/snake.jpg',
+      text: "A book you have to read once in your life - come get it",
+      distance: "1/2 mile",
+      time_left: "7 days"},
+
+      {src: '../img/snake.jpg',
+      text: "Old but super-nice bicycle needs a new rider",
+      distance: "1 mile",
+      time_left: "1 day"},
+
+      {src: '../img/snake.jpg',
+      text: "Sunglasses for the cool guys out there",
+      distance: "3 miles",
+      time_left: "3 days"},
+
+      {src: '../img/snake.jpg',
+      text: "Little Bonzai tree",
+      distance: "1/2 mile",
+      time_left: "1 day"}
+
+
+      // genBrick(),
+      // genBrick(),
+      // genBrick()
   ];
 
   $scope.add = function add() {
