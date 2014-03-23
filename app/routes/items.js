@@ -1,7 +1,7 @@
 'use strict';
 
 // Articles routes use articles controller
-var item = require('../controllers/giveititems');
+var items = require('../controllers/items');
 var authorization = require('./middlewares/authorization');
 
 // Article authorization helpers
@@ -14,13 +14,13 @@ var hasAuthorization = function(req, res, next) {
 
 module.exports = function(app) {
 
-    app.get('/item', item.all);
-    app.post('/item', authorization.requiresLogin, item.create);
-    app.get('/item/:articleId', item.show);
-    app.put('/item/:articleId', authorization.requiresLogin, hasAuthorization, item.update);
-    app.del('/item/:articleId', authorization.requiresLogin, hasAuthorization, item.destroy);
+    app.get('/items', items.all);
+    app.post('/items', authorization.requiresLogin, items.create);
+    app.get('/items/:itemId', items.show);
+    app.put('/items/:itemId', authorization.requiresLogin, hasAuthorization, items.update);
+    app.del('/items/:itemId', authorization.requiresLogin, hasAuthorization, items.destroy);
 
-    // Finish with setting up the articleId param
-    app.param('articleId', item.article);
+    // Finish with setting up the itemId param
+    app.param('itemId', items.item);
 
 };

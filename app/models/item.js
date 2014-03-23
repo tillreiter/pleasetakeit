@@ -35,11 +35,11 @@ var ItemSchema = new Schema({
     },
     owned_by: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'TakeItUser'
     },
     wanted_by: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'TakeItUser'
     }
 });
 

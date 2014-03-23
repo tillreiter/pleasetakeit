@@ -66,7 +66,6 @@ UserSchema.path('name.first').validate(function(name) {
     if (!this.provider) return true;
     return (typeof name.first === 'string' && name.length > 0);
 }, 'Name cannot be blank');
-console.log(UserSchema.paths);
 
 UserSchema.path('email').validate(function(email) {
     // If you are authenticating by any of the oauth strategies, don't validate.
@@ -138,4 +137,4 @@ UserSchema.methods = {
     }
 };
 
-mongoose.model('User', UserSchema);
+mongoose.model('TakeItUser', UserSchema);
