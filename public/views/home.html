@@ -1,0 +1,42 @@
+<section data-ng-controller="MasonryController" class="main-background">
+
+    <div class="container">
+
+        <!-- <div class="col-sm-4"> -->
+          <div class="col-sm-4 form-group">
+            <label for="masonryFilter">Sort by:</label>
+              <div class="btn-group">
+                <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'1 day'">Time left</button>
+                <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'3 days'">Distance</button>
+              </div>
+          </div>
+
+        <div class="col-sm-4">
+          <input class="form-control input" ng-model="searchText" placeholder="Search the free universe!">
+        </div>
+
+        </div>
+        <br>
+
+        <div class="hero-unit col-sm-12">
+        <div class="row">
+            <div class="span12">
+<!--                 <div class="btn-group">
+                    <button class="btn btn-primary" ng-click="add()">Add</button>
+                    <button class="btn btn-danger" ng-click="remove()">Remove</button>
+                </div>
+                <hr> -->
+                <div masonry>
+                    <div class="masonry-brick loaded" ng-repeat="brick in bricks | filter:searchText" ng-mouseenter="hover(brick)" ng-mouseleave="hover(brick)">
+                        <button class="btn btn-deal show-deal" ng-show="brick.showDeal" ng-click="deal(brick)">I want that</button>
+                        <img ng-src="{{ brick.src }}" alt="A masonry brick" class="brick-img">
+                        <h4>{{brick.text}}</h4>
+<!--                         <p>Distance: {{brick.distance}}</p>
+                        <p>Time left: {{brick.time_left}}</p> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+</section>

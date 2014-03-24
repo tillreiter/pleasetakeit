@@ -24,37 +24,11 @@ footer p {
     padding:5px 0 12px 10px
 }
 
-/*Isotope styling*/
-.kindling {
-    width: 250px;
-    height: 300px;
-    margin: 5px;
-    float: left;
-    overflow: hidden;
-    position: relative;
-    background: #FFFFFF;
-    color: #222;
-}
-
-.kindling.picture {
-    width: 250px;
-    height: 150px;
-    background-color: #2E75A5;
-}
-
-.kindling.purple {
-    width: 250px;
-    height: 250px;
-    background-color: #D14E4E;
-}
-
-.kindling.green {
-    width: 250px;
-    height: 200px;
-    background-color: #48690B;
-}
-
 /*Flat theme*/
+
+.container {
+    width: 100%;
+}
 
 header {
     min-height:230px;
@@ -117,11 +91,11 @@ h3.highlight  {
     color:#fff;
     padding-left:20px;
     padding-right:20px;
-    border-left:1px solid #e8e8e8;
-}
+/*    border-left:1px solid #e8e8e8;
+*/}
 .navbar-nav > li:last-child > a {
-    border-right:1px solid #e8e8e8;
-}
+/*    border-right:1px solid #e8e8e8;
+*/}
 .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
     color: #ffffff;
     background-color:transparent;
@@ -178,8 +152,49 @@ h3.highlight  {
 .masonry-brick.loaded {
     width: 250px;
     background-color: #FFF;
-    margin: 1em;
+    margin: 0.5em;
     display: block;
     float: left;
     padding: 4px;
+    position: relative;
+}
+
+.brick-img {
+    width: 242px;
+    height: auto;
+    margin: 0px;
+}
+
+.show-deal {
+    position: absolute;
+}
+
+.btn-deal {
+  color: #333333;
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+
+.btn-deal:hover,
+.btn-deal:focus,
+.btn-deal:active,
+.btn-deal.active,
+.open .dropdown-toggle.btn-deal {
+  color: #fff;
+  background-color: #ff3333;
+  border-color: #fff;
+}
+
+
+
+
+
+/*LOGO Bootstrap modification*/
+.nav-center {
+    margin:0;
+    float:none;
+}
+
+.navbar-inner{
+    text-align:center;
 }

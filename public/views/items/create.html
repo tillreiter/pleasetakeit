@@ -1,0 +1,61 @@
+<div class="modal-header" controller="ItemsController">
+  <h3>Add your free item for the crowd!</h3>
+</div>
+
+<div class="modal-body">
+  <div class="form-group">
+    <label for="title">Title:</label>
+    <input type="text" class="form-control" data-ng-model="title" id="title" placeholder="Describe your item in 120 letters" required>
+  </div>
+
+  <div class="form-group">
+    <label for="category">Please upload a picture:</label>
+    <form action="input_file.htm" method="post" enctype="multipart/form-data">
+    <input type="file" name="picture" size="50" maxlength="100000" data-ng- model="picture" accept="text/*" required>
+  </div>
+  <!-- Lets change this to a drag and drop field when we have time -->
+
+  <div class="form-group">
+    <label for="category">Category:</label>
+    <br>
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary" ng-model="category" btn-radio="'Household'">Household</button>
+      <button type="button" class="btn btn-primary" ng-model="category" btn-radio="'Outdoor'">Outdoor</button>
+      <button type="button" class="btn btn-primary" ng-model="category" btn-radio="'Electronics'">Electronics</button>
+      <button type="button" class="btn btn-primary" ng-model="category" btn-radio="'Animals'">Animals</button>
+      <button type="button" class="btn btn-primary" ng-model="category" btn-radio="'Clothes'">Clothes</button>
+      <button type="button" class="btn btn-primary" ng-model="category" btn-radio="'Furniture'">Furniture</button>
+      <button type="button" class="btn btn-primary" ng-model="category" btn-radio="'Other'">Other</button>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="duration">Offer duration:</label>
+    <br>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary" ng-model="duration" btn-radio="'1 day'">1 day</button>
+        <button type="button" class="btn btn-primary" ng-model="duration" btn-radio="'3 days'">3 days</button>
+        <button type="button" class="btn btn-primary" ng-model="duration" btn-radio="'7 days'">7 days</button>
+        <button type="button" class="btn btn-primary" ng-model="duration" btn-radio="'1 month'">1 month</button>
+      </div>
+  </div>
+
+  <div class="form-group">
+    <label for="conditionRating">Condition:</label>
+    <br>
+    <rating value="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
+    <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span>
+  </div>
+
+  <div class="form-group">
+    <label for="location">Location:</label>
+    <input type="text" class="form-control" data-ng-model="location" id="location" placeholder="Enter the approximate location of your item (eg. Pearl Street, 10005, New York, NY" required>
+    <!-- Wanted solution is hooking this up with google maps -->
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="ok()">OK</button>
+  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>
+
