@@ -144,17 +144,6 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
       // genBrick()
   ];
 
-  $scope.add = function add() {
-      $scope.bricks.push(genBrick());
-  };
-
-  $scope.remove = function remove() {
-      $scope.bricks.splice(
-          ~~(Math.random() * $scope.bricks.length),
-          1
-      )
-  };
-
   $scope.categories = [
     "Household",
     "Outdoor",
@@ -162,7 +151,8 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
     "Animals",
     "Clothes",
     "Furniture",
-    "Other"
+    "Other",
+    "All"
   ];
 
   $scope.hover = function(brick) {

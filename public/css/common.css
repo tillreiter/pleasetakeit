@@ -159,21 +159,36 @@ h3.highlight  {
     position: relative;
 }
 
-.brick-img {
-    width: 242px;
-    height: auto;
-    margin: 0px;
-}
-
 .show-deal {
     position: absolute;
-}
+/*    left: 75%;
+*/
+    z-index:1;
+    }
 
 .btn-deal {
   color: #333333;
   background-color: #ffffff;
   border-color: #cccccc;
 }
+
+.dealInfo {
+    color: black;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.brick-img {
+    width: 242px;
+    height: auto;
+    margin: 0 px;
+}
+
+.brick-img.hovered {
+    opacity: 0.3;
+    z-index:2;
+}
+
 
 .btn-deal:hover,
 .btn-deal:focus,

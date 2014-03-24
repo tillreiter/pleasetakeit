@@ -15,35 +15,31 @@
             <input class="form-control input" ng-model="searchText" placeholder="Search the free universe!">
         </div>
     <!-- Category Filter -->
-        <li class="dropdown">
-          <a class="dropdown-toggle">
-            Select category!
-          </a>
+        <div class="dropdown col-sm-2 col-sm-offset-1">
+          <button class="dropdown-toggle btn btn-default">
+            Select category
+          </button>
           <ul class="dropdown-menu">
             <li ng-repeat="category in categories">
               <a>{{category}}</a>
             </li>
           </ul>
-        </li>
-
         </div>
-        <br>
 
+        <br>
+    <!-- Masonry brick unit -->
         <div class="hero-unit col-sm-12">
         <div class="row">
             <div class="span12">
-<!--                 <div class="btn-group">
-                    <button class="btn btn-primary" ng-click="add()">Add</button>
-                    <button class="btn btn-danger" ng-click="remove()">Remove</button>
-                </div>
-                <hr> -->
                 <div masonry>
                     <div class="masonry-brick loaded" ng-repeat="brick in bricks | filter:searchText" ng-mouseenter="hover(brick)" ng-mouseleave="hover(brick)">
-                        <button class="btn btn-deal show-deal" ng-show="brick.showDeal" ng-click="deal(brick)">I want that</button>
-                        <img ng-src="{{ brick.src }}" alt="A masonry brick" class="brick-img">
+                        <div ng-show="brick.showDeal" class="show-deal">
+                            <button class="btn btn-deal" ng-click="deal(brick)">I want that</button>
+                            <p class="dealInfo"><b>Distance:</b> {{brick.distance}}</p>
+                            <p class="dealInfo"><b>Time left:</b> {{brick.time_left}}</p>
+                        </div>
+                        <img ng-src="{{ brick.src }}" alt="A masonry brick" class="brick-img" ng-class="{hovered: brick.showDeal}">
                         <h4>{{brick.text}}</h4>
-<!--                         <p>Distance: {{brick.distance}}</p>
-                        <p>Time left: {{brick.time_left}}</p> -->
                     </div>
                 </div>
             </div>
