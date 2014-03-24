@@ -155,6 +155,16 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
       )
   };
 
+  $scope.categories = [
+    "Household",
+    "Outdoor",
+    "Electronics",
+    "Animals",
+    "Clothes",
+    "Furniture",
+    "Other"
+  ];
+
   $scope.hover = function(brick) {
       // Shows/hides the delete button on hover
     return brick.showDeal = ! brick.showDeal;
@@ -164,6 +174,8 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
       // Hides a row of brick, if the deal button was clicked
     alert("You are officially asking for " + brick.text);
   };
+
+
 }])
 
 .controller('ModalController', ['$scope', '$modal', '$log', function ($scope, $modal, $log) {

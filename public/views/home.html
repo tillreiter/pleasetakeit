@@ -2,18 +2,29 @@
 
     <div class="container">
 
-        <!-- <div class="col-sm-4"> -->
-          <div class="col-sm-4 form-group">
+    <!-- Sorting directive -->
+        <div class="col-sm-4 form-group">
             <label for="masonryFilter">Sort by:</label>
-              <div class="btn-group">
-                <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'1 day'">Time left</button>
-                <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'3 days'">Distance</button>
-              </div>
-          </div>
-
-        <div class="col-sm-4">
-          <input class="form-control input" ng-model="searchText" placeholder="Search the free universe!">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'Time left'">Time left</button>
+                <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'Distance'">Distance</button>
+            </div>
         </div>
+    <!-- Searching directive -->
+        <div class="col-sm-4">
+            <input class="form-control input" ng-model="searchText" placeholder="Search the free universe!">
+        </div>
+    <!-- Category Filter -->
+        <li class="dropdown">
+          <a class="dropdown-toggle">
+            Select category!
+          </a>
+          <ul class="dropdown-menu">
+            <li ng-repeat="category in categories">
+              <a>{{category}}</a>
+            </li>
+          </ul>
+        </li>
 
         </div>
         <br>
