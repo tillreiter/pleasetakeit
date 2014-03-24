@@ -1,13 +1,12 @@
-<section data-ng-controller="MasonryController" class="main-background">
+<section data-ng-controller="MasonryController" class="main-background" id="search">
 
     <div class="container">
-
     <!-- Sorting directive -->
         <div class="col-sm-4 form-group">
             <label for="masonryFilter">Sort by:</label>
             <div class="btn-group">
-                <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'Time left'">Time left</button>
-                <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'Distance'">Distance</button>
+                <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'Time left'" popover="Sort items by time" popover-trigger="mouseenter" popover-placement="bottom">Time left</button>
+                <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'Distance'" popover="Sort items by distance" popover-trigger="mouseenter" popover-placement="bottom">Distance</button>
             </div>
         </div>
     <!-- Searching directive -->
@@ -16,8 +15,8 @@
         </div>
     <!-- Category Filter -->
         <div class="dropdown col-sm-2 col-sm-offset-1">
-          <button class="dropdown-toggle btn btn-default">
-            Select category
+          <button class="dropdown-toggle btn btn-default" popover="Select your search category" popover-trigger="mouseenter" popover-placement="bottom">
+            Category
           </button>
           <ul class="dropdown-menu">
             <li ng-repeat="category in categories">
@@ -25,7 +24,6 @@
             </li>
           </ul>
         </div>
-
         <br>
     <!-- Masonry brick unit -->
         <div class="hero-unit col-sm-12">

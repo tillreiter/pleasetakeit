@@ -1,9 +1,9 @@
 <div data-ng-controller="HeaderController">
     <ul class="navbar-nav nav" data-ng-show="global.user">
-        <li alt="Search"><a href="#"><i class="fa fa-search fa-lg"></i></a></li>
-        <li alt="Location"><a href="#"><i class="fa fa-map-marker fa-lg"></i></a></li>
-        <li alt="I want that"><a href="#"><i class="fa fa-eye fa-lg"></i></a></li>
-        <li alt="I give that"><a href="#"><i class="fa fa-list fa-lg"></i></a></li>
+        <li popover="Jump to the search bar" popover-trigger="mouseenter" popover-placement="bottom" data-ng-controller="MasonryController" alt="Search"><a href="" ng-click="gotoSearch()"><i class="fa fa-search fa-lg"></i></a></li>
+        <li popover="Select your search area" popover-trigger="mouseenter" popover-placement="bottom" alt="Location"><a href="#"><i class="fa fa-map-marker fa-lg"></i></a></li>
+        <li popover="See the items you showed interest in" popover-trigger="mouseenter" popover-placement="bottom" alt="I want that"><a href="#"><i class="fa fa-eye fa-lg"></i></a></li>
+        <li popover="Check your offerings and messages" popover-trigger="mouseenter" popover-placement="bottom" alt="Offerings and messages"><a href="#"><i class="fa fa-list fa-lg"></i></a></li>
 <!--         <li data-ng-repeat="item in menu"  ui-route="/{{item.link}}" ng-class="{active: $uiRoute}">
             <a href="#!/{{item.link}}">{{item.title}}</a>
         </li> -->

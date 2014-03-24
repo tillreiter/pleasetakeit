@@ -62,12 +62,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
     };
 }])
 
-.controller('MasonryController', ['$scope', function ($scope) {
-  function genBrick() {
-      return {
-          src: 'http://lorempixel.com/g/400/200/?' + ~~(Math.random() * 10000)
-      };
-  };
+.controller('MasonryController', ['$scope', '$location', '$anchorScroll', function ($scope, $location, $anchorScroll) {
 
   $scope.bricks = [
       {src: '../img/chair.jpg',
@@ -164,6 +159,14 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
       // Hides a row of brick, if the deal button was clicked
     alert("You are officially asking for " + brick.text);
   };
+
+  $scope.gotoSearch = function (){
+      // set the location.hash to the id of
+      // the element you wish to scroll to.
+      $location.hash('search');
+      // call $anchorScroll()
+      $anchorScroll();
+    };
 
 
 }])
