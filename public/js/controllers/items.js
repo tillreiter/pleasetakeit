@@ -6,11 +6,16 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
     $scope.create = function() {
         var item = new Items({
             title: this.title,
-            pic_url: this.pic_url,
+            picture: this.picture,
             category: this.category,
-            location: this.location,
             duration: this.duration,
-            owned_by: global.user._id
+            location: this.location,
+            condition: this.condition,
+            street: this.street,
+            street_number: this.street_number,
+            city: this.city,
+            state: this.state,
+            // owned_by: global.user._id
             // not so sure how to save global.users id in here
         });
         item.$save(function(response) {
@@ -188,7 +193,20 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
 
 .controller('ModalController', ['$scope', '$modal', '$log', function ($scope, $modal, $log) {
 
-  $scope.items = ['item1', 'item2', 'item3'];
+  // console.log('Hello');
+  // console.log($scope.item)
+
+  $scope.item = {
+    title: 'hippie',
+    picture: '',
+    category: '',
+    duration: '',
+    condition: '',
+    street: '',
+    street_number: '',
+    city: '',
+    state: '',
+  }
 
   $scope.open = function () {
 
@@ -196,8 +214,9 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
       templateUrl: 'views/items/create.html',
       controller: ModalInstanceCtrl,
       resolve: {
-        items: function () {
-          return $scope.items;
+        item: function () {
+          return $scope.item;
+          $log.info($scope.item)
         }
       }
     });
@@ -211,28 +230,18 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
 }])
 
 
-var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
+var ModalInstanceCtrl = function ($scope, $modalInstance, item) {
 
-  $scope.items = items;
-  $scope.selected = {
-    item: $scope.items[0]
-  };
+  $scope.item = {};
 
-  $scope.ok = function () {
-    $modalInstance.close($scope.selected.item);
+  $scope.addItem = function () {
+    $modalInstance.close($scope.item);
+    console.log($scope.item)
   };
 
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
-
-  $scope.title = '';
-
-  $scope.picture = '';
-
-  $scope.category = 'Other'
-
-  $scope.duration = '7 days';
 
   $scope.rate = 7;
   $scope.max = 10;

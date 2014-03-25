@@ -33,8 +33,8 @@
                     <div class="masonry-brick loaded" ng-repeat="brick in bricks | filter:searchText" ng-mouseenter="hover(brick)" ng-mouseleave="hover(brick)">
                         <div ng-show="brick.showDeal" class="show-deal">
                             <button class="btn btn-deal" ng-click="deal(brick)">I want that</button>
-                            <p class="dealInfo"><b>Distance:</b> {{brick.distance}}</p>
-                            <p class="dealInfo"><b>Time left:</b> {{brick.time_left}}</p>
+                            <p class="dealInfo"><i class="fa fa-map-marker"></i>  {{brick.distance}}</p>
+                            <p class="dealInfo"><i class="fa fa-clock-o"></i>  {{brick.time_left}}</p>
                         </div>
                         <img ng-src="{{ brick.src }}" alt="A masonry brick" class="brick-img" ng-class="{hovered: brick.showDeal}">
                         <h4>{{brick.text}}</h4>
