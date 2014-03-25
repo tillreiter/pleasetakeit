@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mean.items').controller('ItemsController', ['$scope', '$stateParams', '$location', 'Global', 'Items', function ($scope, $stateParams, $location, Global, Items) {
+angular.module('mean.items').controller('ItemsController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Items', function ($scope, $stateParams, $location, $http, Global, Items) {
     $scope.global = Global;
 
     $scope.create = function() {
@@ -59,6 +59,21 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
         }, function(item) {
             $scope.item = item;
         });
+    };
+
+    $scope.getLocation = function(val) {
+      return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+        params: {
+          address: val,
+          sensor: false
+        }
+      }).then(function(res){
+        var addresses = [];
+        angular.forEach(res.data.results, function(item){
+          addresses.push(item.formatted_address);
+        });
+        return addresses;
+      });
     };
 }])
 
