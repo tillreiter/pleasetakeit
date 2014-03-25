@@ -4,7 +4,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    User = mongoose.model('User'),
+    Item = mongoose.model('Item');
 
 /**
  * Auth callback
@@ -98,6 +99,21 @@ exports.user = function(req, res, next, id) {
             if (err) return next(err);
             if (!user) return next(new Error('Failed to load User ' + id));
             req.profile = user;
+            console.log(req.profile);
             next();
         });
 };
+
+
+//Find items by distance
+exports.items = function(req, res) {
+//1) Get distance between user and all items
+    //a. Query user lat/lng
+    User.find({_id:window.user._id}, function(err, result){
+        var userLatLng = result.latlng;
+    });
+
+    // b. Query all items lat/lng
+
+//2) Return items based on user selected distance
+}

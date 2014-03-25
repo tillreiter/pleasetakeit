@@ -41,6 +41,11 @@ module.exports = function(grunt) {
                     ignore: ['public/**'],
                     ext: 'js,html',
                     nodeArgs: ['--debug'],
+                    callback: function(nodemon) {
+                        nodemon.on('log', function(event) {
+                            console.log(event.colour);
+                        });
+                    },
                     delayTime: 1,
                     env: {
                         PORT: 3000

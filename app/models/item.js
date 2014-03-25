@@ -22,7 +22,11 @@ var ItemSchema = new Schema({
         required: true
     },
     category: Number,
-    location: String,
+    streetNumber: String,
+    street: String,
+    city: String,
+    state: String,
+    latlng: {latitude: Number, longitude: Number},
     time: {
         startTime: {
             type: Date,
@@ -31,6 +35,7 @@ var ItemSchema = new Schema({
         duration: {
             type: Date,
             required: true
+        // endTime: {}
         },
     },
     owned_by: {
@@ -42,6 +47,9 @@ var ItemSchema = new Schema({
         ref: 'TakeItUser'
     }
 });
+
+//write a method to get endTime = startTime + duaration selected
+
 
 /**
  * Validations

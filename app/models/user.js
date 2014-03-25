@@ -34,6 +34,7 @@ var UserSchema = new Schema({
         city: String,
         state: String
     },
+    //latlng: {latitude: Number, longitude: Number},
     hashed_password: String,
     provider: String,
     salt: String,

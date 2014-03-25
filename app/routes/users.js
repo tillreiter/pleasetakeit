@@ -10,19 +10,21 @@ module.exports = function(app, passport) {
     app.get('/signout', users.signout);
     app.get('/users/me', users.me);
 
+
+    app.get('/users/:id', users.user);
     // Setting up the users api
     app.post('/users', users.create);
 
     // Setting up the userId param
     app.param('userId', users.user);
 
-    // Setting the local strategy route
+    // // Setting the local strategy route
     app.post('/users/session', passport.authenticate('local', {
         failureRedirect: '/signin',
         failureFlash: true
     }), users.session);
 
-    // Setting the facebook oauth routes
+    // // Setting the facebook oauth routes
     app.get('/auth/facebook', passport.authenticate('facebook', {
         scope: ['email', 'user_about_me'],
         failureRedirect: '/signin'

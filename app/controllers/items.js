@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
     Item = mongoose.model('Item'),
     _ = require('lodash');
+    // Q = require('q');
 
 
 /**
@@ -23,21 +24,41 @@ exports.item = function(req, res, next, id) {
 /**
  * Create an item
  */
-
-
 exports.create = function(req, res) {
     var item = new Item(req.body);
 
-    //it does not work like this - you are setting up the new item with the req.body above. it puts all the stuff it gets from the query into the new item.
-    // item.active = true;
-    // item.pic_url = req.item_pic_url;
-    // item.title = req.item_title;
-    // item.category = req.item_category;
-    // item.location = req.item_location;
-    // item.time = req.item_time;
-    // item.owner = req.owned_by;
+    // //1) Change location information into appropriate string to send to GoogleMaps API
+
+    // var itemLocation = item.streetNumber.split(" ").join("+") + "+" + item.street.split(" ").join("+") + "+" + item.city.split(" ").join("+") + "+" + item.state.split(" ");
+    // var requestString = "https://maps.googleapis.com/maps/api/geocode/json?address=" + itemLocation + "&sensor=false&key=AIzaSyAhAKz6iviBvxbLd7ZMjhkx_jaWToU9Kx4";
+
+    // //2) set function to call geocoding API (translates to lat/long);
+    // var geoCodeRequest = function(url) {
+    // var deferred = Q.defer();
+    // request.get(url, function(err, response, data) {
+    //   if (!err) {
+    //     var googleResponse = JSON.parse(data);
+    //     deferred.resolve(googleResponse);
+    //   }
+    //   else {
+    //     deferred.reject("There was an error! Status code: " + data.status + error);
+    //   }
+    // });
+    //     return deferred.promise;
+    // };
+    // //3) Take response and parse it for latlng information
+    // geoCodeRequest = function(requestString).then(function(data){
+    //     var latLngObject = {latitude: data.results[0].geometry.location.lat, longitude: data.results[0].geometry.location.lng};
+    //     console.log(latLngObject);
+    // })
+
+    // //4) set item's latlng value from parsed latlng
+    // item.latlng = latLngObject;
 
 
+    //
+
+    //5) save item in Mongo
     item.save(function(err) {
         if (err) {
             //not sure where to send user if failed to save item.
@@ -95,6 +116,7 @@ exports.destroy = function(req, res) {
 exports.show = function(req, res) {
     res.jsonp(req.item);
 };
+
 
 /**
  * List of Articles
