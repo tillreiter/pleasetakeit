@@ -65,21 +65,6 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
             $scope.item = item;
         });
     };
-
-    $scope.getLocation = function(val) {
-      return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
-        params: {
-          address: val,
-          sensor: false
-        }
-      }).then(function(res){
-        var addresses = [];
-        angular.forEach(res.data.results, function(item){
-          addresses.push(item.formatted_address);
-        });
-        return addresses;
-      });
-    };
 }])
 
 .controller('MasonryController', ['$scope', '$location', '$anchorScroll', function ($scope, $location, $anchorScroll) {
@@ -230,7 +215,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
 }])
 
 
-var ModalInstanceCtrl = function ($scope, $modalInstance, item) {
+var ModalInstanceCtrl = function ($scope, $http, $modalInstance, item) {
 
   $scope.item = {};
 
@@ -253,6 +238,21 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, item) {
   };
 
   $scope.location = '';
+
+  $scope.getLocation = function(val) {
+  return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+    params: {
+      address: val,
+      sensor: false,
+    }
+  }).then(function(res){
+    var addresses = [];
+    angular.forEach(res.data.results, function(item){
+      addresses.push(item.formatted_address);
+    });
+    return addresses;
+  });
+};
 
 };
 
