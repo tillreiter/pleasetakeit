@@ -13,19 +13,22 @@ var mongoose = require('mongoose'),
  */
 var ItemSchema = new Schema({
     active: Boolean,
-    pic_url: {
+    picture: {
         type: String,
-        required: true
+        // required: true
     },
     title: {
         type: String,
         required: true
     },
     category: String,
-    location: {
-        address: String,
+    address: {
+        type: String,
+        required: true
+    },
+    latlng: {
         latitude: Number,
-        longitude: Number,
+        longitude: Number
     },
     time: {
         startTime: {
@@ -35,6 +38,10 @@ var ItemSchema = new Schema({
         duration: {
             type: Date,
         },
+    },
+    condition: {
+        type: Number,
+        default: 5
     },
     owned_by: {
         type: mongoose.Schema.Types.ObjectId,

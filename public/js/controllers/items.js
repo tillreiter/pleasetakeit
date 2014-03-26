@@ -4,21 +4,14 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
     $scope.global = Global;
 
     $scope.$on('item-added', function(evt, item) {
-              console.log('Test create')
-
         var mitem = new Items({
             title: item.title,
             picture: item.picture,
             category: item.category,
             duration: item.duration,
-            location: item.location,
+            address: item.address,
             condition: item.condition,
-            street: item.street,
-            street_number: item.street_number,
-            city: item.city,
-            state: item.state,
-            // owned_by: global.user._id
-            // not so sure how to save global.users id in here
+            owned_by: user._id
         });
         console.log("this is the new created item", mitem)
         mitem.$save(function(response) {

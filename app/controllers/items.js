@@ -5,8 +5,9 @@
  */
 var mongoose = require('mongoose'),
     Item = mongoose.model('Item'),
-    _ = require('lodash');
-    // Q = require('q');
+    _ = require('lodash'),
+    Q = require('q'),
+    request = require('request');
 
 
 /**
@@ -26,52 +27,57 @@ exports.item = function(req, res, next, id) {
  */
 exports.create = function(req, res) {
     var item = new Item(req.body);
-    item.owned_by = req.user._id;
 
-    // //1) Change location information into appropriate string to send to GoogleMaps API
+    //1) Change location information into appropriate string to send to GoogleMaps API
 
-    // var itemLocation = item.streetNumber.split(" ").join("+") + "+" + item.street.split(" ").join("+") + "+" + item.city.split(" ").join("+") + "+" + item.state.split(" ");
-    // var requestString = "https://maps.googleapis.com/maps/api/geocode/json?address=" + itemLocation + "&sensor=false&key=AIzaSyAhAKz6iviBvxbLd7ZMjhkx_jaWToU9Kx4";
+    var itemLocation = item.address.split(" ").join("+");
+    var requestString = "https://maps.googleapis.com/maps/api/geocode/json?address=" + itemLocation + "&sensor=false";
+    console.log(requestString);
 
     // //2) set function to call geocoding API (translates to lat/long);
-    // var geoCodeRequest = function(url) {
-    // var deferred = Q.defer();
-    // request.get(url, function(err, response, data) {
-    //   if (!err) {
-    //     var googleResponse = JSON.parse(data);
-    //     deferred.resolve(googleResponse);
-    //   }
-    //   else {
-    //     deferred.reject("There was an error! Status code: " + data.status + error);
-    //   }
-    // });
-    //     return deferred.promise;
-    // };
+    var geoCodeRequest = function(url) {
+        var deferred = Q.defer();
+        request.get(url, function(err, response, data) {
+          if (!err) {
+            var googleResponse = JSON.parse(data);
+            deferred.resolve(googleResponse);
+          }
+          else {
+            deferred.reject("There was an error! Status code: " + data.status + error);
+          }
+        });
+            return deferred.promise;
+    };
     // //3) Take response and parse it for latlng information
-    // geoCodeRequest = function(requestString).then(function(data){
-    //     var latLngObject = {latitude: data.results[0].geometry.location.lat, longitude: data.results[0].geometry.location.lng};
-    //     console.log(latLngObject);
-    // })
+    var geoData = [];
+
+    geoCodeRequest(requestString).then(function(data){
+        console.log("are we getting here?");
+        var latitude = data.results[0].geometry.location.lat;
+        var longitude = data.results[0].geometry.location.lng;
+        // latLngObject = {latitude: data.results[0].geometry.location.lat, longitude: data.results[0].geometry.location.lng};
+        // console.log("Lat equals"+latitude);
+        // console.log("long equals"+longitude);
+        // geoData.push(latitude, longitude);
+        item.latlng.latitude = latitude;
+        item.latlng.longitude = longitude;
+        item.save(function(err) {
+            if (err) {
+                return res.send('users/signup', {
+                    errors: err.errors,
+                    item: item
+                });
+            } else {
+                res.jsonp(item);
+                console.log(item)
+            }
+        });
+
+    })
 
     // //4) set item's latlng value from parsed latlng
-    // item.latlng = latLngObject;
-
-
-    //
 
     //5) save item in Mongo
-    item.save(function(err) {
-        if (err) {
-            //not sure where to send user if failed to save item.
-            return res.send('users/signup', {
-                errors: err.errors,
-                item: item
-            });
-        } else {
-            res.jsonp(item);
-            console.log(item)
-        }
-    });
 };
 
 /**
