@@ -3,26 +3,29 @@
 angular.module('mean.items').controller('ItemsController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Items', function ($scope, $stateParams, $location, $http, Global, Items) {
     $scope.global = Global;
 
-    $scope.create = function() {
-        var item = new Items({
-            title: this.title,
-            picture: this.picture,
-            category: this.category,
-            duration: this.duration,
-            location: this.location,
-            condition: this.condition,
-            street: this.street,
-            street_number: this.street_number,
-            city: this.city,
-            state: this.state,
+    $scope.$on('item-added', function(evt, item) {
+              console.log('Test create')
+
+        var mitem = new Items({
+            title: item.title,
+            picture: item.picture,
+            category: item.category,
+            duration: item.duration,
+            location: item.location,
+            condition: item.condition,
+            street: item.street,
+            street_number: item.street_number,
+            city: item.city,
+            state: item.state,
             // owned_by: global.user._id
             // not so sure how to save global.users id in here
         });
-        item.$save(function(response) {
+        console.log("this is the new created item", mitem)
+        mitem.$save(function(response) {
             $location.path('items/' + response._id);
         });
 
-    };
+    });
 
     $scope.remove = function(item) {
         if (item) {
@@ -76,7 +79,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
       time_left: "1 day"},
 
       {src: '../img/puppy.jpg',
-      text: "This couch needs a new person to take care of",
+      text: "item.couch needs a new person to take care of",
       distance: "2 miles",
       time_left: "7 days"},
 
@@ -111,7 +114,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
       time_left: "1 day"},
 
       {src: '../img/chair.jpg',
-      text: "This couch needs a new person to take care of",
+      text: "item.couch needs a new person to take care of",
       distance: "2 miles",
       time_left: "7 days"},
 
@@ -176,21 +179,21 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
 
 }])
 
-.controller('ModalController', ['$scope', '$modal', '$log', function ($scope, $modal, $log) {
+.controller('ModalController', ['$scope', '$modal', '$log', '$rootScope', function ($scope, $modal, $log, $rootScope) {
 
   // console.log('Hello');
   // console.log($scope.item)
 
   $scope.item = {
-    title: 'hippie',
-    picture: '',
-    category: '',
-    duration: '',
-    condition: '',
-    street: '',
-    street_number: '',
-    city: '',
-    state: '',
+    // title: 'hippie',
+    // picture: '',
+    // category: '',
+    // duration: '',
+    // condition: '',
+    // street: '',
+    // street_number: '',
+    // city: '',
+    // state: '',
   }
 
   $scope.open = function () {
@@ -206,8 +209,10 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
       }
     });
 
-    modalInstance.result.then(function (selectedItem) {
-      $scope.selected = selectedItem;
+    modalInstance.result.then(function (item) {
+      $scope.item = item;
+      $rootScope.$broadcast('item-added', item);
+      console.log("broadcasting: ", item);
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });
@@ -258,7 +263,7 @@ var ModalInstanceCtrl = function ($scope, $http, $modalInstance, item) {
 
 // Please note that $modalInstance represents a modal window (instance) dependency.
 // It is not the same as the $modal service used above.
-// Not entirely sure why it isnt working with this controller and only the variable way works
+// Not entirely sure why it isnt working with item.controller and only the variable way works
 // .controller('ModalInstanceController', ['$scope', '$modalInstance', 'items', function ($scope, $modalInstance, items) {
 
 //   $scope.items = items;

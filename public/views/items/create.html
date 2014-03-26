@@ -1,4 +1,4 @@
-<div class="modal-header" controller="ItemsController">
+<div class="modal-header" data-ng-controller="ItemsController">
   <h3>Add your free item for the crowd!</h3>
 </div>
 
@@ -11,8 +11,8 @@
 
   <div class="form-group">
     <label for="picture">Please upload a picture:</label>
-    <form action="input_file.htm" method="post" enctype="multipart/form-data">
-    <input type="file" name="picture" size="50" maxlength="100000" data-ng- model="item.picture" accept="text/*" required>
+<!--     <form action="input_file.htm" method="post" enctype="multipart/form-data">
+ -->    <input type="file" accept="image" name="picture" data-ng-model="item.picture" required>
   </div>
   <!-- Lets change this to a drag and drop field when we have time -->
 

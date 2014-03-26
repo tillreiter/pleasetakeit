@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
+    ObjectId = Schema.ObjectId,
     crypto = require('crypto');
 
 /**
@@ -20,15 +21,6 @@ var UserSchema = new Schema({
         type: String,
         unique: true
     },
-    location: {
-        address: String,
-        latitude: Number,
-        longitude: Number,
-    },
-    hashed_password: String,
-    provider: String,
-    salt: String,
-    facebook: {},
     wantItems: [{
         type: Schema.Types.ObjectId,
         ref: "Item"
@@ -37,6 +29,18 @@ var UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Item"
     }],
+    location: {
+        address: String,
+        city: String,
+        state: String
+    },
+    //latlng: {latitude: Number, longitude: Number},
+    hashed_password: String,
+    provider: String,
+    salt: String,
+    // facebook: {
+
+    // }
 });
 
 /**
@@ -57,12 +61,12 @@ var validatePresenceOf = function(value) {
     return value && value.length;
 };
 
-// The 4 validations below only apply if you are signing up traditionally.
+// // The 4 validations below only apply if you are signing up traditionally.
 UserSchema.path('name.first').validate(function(name) {
     // If you are authenticating by any of the oauth strategies, don't validate.
     if (!this.provider) return true;
-    return (typeof name === 'string' && name.length > 0);
-}, 'First name cannot be blank');
+    return (typeof name.first === 'string' && name.length > 0);
+}, 'Name cannot be blank');
 
 UserSchema.path('email').validate(function(email) {
     // If you are authenticating by any of the oauth strategies, don't validate.
@@ -134,4 +138,4 @@ UserSchema.methods = {
     }
 };
 
-mongoose.model('User', UserSchema);
+mongoose.model('TakeItUser', UserSchema);

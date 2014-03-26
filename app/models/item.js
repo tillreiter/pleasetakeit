@@ -21,12 +21,12 @@ var ItemSchema = new Schema({
         type: String,
         required: true
     },
-    category: Number,
-    streetNumber: String,
-    street: String,
-    city: String,
-    state: String,
-    latlng: {latitude: Number, longitude: Number},
+    category: String,
+    location: {
+        address: String,
+        latitude: Number,
+        longitude: Number,
+    },
     time: {
         startTime: {
             type: Date,
@@ -34,17 +34,15 @@ var ItemSchema = new Schema({
         },
         duration: {
             type: Date,
-            required: true
-        // endTime: {}
         },
     },
     owned_by: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'TakeItUser'
+        ref: 'User'
     },
     wanted_by: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'TakeItUser'
+        ref: 'User'
     }
 });
 

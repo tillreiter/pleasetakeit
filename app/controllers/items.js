@@ -26,6 +26,7 @@ exports.item = function(req, res, next, id) {
  */
 exports.create = function(req, res) {
     var item = new Item(req.body);
+    item.owned_by = req.user._id;
 
     // //1) Change location information into appropriate string to send to GoogleMaps API
 
@@ -68,6 +69,7 @@ exports.create = function(req, res) {
             });
         } else {
             res.jsonp(item);
+            console.log(item)
         }
     });
 };
