@@ -26,9 +26,9 @@ var ItemSchema = new Schema({
         type: String,
         required: true
     },
-    latlng: {
-        latitude: Number,
-        longitude: Number
+    lnglat: {
+        type: [Number],
+        index: '2d'
     },
     time: {
         startTime: {

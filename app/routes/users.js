@@ -9,6 +9,7 @@ module.exports = function(app, passport) {
     app.get('/signup', users.signup);
     app.get('/signout', users.signout);
     app.get('/users/me', users.me);
+    app.get('/within/:miles', users.nearItems);
 
 
     app.get('/users/:id', users.user);

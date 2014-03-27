@@ -46,7 +46,7 @@ exports.create = function(req, res) {
             deferred.reject("There was an error! Status code: " + data.status + error);
           }
         });
-            return deferred.promise;
+        return deferred.promise;
     };
     // //3) Take response and parse it for latlng information
     var geoData = [];
