@@ -1,0 +1,23 @@
+<div class="modal-header" data-ng-controller="UsersController">
+<!--   <h3>Enter your current location to explore cool stuff</h3>
+ -->
+  <div class="center-pic">
+    <img class="modal-pic" src="../img/location.jpg">
+  </div>
+</div>
+
+<form name="itemForm">
+<div class="modal-body">
+  <div class="form-group">
+    <label for="address">Enter your current location to explore cool stuff</label>
+    <input type="text" ng-model="user.address" placeholder="eg. 160 Pearl Street, New York City, New York 10005, USA" typeahead="address for address in getLocation($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations" class="form-control">
+    <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+  </div>
+</div>
+</form>
+
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="changeLocation()">OK</button>
+  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>
+

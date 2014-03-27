@@ -1,47 +1,48 @@
-<section data-ng-controller="MasonryController" class="main-background" id="search">
+<section data-ng-controller="ItemsController" data-ng-init="findAll()">
+    <section data-ng-controller="MasonryController" class="main-background" id="search">
 
-    <div class="container">
-    <!-- Sorting directive -->
-        <div class="col-sm-4 form-group">
-            <label for="masonryFilter">Sort by:</label>
-            <div class="btn-group">
-                <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'Time left'" popover="Sort items by time" popover-trigger="mouseenter" popover-placement="bottom">Time left</button>
-                <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'Distance'" popover="Sort items by distance" popover-trigger="mouseenter" popover-placement="bottom">Distance</button>
+        <div class="container">
+        <!-- Sorting directive -->
+            <div class="col-sm-4 form-group">
+                <label for="masonryFilter">Sort by:</label>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'Time left'">Time left</button>
+                    <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'Distance'">Distance</button>
+                </div>
             </div>
-        </div>
-    <!-- Searching directive -->
-        <div class="col-sm-4">
-            <input class="form-control input" ng-model="searchText" placeholder="Search the free universe!">
-        </div>
-    <!-- Category Filter -->
-        <div class="dropdown col-sm-2 col-sm-offset-1">
-          <button class="dropdown-toggle btn btn-default" popover="Select your search category" popover-trigger="mouseenter" popover-placement="bottom">
-            Category
-          </button>
-          <ul class="dropdown-menu">
-            <li ng-repeat="category in categories">
-              <a>{{category}}</a>
-            </li>
-          </ul>
-        </div>
-        <br>
-    <!-- Masonry brick unit -->
-        <div class="hero-unit col-sm-12">
-        <div class="row">
-            <div class="span12">
-                <div masonry>
-                    <div class="masonry-brick loaded" ng-repeat="brick in bricks | filter:searchText" ng-mouseenter="hover(brick)" ng-mouseleave="hover(brick)">
-                        <div ng-show="brick.showDeal" class="show-deal">
-                            <button class="btn btn-deal" ng-click="deal(brick)">I want that</button>
-                            <p class="dealInfo"><i class="fa fa-map-marker"></i>  {{brick.distance}}</p>
-                            <p class="dealInfo"><i class="fa fa-clock-o"></i>  {{brick.time_left}}</p>
+        <!-- Searching directive -->
+            <div class="col-sm-4">
+                <input class="form-control input" ng-model="searchText" placeholder="Search the free universe!">
+            </div>
+        <!-- Category Filter -->
+            <div class="dropdown col-sm-2 col-sm-offset-1">
+              <button class="dropdown-toggle btn btn-default" popover="Select your search category" popover-trigger="mouseenter" popover-placement="bottom">
+                Category
+              </button>
+              <ul class="dropdown-menu">
+                <li ng-repeat="category in categories">
+                  <a>{{category}}</a>
+                </li>
+              </ul>
+            </div>
+            <br>
+        <!-- Masonry brick unit -->
+            <div class="hero-unit col-sm-12">
+            <div class="row">
+                <div class="span12">
+                    <div masonry>
+                        <div class="masonry-brick loaded" ng-repeat="brick in items | filter:searchText" ng-mouseenter="hover(brick)" ng-mouseleave="hover(brick)">
+                            <div ng-show="brick.showDeal" class="show-deal">
+                                <button class="btn btn-deal" ng-click="deal(brick)">I want that</button>
+                                <p class="dealInfo"><i class="fa fa-map-marker"></i>  {{brick.address}}</p>
+                                <p class="dealInfo"><i class="fa fa-clock-o"></i>  {{brick.time}}</p>
+                            </div>
+                            <img src="../img/puppy.jpg" alt="A masonry brick" class="brick-img" ng-class="{hovered: brick.showDeal}">
+                            <h4>{{brick.title}}</h4>
                         </div>
-                        <img ng-src="{{ brick.src }}" alt="A masonry brick" class="brick-img" ng-class="{hovered: brick.showDeal}">
-                        <h4>{{brick.text}}</h4>
                     </div>
                 </div>
             </div>
-        </div>
-        </div>
-
+            </div>
+    </section>
 </section>

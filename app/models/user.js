@@ -20,10 +20,9 @@ var UserSchema = new Schema({
         type: String,
         unique: true
     },
-    location: {
-        address: String,
+    latlng: {
         latitude: Number,
-        longitude: Number,
+        longitude: Number
     },
     hashed_password: String,
     provider: String,
