@@ -3,26 +3,28 @@
 angular.module('mean.users')
 
 .controller('UsersController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Users', function ($scope, $stateParams, $location, $http, Global, Users) {
-    $scope.global = Global;
+    var user = Global.user;
+    console.log("This is the user", user);
 
-    $scope.$on('location-changed', function(evt, user) {
-        var newLocation = new Users({
-            address: user.address,
-        });
-        console.log("this is the new user location", newLocation)
-        newLocation.$save(function(response) {
-            $location.path('users/' + response._id);
-        });
+    $scope.$on('location-changed', function(evt, userAddress) {
+        user.address = $scope.userAddress.address;
+        console.log("this is updatedUser", user);
+        var userpath = "users/:" + user._id;
+        console.log("this is the userpath", userpath);
 
+
+      Users.update(user);
+      //     // $location.path("home");
+      //     // console.log("home");
+        // })
     });
-
 }])
 
 
 .controller('AreaSelectModalController', ['$scope', '$modal', '$log', '$rootScope', function ($scope, $modal, $log, $rootScope) {
 
 
-  $scope.user = {
+  $scope.userAddress = {
   }
 
   $scope.open = function () {
@@ -31,17 +33,17 @@ angular.module('mean.users')
       templateUrl: 'views/users/user_area_select.html',
       controller: AreaModalInstanceCtrl,
       resolve: {
-        user: function () {
-          return $scope.user;
-          $log.info($scope.user)
+        userAddress: function () {
+          return $scope.userAddress;
+          $log.info($scope.userAddress)
         }
       }
     });
 
-    modalInstance.result.then(function (user) {
-      $scope.user = user;
-      $rootScope.$broadcast('location-changed', user);
-      console.log("broadcasting: ", user);
+    modalInstance.result.then(function (userAddress) {
+      $scope.userAddress = userAddress;
+      $rootScope.$broadcast('location-changed', userAddress);
+      console.log("broadcasting: ", userAddress);
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });
@@ -49,13 +51,13 @@ angular.module('mean.users')
 }])
 
 
-var AreaModalInstanceCtrl = function ($scope, $http, $modalInstance, user) {
+var AreaModalInstanceCtrl = function ($scope, $http, $modalInstance, userAddress) {
 
-  $scope.user = {};
+  $scope.userAddress = {};
 
   $scope.changeLocation = function () {
-    $modalInstance.close($scope.user);
-    console.log($scope.user)
+    $modalInstance.close($scope.userAddress);
+    console.log($scope.userAddress)
   };
 
   $scope.cancel = function () {

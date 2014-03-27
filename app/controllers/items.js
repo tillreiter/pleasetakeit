@@ -117,9 +117,27 @@ exports.show = function(req, res) {
 };
 
 /**
- * List of items
+ * List of all items
  */
+
+
 exports.all = function(req, res) {
+    if (req.query.itemRadius) {
+        var miles = req.query.itemRadius;
+        console.log(miles)
+        console.log(req.user)
+        var userLng = req.user.lnglat[0];
+        var userLat = req.user.lnglat[1];
+        var userCoord = [userLng, userLat]
+
+        Item.find({lnglat:
+           {$near: userCoord,
+            $maxDistance:miles/69.17}
+        }).exec(function(err, items){
+            console.log(err, items);
+            res.jsonp(items);
+        });
+    } else {
     Item.find().sort('-created').populate('owned_by', 'name.first name.last username _id').exec(function(err, items) {
         if (err) {
             res.render('error', {
@@ -129,4 +147,24 @@ exports.all = function(req, res) {
             res.jsonp(items);
         }
     });
+    };
 };
+
+
+// Find items by distance
+// exports.nearItems = function(req, res) {
+//     var miles = req.params.miles;
+//     var userLng = req.user.lnglat[0];
+//     var userLat = req.user.lnglat[1];
+//     var userCoord = [userLng, userLat]
+
+//     Item.find({lnglat:
+//        {$near: userCoord,
+//         $maxDistance:miles/69.17}
+//     }).exec(function(err, items){
+//         console.log(err, items);
+//         res.jsonp(items);
+//     });
+// };
+
+
