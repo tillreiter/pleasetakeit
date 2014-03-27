@@ -26,19 +26,17 @@ var ItemSchema = new Schema({
         type: String,
         required: true
     },
-    latlng: {
-        latitude: Number,
-        longitude: Number
+    lnglat: {
+        type: [Number],
+        index: '2d'
     },
-    time: {
-        startTime: {
+    startTime: {
             type: Date,
             default: Date.now
         },
-        duration: {
-            type: Date,
+    duration: {
+            type: Number,
         },
-    },
     condition: {
         type: Number,
         default: 5
@@ -52,8 +50,6 @@ var ItemSchema = new Schema({
         ref: 'User'
     }
 });
-
-//write a method to get endTime = startTime + duaration selected
 
 
 /**

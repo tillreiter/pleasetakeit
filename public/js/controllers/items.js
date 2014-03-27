@@ -48,7 +48,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
         });
     };
 
-    $scope.find = function() {
+    $scope.findAll = function() {
         Items.query(function(items) {
             $scope.items = items;
         });
@@ -174,19 +174,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
 
 .controller('ModalController', ['$scope', '$modal', '$log', '$rootScope', function ($scope, $modal, $log, $rootScope) {
 
-  // console.log('Hello');
-  // console.log($scope.item)
-
   $scope.item = {
-    // title: 'hippie',
-    // picture: '',
-    // category: '',
-    // duration: '',
-    // condition: '',
-    // street: '',
-    // street_number: '',
-    // city: '',
-    // state: '',
   }
 
   $scope.open = function () {

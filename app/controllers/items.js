@@ -27,7 +27,7 @@ exports.item = function(req, res, next, id) {
  */
 exports.create = function(req, res) {
     var item = new Item(req.body);
-
+    // item.time.duration = req.body.duration;
     //1) Change location information into appropriate string to send to GoogleMaps API
 
     var itemLocation = item.address.split(" ").join("+");
@@ -49,18 +49,15 @@ exports.create = function(req, res) {
             return deferred.promise;
     };
     // //3) Take response and parse it for latlng information
-    var geoData = [];
+    // var geoData = [];
 
     geoCodeRequest(requestString).then(function(data){
         console.log("are we getting here?");
         var latitude = data.results[0].geometry.location.lat;
         var longitude = data.results[0].geometry.location.lng;
-        // latLngObject = {latitude: data.results[0].geometry.location.lat, longitude: data.results[0].geometry.location.lng};
-        // console.log("Lat equals"+latitude);
-        // console.log("long equals"+longitude);
-        // geoData.push(latitude, longitude);
-        item.latlng.latitude = latitude;
-        item.latlng.longitude = longitude;
+
+        item.latlng = [longitude, latitude];
+
         item.save(function(err) {
             if (err) {
                 return res.send('users/signup', {
@@ -81,7 +78,7 @@ exports.create = function(req, res) {
 };
 
 /**
- * Update an article
+ * Update an item
  */
 exports.update = function(req, res) {
     var item = req.item;
@@ -101,7 +98,7 @@ exports.update = function(req, res) {
 };
 
 /**
- * Delete an article
+ * Delete an item
  */
 exports.destroy = function(req, res) {
     var item = req.item;
@@ -119,18 +116,17 @@ exports.destroy = function(req, res) {
 };
 
 /**
- * Show an article
+ * Show an item
  */
 exports.show = function(req, res) {
     res.jsonp(req.item);
 };
 
-
 /**
- * List of Articles
+ * List of items
  */
 exports.all = function(req, res) {
-    Item.find().sort('-created').populate('user', 'name username').exec(function(err, items) {
+    Item.find().sort('-created').populate('owned_by', 'name.first name.last username _id').exec(function(err, items) {
         if (err) {
             res.render('error', {
                 status: 500
