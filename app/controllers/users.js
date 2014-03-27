@@ -112,8 +112,8 @@ exports.nearItems = function(req, res) {
     User.find({_id: req.user._id}, function(err, result){
 
 
-        var userLng = result.latlng.[0];
-        var userLat = result.latlng.[1];
+        var userLng = result.latlng[0];
+        var userLat = result.latlng[1];
         var userCoord = [userLng, userLat]
 
         Item.find({lnglat:

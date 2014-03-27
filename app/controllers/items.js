@@ -27,12 +27,10 @@ exports.item = function(req, res, next, id) {
  */
 exports.create = function(req, res) {
     var item = new Item(req.body);
-    // item.time.duration = req.body.duration;
     //1) Change location information into appropriate string to send to GoogleMaps API
 
     var itemLocation = item.address.split(" ").join("+");
     var requestString = "https://maps.googleapis.com/maps/api/geocode/json?address=" + itemLocation + "&sensor=false";
-    console.log(requestString);
 
     // //2) set function to call geocoding API (translates to lat/long);
     var geoCodeRequest = function(url) {
@@ -49,15 +47,15 @@ exports.create = function(req, res) {
         return deferred.promise;
     };
     // //3) Take response and parse it for latlng information
-    // var geoData = [];
 
     geoCodeRequest(requestString).then(function(data){
         console.log("are we getting here?");
         var latitude = data.results[0].geometry.location.lat;
         var longitude = data.results[0].geometry.location.lng;
 
-        item.latlng = [longitude, latitude];
+        //parsing long and lat values into object
 
+        item.lnglat = [longitude, latitude];
         item.save(function(err) {
             if (err) {
                 return res.send('users/signup', {
@@ -71,10 +69,6 @@ exports.create = function(req, res) {
         });
 
     })
-
-    // //4) set item's latlng value from parsed latlng
-
-    //5) save item in Mongo
 };
 
 /**
