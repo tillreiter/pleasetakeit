@@ -91,6 +91,7 @@ exports.create = function(req, res, next) {
 exports.update = function(req, res) {
 
     var user = req.user;
+    console.log("who is this requser", user)
 
     user = _.extend(user, req.body);
 

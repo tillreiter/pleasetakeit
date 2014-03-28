@@ -16,11 +16,13 @@ module.exports = function(app) {
 
     app.get('/items', items.all);
 
-    // app.get('/items/area/:miles', items.nearItems);
 
-    app.post('/items', items.create);
+    app.post('/items', authorization.requiresLogin, items.create);
+
 
     app.get('/items/:itemId', items.show);
+    app.put('/items/:id', items.update);
+
 
 //==================NEW SHIT==============================
     // app.get('/within/:miles', items.nearItems); /** Find items by distance */

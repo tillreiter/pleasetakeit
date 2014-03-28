@@ -36,18 +36,6 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
         }
     };
 
-    $scope.update = function() {
-        var item = $scope.item;
-        if (!item.updated) {
-            item.updated = [];
-        }
-        item.updated.push(new Date().getTime());
-
-        item.$update(function() {
-            $location.path('items/' + item._id);
-        });
-    };
-
     $scope.findAll = function() {
         Items.query(function(items) {
             $scope.items = items;
@@ -55,9 +43,6 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
     };
 
     $scope.findNear = function (radius) {
-        // Items.query(function(items) {
-        //     $scope.items = items;
-        // });
         Items.query({
           itemRadius: radius
         }, function (items) {
@@ -90,18 +75,24 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
 
 }])
 
-.controller('MasonryController', ['$scope', '$location', '$anchorScroll', function ($scope, $location, $anchorScroll) {
+.controller('MasonryController', ['$scope', '$location', '$anchorScroll', 'Items', function ($scope, $location, $anchorScroll, Items) {
 
 
   $scope.hover = function(brick) {
       // Shows/hides the delete button on hover
-    return brick.showDeal = ! brick.showDeal;
+    return brick.showDeal = !brick.showDeal;
   };
 
   $scope.deal = function(brick) {
       // Hides a row of brick, if the deal button was clicked
     alert("You are officially asking for " + brick.text);
   };
+
+  $scope.showDetails = function (brick) {
+    // return brick.showDetails = true;
+    $scope.details = !$scope.details;
+    $scope.brick = brick;
+  }
 
   $scope.gotoSearch = function (){
       // set the location.hash to the id of
@@ -111,6 +102,20 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
       $anchorScroll();
     };
 
+  $scope.details = false;
+  $scope.confirmation = false;
+
+  $scope.confirm = function () {
+    $scope.confirmation = !$scope.confirmation;
+  }
+
+  $scope.wantItem = function (brick) {
+    var wantItem = $scope.brick;
+    wantItem.wanted_by = user._id;
+        console.log("this is wantItem", wantItem);
+
+      Items.update(wantItem);
+  }
 
 }])
 
