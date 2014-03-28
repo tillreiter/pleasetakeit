@@ -37,7 +37,8 @@
     "view-helpers": "~0.1.4",
     "mean-logger": "0.0.1",
     "request": "~2.34.0",
-    "q": "~1.0.1"
+    "q": "~1.0.1",
+    "aws-sdk": "~2.0.0-rc13"
   },
   "devDependencies": {
     "grunt-env": "~0.4.1",

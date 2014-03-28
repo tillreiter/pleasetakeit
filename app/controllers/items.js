@@ -7,8 +7,12 @@ var mongoose = require('mongoose'),
     Item = mongoose.model('Item'),
     _ = require('lodash'),
     Q = require('q'),
-    request = require('request');
+    request = require('request'),
+    fs = require('fs'),
+    AWS = require('aws-sdk'),
 
+//loading access S3 access keys
+AWS.config.loadFromPath(__dirname + '/aws.json');
 
 /**
  * Find item by id
@@ -28,8 +32,25 @@ exports.item = function(req, res, next, id) {
 exports.create = function(req, res) {
     var item = new Item(req.body);
 
-    //1) Change location information into appropriate string to send to GoogleMaps API
+    //make sure form's input field is called "image"
+    var file = req.files.image;
+    var filePath = file.path;
 
+    //upload file to s3
+    fs.readFile(filePath, function(err, data) {
+        if (err) { throw err; }
+
+        var s3 = new AWS.S3({ params: {Bucket: 'PleaseTakeIt', Key: file.name }});
+        s3.putObject({
+            Body: data
+        }, function() {
+            console.log('UPLOADED');
+        });
+    });
+    //Set file path to URL in ItemSchema (baseURL+file.name)
+    item.picture = "http://s3.amazonaws.com/PleaseTakeIt/" + file.name;
+
+    //1) Change location information into appropriate string to send to GoogleMaps API
     var itemLocation = item.address.split(" ").join("+");
     var requestString = "https://maps.googleapis.com/maps/api/geocode/json?address=" + itemLocation + "&sensor=false";
 
@@ -47,8 +68,8 @@ exports.create = function(req, res) {
         });
         return deferred.promise;
     };
-    //3) Take response and parse it for latlng information
 
+    //3) Take response and parse it for latlng information
     geoCodeRequest(requestString).then(function(data){
         console.log("are we getting here?");
         var latitude = data.results[0].geometry.location.lat;
