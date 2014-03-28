@@ -153,6 +153,17 @@ h3.highlight  {
     float: left;
 }
 
+.masonry-brick.details {
+    width: 500px;
+    background-color: black;
+    margin: 0.5em;
+    display: block;
+    float: left;
+    padding: 4px;
+    position: relative;
+}
+
+
 .masonry-brick.loaded {
     width: 250px;
     background-color: #FFF;

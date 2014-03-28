@@ -74,27 +74,27 @@ exports.create = function(req, res) {
  * Update an item
  */
 exports.update = function(req, res) {
-    var item = req.item;
-
-    item = _.extend(item, req.body);
-
-    item.save(function(err) {
-        if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                item: item
-            });
-        } else {
-            res.jsonp(item);
-        }
-    });
+    console.log("are we here?");
+    var item = req.body;
+    Item.findOne({_id: item._id}, function (err, foundItem){
+        foundItem.wanted_by = item.wanted_by;
+        foundItem.save(function(err) {
+            if (err) {
+                return res.send('users/signup', {
+                    errors: err.errors,
+                });
+            } else {
+                res.jsonp(foundItem);
+            }
+        });
+    })
 };
 
 /**
  * Delete an item
  */
 exports.destroy = function(req, res) {
-    var item = req.item;
+    var item = req.wantItem;
 
     item.remove(function(err) {
         if (err) {
