@@ -104,25 +104,3 @@ exports.user = function(req, res, next, id) {
         });
 };
 
-
-//Find items by distance
-exports.nearItems = function(req, res) {
-    var miles = req.params.miles;
-
-    User.find({_id: req.user._id}, function(err, result){
-
-
-        var userLng = result.latlng[0];
-        var userLat = result.latlng[1];
-        var userCoord = [userLng, userLat]
-
-        Item.find({lnglat:
-           {$near: userCoord,
-            $maxDistance:miles/69.17}
-        }).exec(function(err, items){
-            console.log(err, items);
-            res.jsonp(items);
-        });
-    });
-};
-

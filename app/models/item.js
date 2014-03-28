@@ -12,7 +12,10 @@ var mongoose = require('mongoose'),
  * OfferItem Schema
  */
 var ItemSchema = new Schema({
-    active: Boolean,
+    active: {
+        type: String,
+        default: "active"
+    },
     picture: {
         type: String,
         // required: true
@@ -31,12 +34,12 @@ var ItemSchema = new Schema({
         index: '2d'
     },
     startTime: {
-            type: Date,
-            default: Date.now
-        },
+        type: Date,
+        default: Date.now
+    },
     duration: {
-            type: Number,
-        },
+        type: Number,
+    },
     condition: {
         type: Number,
         default: 5
