@@ -5,7 +5,12 @@
  */
 var mongoose = require('mongoose'),
     User = mongoose.model('User'),
-    Item = mongoose.model('Item');
+    Item = mongoose.model('Item'),
+    _ = require('lodash'),
+    Q = require('q'),
+    request = require('request');
+
+
 
 /**
  * Auth callback
@@ -79,6 +84,60 @@ exports.create = function(req, res, next) {
         });
     });
 };
+
+/**
+ * Update an user or set its new location
+ */
+exports.update = function(req, res) {
+
+    var user = req.user;
+
+    user = _.extend(user, req.body);
+
+// 1) Change location information into appropriate string to send to GoogleMaps API
+
+    var userLocation = user.address.split(" ").join("+");
+    var requestString = "https://maps.googleapis.com/maps/api/geocode/json?address=" + userLocation + "&sensor=false";
+
+    // //2) set function to call geocoding API (translates to lat/long);
+    var geoCodeRequest = function(url) {
+        var deferred = Q.defer();
+        request.get(url, function(err, response, data) {
+          if (!err) {
+            var googleResponse = JSON.parse(data);
+            deferred.resolve(googleResponse);
+          }
+          else {
+            deferred.reject("There was an error! Status code: " + data.status + error);
+          }
+        });
+        return deferred.promise;
+    };
+    // //3) Take response and parse it for latlng information
+
+    geoCodeRequest(requestString).then(function(data){
+        console.log("are we getting here?");
+        var latitude = data.results[0].geometry.location.lat;
+        var longitude = data.results[0].geometry.location.lng;
+
+        //parsing long and lat values into object
+
+        user.lnglat = [longitude, latitude];
+        user.save(function(err) {
+            if (err) {
+                return res.send('users/signup', {
+                    errors: err.errors,
+                    user: user
+                });
+            } else {
+                res.jsonp(user);
+                console.log("This is the updated",user);
+            }
+        });
+
+    })
+};
+
 
 /**
  * Send User
