@@ -15,8 +15,6 @@ var hasAuthorization = function(req, res, next) {
 module.exports = function(app) {
 
     app.get('/items', items.all);
-    // app.get('/items/area/:miles', items.nearItems);
-
 
     app.post('/items', authorization.requiresLogin, items.create);
     app.get('/items/:itemId', items.show);

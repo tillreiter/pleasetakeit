@@ -86,7 +86,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
 
     $scope.radioDistanceModel = 0.5;
 
-    $scope.radioCategoryModel = "All";
+    $scope.radioCategoryModel = "";
 
 }])
 
