@@ -39,10 +39,17 @@
             </div>
 
             <div class="col-sm-6 btn-group">
-                <button type="button" ng-repeat="category in categories" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'{{category}}'">{{category}}</button><!--
-                <button type="button" class="btn btn-primary btn-xs" ng-model="radioModel" btn-radio="2">2 miles</button>
-                 <button type="button" class="btn btn-primary btn-xs" ng-model="radioModel" btn-radio="5">5 miles</button>
-                <button type="button" class="btn btn-primary btn-xs" ng-model="radioModel" btn-radio="10">10 miles</button> -->
+                <!-- Dont know why the ng-repeat is not binding to categorymodel here -->
+                <!-- <button type="button" ng-repeat="category in categories" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'{{category}}'">{{category}}</button> -->
+                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Household'" ng-click="">Household</button>
+                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Outdoor'" ng-click="">Outdoor</button>
+                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Electronics'" ng-click="">Electronics</button>
+                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Animals'" ng-click="">Animals</button>
+                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Clothes'" ng-click="">Clothes</button>
+                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Furniture'" ng-click="">Furniture</button>
+                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Other'" ng-click="">Other</button>
+                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="" ng-click="">All</button>
+
             </div>
 
 
@@ -52,7 +59,7 @@
             <div class="row">
                 <div class="span12">
                     <div masonry>
-                        <div class="masonry-brick loaded" ng-repeat="brick in items | filter:searchText" ng-mouseenter="hover(brick)" ng-mouseleave="hover(brick)">
+                        <div class="masonry-brick loaded" ng-repeat="brick in items | filter: searchText | filter:radioCategoryModel " ng-mouseenter="hover(brick)" ng-mouseleave="hover(brick)">
                             <div ng-show="brick.showDeal" class="show-deal">
                                 <button class="btn btn-deal" ng-click="deal(brick)">I want that</button>
                                 <p class="dealInfo"><i class="fa fa-map-marker"></i>  {{brick.address}}</p>

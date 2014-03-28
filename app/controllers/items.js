@@ -160,7 +160,6 @@ exports.nearItems = function(req, res) {
  * List of all items
  */
 
-
 exports.all = function(req, res) {
     if (req.query.itemRadius) {
         var miles = req.query.itemRadius;
@@ -177,7 +176,17 @@ exports.all = function(req, res) {
             console.log(err, items);
             res.jsonp(items);
         });
-    } else {
+    }
+
+    // else if (req.query.owned_by) {
+    //     var user_id = req.query.owned_by;
+    //     Item.find({owned_by: user_id})
+    // } else if (req.query.wanted_by) {
+    //     same shit
+    // } else if (req.query.category)
+
+
+    else {
     Item.find().sort('-created').populate('owned_by', 'name.first name.last username _id').exec(function(err, items) {
         if (err) {
             res.render('error', {
