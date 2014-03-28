@@ -15,14 +15,10 @@ var hasAuthorization = function(req, res, next) {
 module.exports = function(app) {
 
     app.get('/items', items.all);
-<<<<<<< HEAD
-=======
 
     // app.get('/items/area/:miles', items.nearItems);
 
->>>>>>> a2083e22e173de4a7b3014f06b1e90a3299925aa
-
-    app.post('/items', authorization.requiresLogin, items.create);
+    app.post('/items', items.create);
 
     app.get('/items/:itemId', items.show);
 
