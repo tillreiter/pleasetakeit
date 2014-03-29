@@ -16,13 +16,10 @@ module.exports = function(app) {
 
     app.get('/items', items.all);
 
-
     app.post('/items', authorization.requiresLogin, items.create);
-
 
     app.get('/items/:itemId', items.show);
     app.put('/items/:id', items.update);
-
 
 //==================NEW SHIT==============================
     // app.get('/within/:miles', items.nearItems); /** Find items by distance */
@@ -34,11 +31,8 @@ module.exports = function(app) {
     // app.post('/items', authorization.requiresLogin, items.create); /** Create items */
 //==================NEW SHIT==============================
 
-
     app.put('/items/:itemId', authorization.requiresLogin, hasAuthorization, items.update);
     app.del('/items/:itemId', authorization.requiresLogin, hasAuthorization, items.destroy);
-
-
 
     // Finish with setting up the itemId param
     app.param('itemId', items.item);
