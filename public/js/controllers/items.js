@@ -48,7 +48,15 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
         }, function (items) {
           $scope.items = items
         });
-      }
+      };
+
+    $scope.findWanted = function () {
+      Items.query({
+        wantedItemsUserId: user._id
+      }, function (items){
+        $scope.items = items;
+      });
+    };
 
     $scope.findOne = function() {
         Items.get({

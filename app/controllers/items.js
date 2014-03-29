@@ -183,6 +183,20 @@ exports.all = function(req, res) {
             res.jsonp(items);
         });
     }
+    else if (req.query.wantedItemsUserId) {
+        console.log("Hi, sind wir da?")
+        var wantedByUser = req.query.wantedItemsUserId;
+        Item.find({wanted_by: wantedByUser}, function (err, items) {
+                if (err) {
+                    res.render('error', {
+                        status: 500
+                    });
+                } else {
+                    console.log("Yeah, im sending this back", items )
+                    res.jsonp(items);
+                }
+        })
+    }
 
     // else if (req.query.owned_by) {
     //     var user_id = req.query.owned_by;
