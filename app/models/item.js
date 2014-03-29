@@ -37,6 +37,9 @@ var ItemSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    endTime: {
+        type:Date,
+    },
     duration: {
         type: Number,
     },

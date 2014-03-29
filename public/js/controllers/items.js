@@ -153,15 +153,11 @@ var ModalInstanceCtrl = function ($scope, $http, $modalInstance, item) {
   $scope.item = {};
 
   $scope.complete = function(content) {
-    // var image_id = ;
-    debugger;
     $modalInstance.close(content);
   };
 
   $scope.addItem = function () {
-    // $scope.item.image_id = image_id;
     $modalInstance.close($scope.item);
-    // console.log($scope.item)
   };
 
   $scope.cancel = function () {

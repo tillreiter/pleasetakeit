@@ -35,6 +35,10 @@ exports.image_upload = function(req, res) {
  */
 exports.create = function(req, res) {
     var item = new Item(req.body);
+    //create endTime
+    item.endTime = item.startTime + 1000*3600*item.duration;
+    console.log("this is the endtime: ",item.endTime);
+
     // console.log("this is body", req.body);
     item.owned_by = req.user;
     // console.log("the req.file is ",req.image)
