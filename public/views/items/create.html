@@ -5,24 +5,20 @@
 <form name="itemForm" method="post" action="/items" ng-upload="complete(content)">
 
 <div class="modal-body">
+
   <div class="form-group">
     <label for="title">Title:</label>
     <input name="title" type="text" class="form-control" data-ng-model="item.title" id="title" placeholder="Describe your item in 120 letters" required>
   </div>
 
-
-
-
   <div class="form-group">
+    <!-- Setting up picture upload -->
     <label for="picture">Please upload a picture:</label>
-
-<!--     <form action="input_file.htm" method="post" enctype="multipart/form-data">
- -->    <input type="file" accept="image/*" name="picture" data-ng-model="item.picture">
+      <input type="file" accept="image/*" name="picture" data-ng-model="item.picture">
   </div>
-  <!-- Lets change this to a drag and drop field when we have time -->
 
   <div class="form-group">
-    <input type="hidden" value="{{item.category}}">
+    <input type="hidden" name="category" value="{{item.category}}">
     <label for="category">Category:</label>
     <br>
     <div class="btn-group">
@@ -38,7 +34,7 @@
 
   <div class="form-group">
     <label for="duration">Offer duration:</label>
-        <input type="hidden" value="{{item.duration}}">
+        <input name="duration" type="hidden" value="{{item.duration}}">
 
     <br>
       <div class="btn-group">
@@ -49,9 +45,11 @@
       </div>
   </div>
 
+<!-- Condition is so far not submitted with the form -->
   <div class="form-group">
     <label for="conditionRating">Condition:</label>
     <br>
+    <input name="condition" type="hidden" value="{{item.rate}}">
     <rating value="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" data-ng-model="item.rate"></rating>
     <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}">{{percent}}%</span>
   </div>
@@ -60,20 +58,12 @@
     <label for="address">Address:</label>
     <input name="address" type="text" ng-model="item.address" placeholder="eg. 160 Pearl Street, New York City, New York 10005, USA" typeahead="address for address in getLocation($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations" class="form-control">
     <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
-<!--
-    <input type="text" class="form-control" data-ng-model="item.street" id="street" placeholder="Street Name" required>
-    <br>
-    <input type="number" class="form-control" data-ng-model="item.street_number" id="street_number" placeholder="House Number" required>
-    <br>
-    <input type="text" class="form-control" data-ng-model="item.city" id="city" placeholder="City" required>
-    <br>
-    <input type="text" class="form-control" data-ng-model="item.state" id="state" placeholder="State" required> -->
-    <!-- Wanted solution is hooking this up with google maps -->
+
   </div>
 </div>
 
-
 <div class="modal-footer">
+
   <button class="btn btn-primary" upload-submit>OK</button>
   <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
 </div>

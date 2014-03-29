@@ -31,7 +31,11 @@
         <!-- New filtering block -->
         <div class="container">
 
-            <div class="col-sm-3  col-sm-offset-3 btn-group">
+            <div class="col-sm-1">
+                <button type="button" class="btn btn-deal btn-xs" btn-radio="0.5" ng-click="findWanted()">Show wanted items</button>
+            </div>
+
+            <div class="col-sm-3  col-sm-offset-2 btn-group">
                 <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="0.5" ng-click="findNear(0.5)">1/2 mile</button>
                 <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="2"ng-click="findNear(2)">2 miles</button>
                  <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="5" ng-click="findNear(5)">5 miles</button>

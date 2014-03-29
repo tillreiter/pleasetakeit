@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
  * OfferItem Schema
  */
 var ItemSchema = new Schema({
-    active: {
+    status: {
         type: String,
         default: "active"
     },
@@ -36,6 +36,9 @@ var ItemSchema = new Schema({
     startTime: {
         type: Date,
         default: Date.now
+    },
+    endTime: {
+        type:Date,
     },
     duration: {
         type: Number,

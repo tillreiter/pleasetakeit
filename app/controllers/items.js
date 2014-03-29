@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
     AWS = require('aws-sdk');
 
 //loading access S3 access keys
-AWS.config.loadFromPath(__dirname + '/aws.json');
+AWS.config.loadFromPath(__dirname + '/aws.json')
 
 /**
  * Find item by id
@@ -26,16 +26,17 @@ exports.item = function(req, res, next, id) {
     });
 };
 
-
-exports.image_upload = function(req, res) {
-
-};
 /**
  * Create an item
  */
 exports.create = function(req, res) {
     var item = new Item(req.body);
-    console.log("this is body", req.body);
+    //create endTime
+    item.endTime = item.startTime + 1000*3600*item.duration;
+    console.log("this is the endtime: ",item.endTime);
+
+    // console.log("this is body", req.body);
+    item.owned_by = req.user;
     // console.log("the req.file is ",req.image)
 
     //make sure form's input field is called "image"
@@ -97,14 +98,15 @@ exports.create = function(req, res) {
     })
 };
 
+// Test
 /**
  * Update an item
  */
 exports.update = function(req, res) {
-    console.log("are we here?");
-    var item = req.body;
-    Item.findOne({_id: item._id}, function (err, foundItem){
-        foundItem.wanted_by = item.wanted_by;
+    var updatedItem = req.body;
+    // console.log("this is the item coming from the front", updatedItem);
+    Item.findOne({_id: updatedItem._id}, function (err, foundItem){
+        foundItem = _.extend(foundItem, updatedItem);
         foundItem.save(function(err) {
             if (err) {
                 return res.send('users/signup', {
@@ -169,8 +171,6 @@ exports.nearItems = function(req, res) {
 exports.all = function(req, res) {
     if (req.query.itemRadius) {
         var miles = req.query.itemRadius;
-        console.log(miles)
-        console.log(req.user)
         var userLng = req.user.lnglat[0];
         var userLat = req.user.lnglat[1];
         var userCoord = [userLng, userLat]
@@ -182,6 +182,20 @@ exports.all = function(req, res) {
             console.log(err, items);
             res.jsonp(items);
         });
+    }
+    else if (req.query.wantedItemsUserId) {
+        console.log("Hi, sind wir da?")
+        var wantedByUser = req.query.wantedItemsUserId;
+        Item.find({wanted_by: wantedByUser}, function (err, items) {
+                if (err) {
+                    res.render('error', {
+                        status: 500
+                    });
+                } else {
+                    console.log("Yeah, im sending this back", items )
+                    res.jsonp(items);
+                }
+        })
     }
 
     // else if (req.query.owned_by) {
@@ -224,7 +238,7 @@ exports.notShowExpired = function(req, res) {
 // //Show wanted items
 exports.showWantedItems = function(req, res) {
     var userID = req.user._id;
-    Item.find({ active: "wanted", wanted_by: userID }, function(err, wantItems){
+    Item.find({ status: "wanted", wanted_by: userID }, function(err, wantItems){
         res.jsonp(wantItems);
     });
 };
@@ -235,26 +249,7 @@ exports.wantItem = function(req, res) {
     var itemID = req.item;
     var userID = req.user._id;
 
-    Item.findByIdAndUpdate(itemId, { active: "wanted", wanted_by: userID }, function(err, items){
+    Item.findByIdAndUpdate(itemId, { status: "wanted", wanted_by: userID }, function(err, items){
         res.redirect('/home');
     });
 };
-
-// Find items by distance
-// exports.nearItems = function(req, res) {
-//     var miles = req.params.miles;
-//     var userLng = req.user.lnglat[0];
-//     var userLat = req.user.lnglat[1];
-//     var userCoord = [userLng, userLat]
-
-//     Item.find({lnglat:
-//        {$near: userCoord,
-//         $maxDistance:miles/69.17}
-//     }).exec(function(err, items){
-//         console.log(err, items);
-//         res.jsonp(items);
-//     });
-// };
-
-
-

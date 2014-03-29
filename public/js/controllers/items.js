@@ -48,7 +48,15 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
         }, function (items) {
           $scope.items = items
         });
-      }
+      };
+
+    $scope.findWanted = function () {
+      Items.query({
+        wantedItemsUserId: user._id
+      }, function (items){
+        $scope.items = items;
+      });
+    };
 
     $scope.findOne = function() {
         Items.get({
@@ -75,7 +83,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
 
 }])
 
-.controller('MasonryController', ['$scope', '$location', '$anchorScroll', 'Items', function ($scope, $location, $anchorScroll, Items) {
+.controller('MasonryController', ['$scope', '$location', '$anchorScroll', 'Items', '$log', function ($scope, $location, $anchorScroll, Items, $log) {
 
 
   $scope.hover = function(brick) {
@@ -112,9 +120,11 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
   $scope.wantItem = function (brick) {
     var wantItem = $scope.brick;
     wantItem.wanted_by = user._id;
-        console.log("this is wantItem", wantItem);
-
-      Items.update(wantItem);
+    wantItem.status = "wanted"
+    console.log("this is wantItem", wantItem);
+    Items.update(wantItem, function (err, res){
+      console.log("the item was updated - what now?", res)
+    });
   }
 
 }])
@@ -153,15 +163,11 @@ var ModalInstanceCtrl = function ($scope, $http, $modalInstance, item) {
   $scope.item = {};
 
   $scope.complete = function(content) {
-    // var image_id = ;
-    debugger;
     $modalInstance.close(content);
   };
 
   $scope.addItem = function () {
-    // $scope.item.image_id = image_id;
     $modalInstance.close($scope.item);
-    // console.log($scope.item)
   };
 
   $scope.cancel = function () {
