@@ -12,7 +12,8 @@ var mongoose = require('mongoose'),
     AWS = require('aws-sdk');
 
 //loading access S3 access keys
-// rs
+AWS.config.loadFromPath(__dirname + '/aws.json')
+
 /**
  * Find item by id
  */
@@ -34,7 +35,8 @@ exports.image_upload = function(req, res) {
  */
 exports.create = function(req, res) {
     var item = new Item(req.body);
-    console.log("this is body", req.body);
+    // console.log("this is body", req.body);
+    item.owned_by = req.user;
     // console.log("the req.file is ",req.image)
 
     //make sure form's input field is called "image"
@@ -168,8 +170,6 @@ exports.nearItems = function(req, res) {
 exports.all = function(req, res) {
     if (req.query.itemRadius) {
         var miles = req.query.itemRadius;
-        console.log(miles)
-        console.log(req.user)
         var userLng = req.user.lnglat[0];
         var userLat = req.user.lnglat[1];
         var userCoord = [userLng, userLat]
@@ -238,22 +238,3 @@ exports.wantItem = function(req, res) {
         res.redirect('/home');
     });
 };
-
-// Find items by distance
-// exports.nearItems = function(req, res) {
-//     var miles = req.params.miles;
-//     var userLng = req.user.lnglat[0];
-//     var userLat = req.user.lnglat[1];
-//     var userCoord = [userLng, userLat]
-
-//     Item.find({lnglat:
-//        {$near: userCoord,
-//         $maxDistance:miles/69.17}
-//     }).exec(function(err, items){
-//         console.log(err, items);
-//         res.jsonp(items);
-//     });
-// };
-
-
-
