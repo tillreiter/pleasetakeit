@@ -75,7 +75,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
 
 }])
 
-.controller('MasonryController', ['$scope', '$location', '$anchorScroll', 'Items', function ($scope, $location, $anchorScroll, Items) {
+.controller('MasonryController', ['$scope', '$location', '$anchorScroll', 'Items', '$log', function ($scope, $location, $anchorScroll, Items, $log) {
 
 
   $scope.hover = function(brick) {
@@ -112,9 +112,11 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
   $scope.wantItem = function (brick) {
     var wantItem = $scope.brick;
     wantItem.wanted_by = user._id;
-        console.log("this is wantItem", wantItem);
-
-      Items.update(wantItem);
+    wantItem.status = "wanted"
+    console.log("this is wantItem", wantItem);
+    Items.update(wantItem, function (err, res){
+      console.log("the item was updated - what now?", res)
+    });
   }
 
 }])

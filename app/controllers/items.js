@@ -26,10 +26,6 @@ exports.item = function(req, res, next, id) {
     });
 };
 
-
-exports.image_upload = function(req, res) {
-
-};
 /**
  * Create an item
  */
@@ -102,14 +98,15 @@ exports.create = function(req, res) {
     })
 };
 
+// Test
 /**
  * Update an item
  */
 exports.update = function(req, res) {
-    console.log("are we here?");
-    var item = req.body;
-    Item.findOne({_id: item._id}, function (err, foundItem){
-        foundItem.wanted_by = item.wanted_by;
+    var updatedItem = req.body;
+    // console.log("this is the item coming from the front", updatedItem);
+    Item.findOne({_id: updatedItem._id}, function (err, foundItem){
+        foundItem = _.extend(foundItem, updatedItem);
         foundItem.save(function(err) {
             if (err) {
                 return res.send('users/signup', {
@@ -227,7 +224,7 @@ exports.notShowExpired = function(req, res) {
 // //Show wanted items
 exports.showWantedItems = function(req, res) {
     var userID = req.user._id;
-    Item.find({ active: "wanted", wanted_by: userID }, function(err, wantItems){
+    Item.find({ status: "wanted", wanted_by: userID }, function(err, wantItems){
         res.jsonp(wantItems);
     });
 };
@@ -238,7 +235,7 @@ exports.wantItem = function(req, res) {
     var itemID = req.item;
     var userID = req.user._id;
 
-    Item.findByIdAndUpdate(itemId, { active: "wanted", wanted_by: userID }, function(err, items){
+    Item.findByIdAndUpdate(itemId, { status: "wanted", wanted_by: userID }, function(err, items){
         res.redirect('/home');
     });
 };

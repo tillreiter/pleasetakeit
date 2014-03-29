@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
  * OfferItem Schema
  */
 var ItemSchema = new Schema({
-    active: {
+    status: {
         type: String,
         default: "active"
     },
