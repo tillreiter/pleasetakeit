@@ -9,11 +9,10 @@ var mongoose = require('mongoose'),
     Q = require('q'),
     request = require('request'),
     fs = require('fs'),
-    AWS = require('aws-sdk'),
+    AWS = require('aws-sdk');
 
 //loading access S3 access keys
-AWS.config.loadFromPath(__dirname + '/aws.json');
-
+// rs
 /**
  * Find item by id
  */
