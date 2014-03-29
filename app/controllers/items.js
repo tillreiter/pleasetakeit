@@ -25,14 +25,20 @@ exports.item = function(req, res, next, id) {
     });
 };
 
+
+exports.image_upload = function(req, res) {
+
+};
 /**
  * Create an item
  */
 exports.create = function(req, res) {
     var item = new Item(req.body);
+    console.log("this is body", req.body);
+    // console.log("the req.file is ",req.image)
 
     //make sure form's input field is called "image"
-    var file = req.files.image;
+    var file = req.files.picture;
     var filePath = file.path;
 
     //upload file to s3
@@ -82,7 +88,7 @@ exports.create = function(req, res) {
                     item: item
                 });
             } else {
-                res.jsonp(item);
+                res.send(JSON.stringify(item));
                 console.log(item)
             }
         });

@@ -11,13 +11,13 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
             duration: item.duration,
             address: item.address,
             condition: item.condition,
-            owned_by: user._id
+            owned_by: user._id,
+            picture_file: item.picture
         });
         mitem.$save(function(response) {
             $location.path('items/' + response._id);
         console.log("this is the new created item", mitem)
         });
-
     });
 
     $scope.remove = function(item) {
@@ -152,9 +152,16 @@ var ModalInstanceCtrl = function ($scope, $http, $modalInstance, item) {
 
   $scope.item = {};
 
+  $scope.complete = function(content) {
+    // var image_id = ;
+    debugger;
+    $modalInstance.close(content);
+  };
+
   $scope.addItem = function () {
+    // $scope.item.image_id = image_id;
     $modalInstance.close($scope.item);
-    console.log($scope.item)
+    // console.log($scope.item)
   };
 
   $scope.cancel = function () {
