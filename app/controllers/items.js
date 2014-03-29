@@ -32,7 +32,11 @@ exports.item = function(req, res, next, id) {
 exports.create = function(req, res) {
     var item = new Item(req.body);
     //create endTime
-    item.endTime = item.startTime + 1000*3600*item.duration;
+    var timeFinish = Date.now() + 1000*3600*item.duration;
+    console.log("This is time finish " + timeFinish);
+
+    item.endTime = new Date(timeFinish);
+
     console.log("this is the endtime: ",item.endTime);
 
     // console.log("this is body", req.body);
@@ -253,3 +257,5 @@ exports.wantItem = function(req, res) {
         res.redirect('/home');
     });
 };
+
+// Chat

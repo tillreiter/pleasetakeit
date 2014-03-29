@@ -45,6 +45,9 @@ walk(models_path);
 require('./config/passport')(passport);
 
 var app = express();
+// Socket.io configuration
+var server = require('http').createServer(app);
+var io = require('socket.io').listen(server);
 
 // Express settings
 require('./config/express')(app, passport, db);
@@ -72,11 +75,21 @@ walk(routes_path);
 
 // Start the app by listening on <port>
 var port = process.env.PORT || config.port;
-app.listen(port);
-console.log('Express app started on port ' + port);
+// app.listen(port);
+// console.log('Express app started on port ' + port);
+server.listen(port, function(){
+  console.log('Express server listening on port ' + port);
+});
 
 // Initializing logger
 logger.init(app, passport, mongoose);
 
 // Expose app
 exports = module.exports = app;
+
+// Server side chatting
+io.sockets.on('connection', function(socket){
+    socket.on('send message', function(data){
+        io.sockets.emit('new message', data);
+    })
+})

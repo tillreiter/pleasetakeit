@@ -37,4 +37,6 @@ module.exports = function(app) {
     // Finish with setting up the itemId param
     app.param('itemId', items.item);
 
+    //Chat app
+
 };

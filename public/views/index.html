@@ -1,2 +1,38 @@
 <!-- Maybe inclusion of BigVideo with something like this (http://footage.shutterstock.com/clip-3591260-stock-footage-young-fun-party-people-dancing-at-the-beach.html?src=search/FqF0Luk5ZeZWmve-NGECNw:1:45) and login offer. We have to think though if it aint better that people can look through items without logging in. -->
 
+<!-- <html>
+  <head>
+    <title>PleaseTakeIt Chatroom</title>
+    <style>#chat{height:500px}</style>
+  </head>
+
+  <body>
+    <div id='chat'></div>
+    <form id ='send-message'>
+      <input size='35' id='message'></input>
+    </form>
+
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+    <script>
+
+      jQuery(function($){
+        var socket = io.connect();
+        var $messageForm = $('#send-message');
+        var $messageInput = $('#message');
+        var $chat = $('#chat');
+      });
+
+      $messageForm.submit(function(e){
+        e.preventDefault();
+        socket.emit('send message', $messageInput.val());
+        $messageInput.val('');
+      });
+
+      socket.on('new message', function(data){
+        $chat.append(data + "<br/>");
+      });
+    </script>
+  </body>
+</html>
+ -->
