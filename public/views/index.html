@@ -1,8 +1,27 @@
 <h1 id="buy">Buy</h1>
-
 <script>
   $("#buy").click(function(){
-    $.post('/buy/5338ddb68678590a5004a2f8', function(result, data, xhr){
+    $.post('/buy/53397b2a781d2959d4cdc18c', function(result, data, xhr){
+      console.log(result, data, xhr)
+    })
+  })
+</script>
+
+
+<h2 id="deal_fail">Deal Fail</h2>
+<script>
+  $("#deal_fail").click(function(){
+    $.post('/deal/fail/53397b2a781d2959d4cdc18c', function(result, data, xhr){
+      console.log(result, data, xhr)
+    })
+  })
+</script>
+
+
+<h3 id="dealconf">Deal Confirmed</h3>
+<script>
+  $("#dealconf").click(function(){
+    $.post('/deal/success/53397b2a781d2959d4cdc18c', function(result, data, xhr){
       console.log(result, data, xhr)
     })
   })

@@ -280,6 +280,7 @@ exports.wantItem = function(req, res) {
 
 // Email to buyer and seller
 exports.email = function(req, res) {
+    console.log("in the email function")
     // Email to Buyer
     Item.findOne({_id: req.item._id}).populate("owned_by").populate("bought_by").exec(function(err, selectedItem){
         console.log("this is selectedItem", selectedItem);
@@ -306,8 +307,9 @@ exports.email = function(req, res) {
                 }
                mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
         });
-    // Email to Seller
 
+
+    // Email to Seller
         mailer.smtpTransport.sendMail({
         from: "PleaseTake.It <pleasetakeitapp@gmail.com>", // sender address.  Must be the same as authenticated user if using Gmail.
         to: selectedItem.owned_by.email, // SELLER EMAIL
@@ -315,8 +317,10 @@ exports.email = function(req, res) {
         generateTextFromHTML: true,
         html: "<p>Hi, " +
         selectedItem.owned_by.username + // SELLER USERNAME
+        ". <br><br>" +
+        selectedItem.bought_by.username +
         " has placed a $10 deposit on your item. Please complete the deal below!</p>" +
-        "<a href='http://localhost:3000/deal/" + selectedItem._id + "'>Finish Deal</a><br>"
+        "<a href='http://localhost:3000/#!/deal_confirmation/" + selectedItem._id + "'>Finish Deal</a><br>"
         }, function(error, response){
             if(error){
                console.log(error);
@@ -327,8 +331,6 @@ exports.email = function(req, res) {
            mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
         });
     })
-
-
 }
 
 exports.dealConfirm = function(req, res) {
@@ -337,16 +339,21 @@ exports.dealConfirm = function(req, res) {
 
 //Deal Success so money goes back to buyer
 exports.dealSuccess = function(req, res) {
-    alert("PleaseTakeIt thanks you for confirming item pickup and hopes to see you again!")
-    // Item.find({_id: req.item._id}).populate("wanted_by").exec(function(err, selectedItem){
+    // alert("PleaseTake.It thanks you for confirming item pickup and hopes to see you again!")
+    Item.findOne({_id: req.item._id}).populate("bought_by").exec(function(err, selectedItem){
+
+        console.log("this is the selected item" + selectedItem)
+        console.log("this is the bought_by object" + selectedItem.bought_by)
+
         mailer.smtpTransport.sendMail({
-        from: "PleaseTakeIt <pleasetakeitapp@gmail.com>",
-        to: req.user.email, // receiver will be the BUYER EMIAL
-        subject: "Item pickup confirmed",
-        generateTextFromHTML: true,
-        html: "<p>Hi, " +
-        req.user.username + //BUYER USERNAME
-        " we hope you enjoyed your experience with PleaseTakeIt and hope to see you soon."
+            from: "PleaseTake.It <pleasetakeitapp@gmail.com>",
+            to: selectedItem.bought_by.email, // BUYER EMIAL
+            subject: "Item pickup confirmed",
+            generateTextFromHTML: true,
+            html: "<p>Hi, " +
+            selectedItem.bought_by.username + //BUYER USERNAME
+            ".<br><br>" +
+            "Your retrieval of the item has been confirmed so your deposit will be returned to you. We hope you enjoyed your experience with PleaseTakeIt and hope to see you soon."
         }, function(error, response){
             if(error){
                console.log(error);
@@ -356,30 +363,34 @@ exports.dealSuccess = function(req, res) {
             }
            mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
         });
-    // })
-
-    // =================== Balanced/STRIPE needs to give money back to buyer HERE.=====================
+    })
 }
 
 //Deal Failed so money goes to charity
 exports.dealFail = function(req, res) {
-    mailer.smtpTransport.sendMail({
-    from: "PleaseTakeIt <pleasetakeitapp@gmail.com>",
-    to: req.user.email, // receiver will be the BUYER EMIAL
-    subject: "Item not picked up",
-    generateTextFromHTML: true,
-    html: "<p>Hi, " +
-    req.user.username + //BUYER USERNAME
-    ".<br>" +
-    "Unfortunately, the owner of the item indicates that you have not picked up the item on the agreed date. As a result, your deposit will be donated to charity."
-    }, function(error, response){
-        if(error){
-           console.log(error);
-        }
-        else {
-           console.log("Message sent: " + response.message);
-        }
-       mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
-    });
-    // =================== Balanced/STRIPE needs to give money to donation..=====================
+    console.log("are we even getting into the fail function?")
+    Item.findOne({_id: req.item._id}).populate("bought_by").exec(function(err, selectedItem){
+
+        console.log("this is the selected item" + selectedItem)
+        console.log("this is the bought_by object" + selectedItem.bought_by)
+
+        mailer.smtpTransport.sendMail({
+            from: "PleaseTake.It <pleasetakeitapp@gmail.com>",
+            to: selectedItem.bought_by.email, //  BUYER EMIAL
+            subject: "Item not picked up",
+            generateTextFromHTML: true,
+            html: "<p>Hi, " +
+            selectedItem.bought_by.username + //BUYER USERNAME
+            ".<br><br>" +
+            "Unfortunately, the owner of the item indicates that you have not picked up the item on the agreed date. As a result, your deposit will be donated to charity."
+        }, function(error, response){
+            if(error){
+               console.log(error);
+            }
+            else {
+               console.log("Message sent: " + response.message);
+            }
+           mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
+        });
+    })
 }
