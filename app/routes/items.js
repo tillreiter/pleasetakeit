@@ -21,6 +21,14 @@ module.exports = function(app) {
     app.get('/items/:itemId', items.show);
     app.put('/items/:itemId', items.update);
 
+
+    //Buying item triggers email to Seller and Buyer
+    app.post('/buy', items.email);
+    // // Giver's response leads to Finish Deal
+    // app.get('/deal/:itemId', items.dealConfirm);
+    // app.post('/deal/fail/:itemId', items.dealFail);
+    // app.post('/deal/success/:itemId', items.dealSuccess);
+
 //==================NEW SHIT==============================
     // app.get('/within/:miles', items.nearItems); /** Find items by distance */
     // app.get('/validitems', items.notShowExpired); /** Show only non-expired items */
@@ -36,5 +44,7 @@ module.exports = function(app) {
 
     // Finish with setting up the itemId param
     app.param('itemId', items.item);
+
+
 
 };
