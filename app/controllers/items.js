@@ -106,13 +106,55 @@ exports.create = function(req, res) {
 };
 
 // Test
+
+// array unique to make an array of ObjectIds unique
+function arrayUnique(array) {
+    var a = array.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i].toString() === a[j].toString())
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+};
+
 /**
  * Update an item
  */
 exports.update = function(req, res) {
     var updatedItem = req.body;
+<<<<<<< HEAD
     Item.findOne({_id: updatedItem._id}).populate('owned_by').populate('bought_by').exec(function(err, foundItem){
         foundItem = _.extend(foundItem, updatedItem);
+=======
+    Item.findOne({_id: updatedItem._id}, function (err, foundItem){
+        console.log(foundItem);
+        console.log(updatedItem);
+        console.log('======abt to change========');
+
+        if (foundItem.wanted_by && typeof updatedItem.wanted_by == 'string') {
+            updatedItem.wanted_by = _.union([updatedItem.wanted_by], foundItem.wanted_by);
+            foundItem = _.extend(foundItem, updatedItem);
+        }
+
+        // if (typeof updatedItem.wanted_by == "string"){
+        //     console.log("updating foundItem.wanted_by");
+        //     foundItem.wanted_by = _.union([updatedItem.wanted_by], savedFoundItemWanted);
+        //     // foundItem.wanted_by.push(new mongoose.Types.ObjectId(updatedItem.wanted_by));
+        //     console.log('new foundItem.wanted_by');
+        //     console.log(foundItem.wanted_by);
+        //     foundItem.wanted_by = arrayUnique(foundItem.wanted_by);
+        //     console.log('unique foundItem.wanted_by');
+        //     console.log(foundItem.wanted_by);
+
+        // } else {
+        //     console.log("didn't get in, ", typeof updatedItem.wanted_by);
+        // }
+        console.log('founditem:');
+        console.log(foundItem);
+>>>>>>> 6815eac7f6e5c7e6fa2856b8cff5a967d06379e8
 
         foundItem.save(function(err) {
             if (err) {
@@ -273,6 +315,7 @@ exports.all = function(req, res) {
 
 // Email to buyer and seller
 exports.email = function(req, res) {
+    console.log("in the email function")
     // Email to Buyer
     Item.findOne({_id: req.item._id}).populate("owned_by").populate("bought_by").exec(function(err, selectedItem){
         console.log("this is selectedItem", selectedItem);
@@ -299,8 +342,9 @@ exports.email = function(req, res) {
                 }
                mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
         });
-    // Email to Seller
 
+
+    // Email to Seller
         mailer.smtpTransport.sendMail({
         from: "PleaseTake.It <pleasetakeitapp@gmail.com>", // sender address.  Must be the same as authenticated user if using Gmail.
         to: selectedItem.owned_by.email, // SELLER EMAIL
@@ -308,6 +352,8 @@ exports.email = function(req, res) {
         generateTextFromHTML: true,
         html: "<p>Hi, " +
         selectedItem.owned_by.username + // SELLER USERNAME
+        ". <br><br>" +
+        selectedItem.bought_by.username +
         " has placed a $10 deposit on your item. Please complete the deal below!</p>" +
         "<a href='http://localhost:3000/#!/deal_confirmation/" + selectedItem._id + "'>Finish Deal</a><br>"
         }, function(error, response){
@@ -320,23 +366,26 @@ exports.email = function(req, res) {
            mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
         });
     })
-
-
 }
 
 
 //Deal Success so money goes back to buyer
 exports.dealSuccess = function(req, res) {
 
-    // Item.find({_id: req.item._id}).populate("wanted_by").exec(function(err, selectedItem){
+    Item.findOne({_id: req.item._id}).populate("bought_by").exec(function(err, selectedItem){
+
+        console.log("this is the selected item" + selectedItem)
+        console.log("this is the bought_by object" + selectedItem.bought_by)
+
         mailer.smtpTransport.sendMail({
-        from: "PleaseTakeIt <pleasetakeitapp@gmail.com>",
-        to: req.user.email, // receiver will be the BUYER EMIAL
-        subject: "Item pickup confirmed",
-        generateTextFromHTML: true,
-        html: "<p>Hi, " +
-        req.user.username + //BUYER USERNAME
-        " we hope you enjoyed your experience with PleaseTakeIt and hope to see you soon."
+            from: "PleaseTake.It <pleasetakeitapp@gmail.com>",
+            to: selectedItem.bought_by.email, // BUYER EMIAL
+            subject: "Item pickup confirmed",
+            generateTextFromHTML: true,
+            html: "<p>Hi, " +
+            selectedItem.bought_by.username + //BUYER USERNAME
+            ".<br><br>" +
+            "Your retrieval of the item has been confirmed so your deposit will be returned to you. We hope you enjoyed your experience with PleaseTakeIt and hope to see you soon."
         }, function(error, response){
             if(error){
                console.log(error);
@@ -346,30 +395,34 @@ exports.dealSuccess = function(req, res) {
             }
            mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
         });
-    // })
-
-    // =================== Balanced/STRIPE needs to give money back to buyer HERE.=====================
+    })
 }
 
 //Deal Failed so money goes to charity
 exports.dealFail = function(req, res) {
-    mailer.smtpTransport.sendMail({
-    from: "PleaseTakeIt <pleasetakeitapp@gmail.com>",
-    to: req.user.email, // receiver will be the BUYER EMIAL
-    subject: "Item not picked up",
-    generateTextFromHTML: true,
-    html: "<p>Hi, " +
-    req.user.username + //BUYER USERNAME
-    ".<br>" +
-    "Unfortunately, the owner of the item indicates that you have not picked up the item on the agreed date. As a result, your deposit will be donated to charity."
-    }, function(error, response){
-        if(error){
-           console.log(error);
-        }
-        else {
-           console.log("Message sent: " + response.message);
-        }
-       mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
-    });
-    // =================== Balanced/STRIPE needs to give money to donation..=====================
+    console.log("are we even getting into the fail function?")
+    Item.findOne({_id: req.item._id}).populate("bought_by").exec(function(err, selectedItem){
+
+        console.log("this is the selected item" + selectedItem)
+        console.log("this is the bought_by object" + selectedItem.bought_by)
+
+        mailer.smtpTransport.sendMail({
+            from: "PleaseTake.It <pleasetakeitapp@gmail.com>",
+            to: selectedItem.bought_by.email, //  BUYER EMIAL
+            subject: "Item not picked up",
+            generateTextFromHTML: true,
+            html: "<p>Hi, " +
+            selectedItem.bought_by.username + //BUYER USERNAME
+            ".<br><br>" +
+            "Unfortunately, the owner of the item indicates that you have not picked up the item on the agreed date. As a result, your deposit will be donated to charity."
+        }, function(error, response){
+            if(error){
+               console.log(error);
+            }
+            else {
+               console.log("Message sent: " + response.message);
+            }
+           mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
+        });
+    })
 }

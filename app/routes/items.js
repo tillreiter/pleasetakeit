@@ -26,8 +26,9 @@ module.exports = function(app) {
     app.post('/buy/:itemId', items.email);
     app.post('/sold/:itemId', items.dealSuccess)
     // // Giver's response leads to Finish Deal
-    // app.post('/deal/fail/:itemId', items.dealFail);
-    // app.post('/deal/success/:itemId', items.dealSuccess);
+
+    app.post('/deal/fail/:itemId', items.dealFail);
+    app.post('/deal/success/:itemId', items.dealSuccess);
 
 //==================NEW SHIT==============================
     // app.get('/within/:miles', items.nearItems); /** Find items by distance */
