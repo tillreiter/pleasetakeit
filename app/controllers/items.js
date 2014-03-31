@@ -20,7 +20,6 @@ AWS.config.loadFromPath(__dirname + '/aws.json')
  * Find item by id
  */
 exports.item = function(req, res, next, id) {
-    console.log("Helllooooooooooooooooooooooooooooooo")
     Item.load(id, function(err, item) {
         if (err) return next(err);
         if (!item) return next(new Error('Failed to load item ' + id));
@@ -43,9 +42,7 @@ exports.create = function(req, res) {
 
     console.log("this is the endtime: ",item.endTime);
 
-    // console.log("this is body", req.body);
     item.owned_by = req.user;
-    // console.log("the req.file is ",req.image)
 
     //make sure form's input field is called "image"
     var file = req.files.picture;
@@ -115,11 +112,8 @@ exports.create = function(req, res) {
  */
 exports.update = function(req, res) {
     var updatedItem = req.body;
-    console.log("this is the item coming from the front", updatedItem);
     Item.findOne({_id: updatedItem._id}, function (err, foundItem){
-        console.log("this is foundItem", foundItem);
         foundItem = _.extend(foundItem, updatedItem);
-        console.log("this is foundItem extended", foundItem);
 
         foundItem.save(function(err) {
             if (err) {
@@ -132,19 +126,6 @@ exports.update = function(req, res) {
         });
     })
 };
-
-// exports.update = function(req, res) {
-//     console.log("Kelvin is tired")
-//     var updatedItem = req.body;
-//     Item.findByIdAndUpdate(req.body._id, {req.body}, function(err, item){
-//         console.log("This is the item",item)
-//     })
-// }
-
-// var newObject = new Item({status: "nice", price: "99", title: "Bravo", address:"bla"});
-// newObject.save();
-
-
 
 
 /**
@@ -169,7 +150,6 @@ exports.destroy = function(req, res) {
  * Show an item
  */
 exports.show = function(req, res) {
-    console.log("are we here hellloooooooooooooo")
     res.jsonp(req.item);
 };
 
@@ -179,7 +159,6 @@ exports.nearItems = function(req, res) {
 
     var userLng = req.user.latlng.latitude;
     var userLat = req.user.latlng.longitude;
-
 
     var userCoord = [userLng, userLat]
 
@@ -316,7 +295,7 @@ exports.email = function(req, res) {
         html: "<p>Hi, " +
         selectedItem.owned_by.username + // SELLER USERNAME
         " has placed a $10 deposit on your item. Please complete the deal below!</p>" +
-        "<a href='http://localhost:3000/deal/" + selectedItem._id + "'>Finish Deal</a><br>"
+        "<a href='http://localhost:3000/#!/deal_confirmation/" + selectedItem._id + "'>Finish Deal</a><br>"
         }, function(error, response){
             if(error){
                console.log(error);
@@ -331,9 +310,6 @@ exports.email = function(req, res) {
 
 }
 
-exports.dealConfirm = function(req, res) {
-    res.render('/deal/:id');
-}
 
 //Deal Success so money goes back to buyer
 exports.dealSuccess = function(req, res) {

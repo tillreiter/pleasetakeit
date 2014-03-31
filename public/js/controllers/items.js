@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mean.items').controller('ItemsController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Items', function ($scope, $stateParams, $location, $http, Global, Items) {
+angular.module('mean.items').controller('ItemsController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Items', 'Deal', function ($scope, $stateParams, $location, $http, Global, Items, Deal) {
     $scope.global = Global;
 
     $scope.$on('item-added', function(evt, item) {
@@ -75,7 +75,12 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
         console.log(item);
         item.bought_by = user._id;
         item.status = "reserved";
-        Items.update({itemId:brick._id}, item)
+        Items.update({itemId:brick._id}, item, function(item){
+        //send email to buyer and seller
+          Deal.save({itemId: item._id}, item, function(dealItem){
+            console.log("dealitem is", dealItem)
+          })
+        });
       });
     };
 
