@@ -35,8 +35,12 @@ angular.module('mean').config(['$stateProvider', '$urlRouterProvider',
       .state('success_deposit', {
         url: '/success_deposit',
         templateUrl: 'views/success_deposit.html'
+    })
+      .state('deal_confirm', {
+        url: '/deal_confirmation/:itemId',
+        templateUrl: 'views/items/confirm_deal.html'
     });
-}
+  }
 ]);
 
 //Setting HTML5 Location Mode
