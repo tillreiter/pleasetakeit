@@ -1,1 +1,28 @@
-<h1>Hi name, Please tell us how everything went with bought_by.username</h1>
+<section data-ng-controller="ItemsController">
+  <div  data-ng-init="findOne()">
+  <h1>Hi {{item.owned_by.username}}, how was it?</h1>
+
+<div class="col-md-6 pagination-centered">
+      <img src="{{item.picture}}" alt="A masonry item" class="detail-img">
+</div>
+<div class="col-md-6 pagination-centered">
+  <h2>{{item.title}}</h2>
+  <p><i class="fa fa-usd"></i> {{item.price}}</p>
+  <p><i class="fa fa-map-marker"></i>  {{item.address}}</p>
+  <p><i class="fa fa-clock-o"></i>  {{item.startTime}}</p>
+  <p><i class="fa fa-smile-o"></i> {{item.bought_by.username}}</p>
+</div>
+
+
+  <div class="col-md-12">
+    <div class="container pagination-centered">
+    <br>
+      <h3 class="pagination-centered">{{item.bought_by.username}} bought this item from you. Please state how the deal went by pressing one of the buttons</h3>
+      <br>
+      <button type="button" class="btn btn-deal" ng-click="confirmPickUp(item)">Great Deal. All fine.</button>
+      <button type="button" class="btn btn-deal">We agreed to skip the deal.</button>
+      <button type="button" class="btn btn-deal">No deal. Punish him!</button>
+    </div>
+  </div>
+  </div>
+</section>

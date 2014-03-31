@@ -3,17 +3,17 @@
 angular.module('mean.users')
 
 .controller('UsersController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Users', function ($scope, $stateParams, $location, $http, Global, Users) {
-    var user = Global.user;
-    console.log("This is the user", user);
+    $scope.user = Global.user;
+    console.log("This is the user", $scope.user);
 
     $scope.$on('location-changed', function(evt, userAddress) {
-        user.address = $scope.userAddress.address;
-        console.log("this is updatedUser", user);
-        var userpath = "users/:" + user._id;
+        $scope.user.address = userAddress.address;
+        console.log("this is updatedUser", $scope.user);
+        var userpath = "users/:" + $scope.user._id;
         console.log("this is the userpath", userpath);
 
 
-      Users.update(user);
+      Users.update($scope.user);
       //     // $location.path("home");
       //     // console.log("home");
         // })

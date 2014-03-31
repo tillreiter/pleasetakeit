@@ -17,4 +17,12 @@ angular.module('mean.items').factory('Items', ['$resource', function($resource) 
             method: 'PUT'
         }
     });
+}]).factory('Sold', ['$resource', function($resource) {
+    return $resource('sold/:itemId', {
+        itemId: '@_id'
+    }, {
+        update: {
+            method: 'PUT'
+        }
+    });
 }])

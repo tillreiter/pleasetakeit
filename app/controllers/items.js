@@ -24,7 +24,6 @@ exports.item = function(req, res, next, id) {
         if (err) return next(err);
         if (!item) return next(new Error('Failed to load item ' + id));
         req.item = item;
-        console.log("Yeah ive got item", req.item)
         next();
     });
 };
@@ -112,7 +111,7 @@ exports.create = function(req, res) {
  */
 exports.update = function(req, res) {
     var updatedItem = req.body;
-    Item.findOne({_id: updatedItem._id}, function (err, foundItem){
+    Item.findOne({_id: updatedItem._id}).populate('owned_by').populate('bought_by').exec(function(err, foundItem){
         foundItem = _.extend(foundItem, updatedItem);
 
         foundItem.save(function(err) {
@@ -126,6 +125,23 @@ exports.update = function(req, res) {
         });
     })
 };
+
+
+
+//     , function (err, foundItem){
+//         foundItem = _.extend(foundItem, updatedItem);
+
+//         foundItem.save(function(err) {
+//             if (err) {
+//                 return res.send('not updating item', {
+//                     errors: err.errors,
+//                 });
+//             } else {
+//                 res.jsonp(foundItem);
+//             }
+//         });
+//     })
+// };
 
 
 /**
@@ -186,15 +202,14 @@ exports.all = function(req, res) {
         Item.find({lnglat:
            {$near: userCoord,
             $maxDistance:miles/69.17}
-        }).exec(function(err, items){
+        }).populate('owned_by', 'name.first name.last username _id').exec(function(err, items){
             console.log(err, items);
             res.jsonp(items);
         });
     }
     else if (req.query.wantedItemsUserId) {
-        console.log("Hi, sind wir da?")
         var wantedByUser = req.query.wantedItemsUserId;
-        Item.find({wanted_by: wantedByUser}, function (err, items) {
+        Item.find({wanted_by: wantedByUser}).populate('owned_by', 'name.first name.last username _id').exec(function(err, items) {
                 if (err) {
                     res.render('error', {
                         status: 500
@@ -202,10 +217,9 @@ exports.all = function(req, res) {
                 } else {
                     console.log("Yeah, im sending this back", items )
                     res.jsonp(items);
-                }
+            }
         })
     }
-
     else {
     Item.find().sort('-created').populate('owned_by', 'name.first name.last username _id').exec(function(err, items) {
         if (err) {
@@ -219,43 +233,43 @@ exports.all = function(req, res) {
     };
 };
 
-exports.deal = function (req, res) {
-    var item = req.body;
-}
+// exports.deal = function (req, res) {
+//     var item = req.body;
+// }
 
 //Do not show items that are expired.
-exports.notShowExpired = function(req, res) {
-    var today = Date.now()
+// exports.notShowExpired = function(req, res) {
+//     var today = Date.now()
 
-    var existingItems = [];
-    Item.find({}, function(err, allItems){
-        for (var i = 0; i < allItems.length; i ++) {
-            if (allItems[i].startTime + 1000*3600*allItems[i].duration < today) {
-                existingItems.push(allItems[i]);
-            }
-        }
-        res.jsonp(existingItems);
-    });
-};
+//     var existingItems = [];
+//     Item.find({}, function(err, allItems){
+//         for (var i = 0; i < allItems.length; i ++) {
+//             if (allItems[i].startTime + 1000*3600*allItems[i].duration < today) {
+//                 existingItems.push(allItems[i]);
+//             }
+//         }
+//         res.jsonp(existingItems);
+//     });
+// };
 
 // //Show wanted items
-exports.showWantedItems = function(req, res) {
-    var userID = req.user._id;
-    Item.find({ status: "wanted", wanted_by: userID }, function(err, wantItems){
-        res.jsonp(wantItems);
-    });
-};
+// exports.showWantedItems = function(req, res) {
+//     var userID = req.user._id;
+//     Item.find({ status: "wanted", wanted_by: userID }, function(err, wantItems){
+//         res.jsonp(wantItems);
+//     });
+// };
 
 
 // Change status of item when wanted by a user
-exports.wantItem = function(req, res) {
-    var itemID = req.item;
-    var userID = req.user._id;
+// exports.wantItem = function(req, res) {
+//     var itemID = req.item;
+//     var userID = req.user._id;
 
-    Item.findByIdAndUpdate(itemId, { status: "wanted", wanted_by: userID }, function(err, items){
-        res.redirect('/home');
-    });
-};
+//     Item.findByIdAndUpdate(itemId, { status: "wanted", wanted_by: userID }, function(err, items){
+//         res.redirect('/home');
+//     });
+// };
 
 // Email to buyer and seller
 exports.email = function(req, res) {
@@ -313,7 +327,7 @@ exports.email = function(req, res) {
 
 //Deal Success so money goes back to buyer
 exports.dealSuccess = function(req, res) {
-    alert("PleaseTakeIt thanks you for confirming item pickup and hopes to see you again!")
+
     // Item.find({_id: req.item._id}).populate("wanted_by").exec(function(err, selectedItem){
         mailer.smtpTransport.sendMail({
         from: "PleaseTakeIt <pleasetakeitapp@gmail.com>",

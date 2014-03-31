@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mean.items').controller('ItemsController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Items', 'Deal', function ($scope, $stateParams, $location, $http, Global, Items, Deal) {
+angular.module('mean.items').controller('ItemsController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Items', 'Deal', 'Sold', function ($scope, $stateParams, $location, $http, Global, Items, Deal, Sold) {
     $scope.global = Global;
 
     $scope.$on('item-added', function(evt, item) {
@@ -63,6 +63,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
             itemId: $stateParams.itemId
         }, function(item) {
             $scope.item = item;
+            console.log("got it + ",item)
         });
     };
 
@@ -79,6 +80,23 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
         //send email to buyer and seller
           Deal.save({itemId: item._id}, item, function(dealItem){
             console.log("dealitem is", dealItem)
+          })
+        });
+      });
+    };
+
+    $scope.confirmPickUp = function (item) {
+    // Items.update(status; bought_by; bought_on)
+    var item = Items.get({
+      itemId: item._id},
+      // get payment
+      function(item){
+        console.log(item);
+        item.status = "sold";
+        Items.update({itemId:item._id}, item, function(item){
+        //send email to buyer and seller
+          Sold.save({itemId: item._id}, item, function(soldItem){
+            console.log("soldItem is", dealItem)
           })
         });
       });

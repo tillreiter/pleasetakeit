@@ -38,8 +38,9 @@ angular.module('mean').config(['$stateProvider', '$urlRouterProvider',
     })
       .state('deal_confirm', {
         url: '/deal_confirmation/:itemId',
-        templateUrl: 'views/items/confirm_deal.html'
-    });
+        templateUrl: 'views/items/confirm_deal.html',
+        controller: 'UsersController'
+  });
   }
 ]);
 

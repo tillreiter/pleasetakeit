@@ -77,8 +77,14 @@ var ItemSchema = new Schema({
 ItemSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
-    }).exec(cb);
+    }).populate('owned_by', 'username').populate('bought_by', 'username').exec(cb);
 };
+
+// ItemSchema.statics.loadpopulated = function(id, cb) {
+//     this.findOne({
+//         _id: id
+//     }).populate('owned_by').populate('bought_by').exec(cb);
+// };
 // ItemSchema.statics.load = function(id, cb) {
 //     this.findOne({
 //         _id: id
