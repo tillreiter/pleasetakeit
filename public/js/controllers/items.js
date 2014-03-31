@@ -71,23 +71,12 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
     var item = Items.get({
       itemId: brick._id},
       function(item){
-        console.log(item)
+        console.log(item);
+        item.bought_by = user._id;
+        item.status = "reserved";
+        Items.update({itemId:brick._id}, item)
       });
-    ;
-
-    // console.log(brick);
-    //   Items.get({
-    //   itemId:brick._id
-    // }, function (item){
-    //   console.log("I am the item youre looking for: ", item[0])
-    // });
-
-    // Items.update({itemId:brick._id}, function() {
-    //   item.status = "bought";
-    //   item.bought_by = req.user._id;
-    //   item.bought_date = Date.now;
-    // })
-  };
+    };
 
     $scope.categories = [
       "Household",
@@ -141,15 +130,15 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
   }
 
   $scope.wantItem = function (brick) {
-    var wantItem = $scope.brick;
-    wantItem.wanted_by = user._id;
-    wantItem.status = "wanted"
-    console.log("this is wantItem", wantItem);
-    Items.update(wantItem, function (err, res){
-      console.log("the item was updated - what now?", res)
-    });
+  var item = Items.get({
+    itemId: $scope.brick._id},
+      function(item){
+        console.log(item);
+        item.wanted_by = user._id;
+        item.status = "wanted";
+        Items.update({itemId:$scope.brick._id}, item)
+      });
   }
-
 }])
 
 .controller('ModalController', ['$scope', '$modal', '$log', '$rootScope', function ($scope, $modal, $log, $rootScope) {
