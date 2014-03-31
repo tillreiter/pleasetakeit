@@ -64,12 +64,7 @@
                             <p class="dealInfo"><i class="fa fa-smile-o"></i> {{brick.owned_by.username}}</p>
                         </div>
                         <img src="{{brick.picture}}" alt="A masonry brick" class="brick-img" ng-class="{hovered: brick.showDeal}">
-                        <h4>$$ | {{brick.title}}</h4>
-
-                            <!-- DetailView -->
-<!--                             <div ng-show="brick.showDetails">
-                                <p>Hello</p>
-                            </div> -->
+                        <h4>${{brick.price}} | {{brick.title}}</h4>
                     </div>
                 </div>
             </div>
@@ -83,6 +78,7 @@
             </div>
             <div ng-show="details" class="col-md-6">
                 <h2>{{brick.title}}</h2>
+                <p><i class="fa fa-usd"></i> {{brick.price}}</p>
                 <p><i class="fa fa-map-marker"></i>  {{brick.address}}</p>
                 <p><i class="fa fa-clock-o"></i>  {{brick.startTime}}</p>
                 <p><i class="fa fa-smile-o"></i> {{brick.owned_by.username}}</p>

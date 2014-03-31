@@ -284,27 +284,27 @@ exports.email = function(req, res) {
     Item.findOne({_id: req.item._id}).populate("owned_by").populate("bought_by").exec(function(err, selectedItem){
         console.log("this is selectedItem", selectedItem);
         mailer.smtpTransport.sendMail({
-        from: "PleaseTake.It <pleasetakeitapp@gmail.com>", // sender address.  Must be the same as authenticated user if using Gmail.
-        to: selectedItem.bought_by.email, // BUYER EMAIL
-        subject: "Item Purchased",
-        generateTextFromHTML: true,
-        html: "<p>Hi, " +
-        selectedItem.bought_by.username + // BUYER USERNAME
-        ". You have purchased " +
-        selectedItem.title +
-        ". Please contact " +
-        selectedItem.owned_by.username+ // Seller name
-        " at " +
-        selectedItem.owned_by.email + // Seller EMAIL
-        " for more details such as an agreed time and date of pickup. Also, please remind the owner to confirm pickup after you have recieved the item otherwise your deposit will be donated to charity."
-        }, function(error, response){
-            if(error){
-               console.log(error);
-            }
-            else {
-               console.log("Message sent: " + response.message);
-            }
-           mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
+            from: "PleaseTake.It <pleasetakeitapp@gmail.com>", // sender address.  Must be the same as authenticated user if using Gmail.
+            to: selectedItem.bought_by.email, // BUYER EMAIL
+            subject: "Item Purchased",
+            generateTextFromHTML: true,
+            html: "<p>Hi, " +
+            selectedItem.bought_by.username + // BUYER USERNAME
+            ". You have purchased " +
+            selectedItem.title +
+            ". Please contact " +
+            selectedItem.owned_by.username+ // Seller name
+            " at " +
+            selectedItem.owned_by.email + // Seller EMAIL
+            " for more details such as an agreed time and date of pickup. Also, please remind the owner to confirm pickup after you have recieved the item otherwise your deposit will be donated to charity."
+            }, function(error, response){
+                if(error){
+                   console.log(error);
+                }
+                else {
+                   console.log("Message sent: " + response.message);
+                }
+               mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
         });
     // Email to Seller
 
