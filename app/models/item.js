@@ -56,7 +56,7 @@ var ItemSchema = new Schema({
         ref: 'User'
     },
     wanted_by: {
-        type: [mongoose.Schema.Types.ObjectId],
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
     bought_by: {
@@ -72,11 +72,18 @@ var ItemSchema = new Schema({
 /**
  * Statics
  */
+
+// w/o populate
 ItemSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
-    }).populate('owned_by').exec(cb);
+    }).exec(cb);
 };
+// ItemSchema.statics.load = function(id, cb) {
+//     this.findOne({
+//         _id: id
+//     }).populate('owned_by').exec(cb);
+// };
 
 
 mongoose.model('Item', ItemSchema);

@@ -92,7 +92,7 @@ exports.create = function(req, res) {
                 item.lnglat = [longitude, latitude];
                 item.save(function(err) {
                     if (err) {
-                        return res.send('users/signup', {
+                        return res.send('creating new item failed', {
                             errors: err.errors,
                             item: item
                         });
@@ -114,12 +114,15 @@ exports.create = function(req, res) {
  */
 exports.update = function(req, res) {
     var updatedItem = req.body;
-    // console.log("this is the item coming from the front", updatedItem);
+    console.log("this is the item coming from the front", updatedItem);
     Item.findOne({_id: updatedItem._id}, function (err, foundItem){
+        console.log("this is foundItem", foundItem);
         foundItem = _.extend(foundItem, updatedItem);
+        console.log("this is foundItem extended", foundItem);
+
         foundItem.save(function(err) {
             if (err) {
-                return res.send('users/signup', {
+                return res.send('not updating item', {
                     errors: err.errors,
                 });
             } else {
@@ -128,6 +131,20 @@ exports.update = function(req, res) {
         });
     })
 };
+
+// exports.update = function(req, res) {
+//     console.log("Kelvin is tired")
+//     var updatedItem = req.body;
+//     Item.findByIdAndUpdate(req.body._id, {req.body}, function(err, item){
+//         console.log("This is the item",item)
+//     })
+// }
+
+// var newObject = new Item({status: "nice", price: "99", title: "Bravo", address:"bla"});
+// newObject.save();
+
+
+
 
 /**
  * Delete an item
