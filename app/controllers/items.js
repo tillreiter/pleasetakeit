@@ -5,11 +5,13 @@
  */
 var mongoose = require('mongoose'),
     Item = mongoose.model('Item'),
+    User = mongoose.model('User'),
     _ = require('lodash'),
     Q = require('q'),
     request = require('request'),
     fs = require('fs'),
-    AWS = require('aws-sdk');
+    AWS = require('aws-sdk'),
+    mailer = require('../lib/mail');
 
 //loading access S3 access keys
 AWS.config.loadFromPath(__dirname + '/aws.json')
@@ -202,14 +204,6 @@ exports.all = function(req, res) {
         })
     }
 
-    // else if (req.query.owned_by) {
-    //     var user_id = req.query.owned_by;
-    //     Item.find({owned_by: user_id})
-    // } else if (req.query.wanted_by) {
-    //     same shit
-    // } else if (req.query.category)
-
-
     else {
     Item.find().sort('-created').populate('owned_by', 'name.first name.last username _id').exec(function(err, items) {
         if (err) {
@@ -258,4 +252,107 @@ exports.wantItem = function(req, res) {
     });
 };
 
-// Chat
+// Email to buyer and seller
+exports.email = function(req, res) {
+    // Email to Buyer
+    // Item.find({_id: req.item._id}).populate("owned_by").exec(function(err, selectedItem){
+        mailer.smtpTransport.sendMail({
+        from: "PleaseTakeIt <pleasetakeitapp@gmail.com>", // sender address.  Must be the same as authenticated user if using Gmail.
+        to: req.user.email, // BUYER EMAIL
+        subject: "Item Purchased",
+        generateTextFromHTML: true,
+        html: "<p>Hi, " +
+        req.user.username + // BUYER USERNAME
+        ". You have purchased " +
+        req.item._id +
+        ". Please contact " +
+        req.user.username + // Seller name
+        " at " +
+        req.user.email + // Seller EMAIL
+        " for more details such as an agreed time and date of pickup. Also, please remind the owner to confirm pickup after you have recieved the item otherwise your deposit will be donated to charity."
+        }, function(error, response){
+            if(error){
+               console.log(error);
+            }
+            else {
+               console.log("Message sent: " + response.message);
+            }
+           mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
+        });
+    // })
+
+    // Email to Seller
+    // Item.find({_id: req.item._id}).populate("owned_by").exec(function(err, selectedItem){
+        mailer.smtpTransport.sendMail({
+        from: "PleaseTakeIt <pleasetakeitapp@gmail.com>", // sender address.  Must be the same as authenticated user if using Gmail.
+        to: req.user.email, // SELLER EMAIL
+        subject: "Congrats, your item was purchased!",
+        generateTextFromHTML: true,
+        html: "<p>Hi, " +
+        req.user.username + // SELLER USERNAME
+        " has placed a $10 deposit on your item. Please complete the deal below!</p>" +
+        "<a href='http://localhost:3000/deal/" + req.user.email + "'>Finish Deal</a><br>"
+        }, function(error, response){
+            if(error){
+               console.log(error);
+            }
+            else {
+               console.log("Message sent: " + response.message);
+            }
+           mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
+        });
+    // })
+}
+
+exports.dealConfirm = function(req, res) {
+    res.render('/deal/:id');
+}
+
+//Deal Success so money goes back to buyer
+exports.dealSuccess = function(req, res) {
+    alert("PleaseTakeIt thanks you for confirming item pickup and hopes to see you again!")
+    // Item.find({_id: req.item._id}).populate("wanted_by").exec(function(err, selectedItem){
+        mailer.smtpTransport.sendMail({
+        from: "PleaseTakeIt <pleasetakeitapp@gmail.com>",
+        to: req.user.email, // receiver will be the BUYER EMIAL
+        subject: "Item pickup confirmed",
+        generateTextFromHTML: true,
+        html: "<p>Hi, " +
+        req.user.username + //BUYER USERNAME
+        " we hope you enjoyed your experience with PleaseTakeIt and hope to see you soon."
+        }, function(error, response){
+            if(error){
+               console.log(error);
+            }
+            else {
+               console.log("Message sent: " + response.message);
+            }
+           mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
+        });
+    // })
+
+    // =================== Balanced/STRIPE needs to give money back to buyer HERE.=====================
+}
+
+//Deal Failed so money goes to charity
+exports.dealFail = function(req, res) {
+    mailer.smtpTransport.sendMail({
+    from: "PleaseTakeIt <pleasetakeitapp@gmail.com>",
+    to: req.user.email, // receiver will be the BUYER EMIAL
+    subject: "Item not picked up",
+    generateTextFromHTML: true,
+    html: "<p>Hi, " +
+    req.user.username + //BUYER USERNAME
+    ".<br>" +
+    "Unfortunately, the owner of the item indicates that you have not picked up the item on the agreed date. As a result, your deposit will be donated to charity."
+    }, function(error, response){
+        if(error){
+           console.log(error);
+        }
+        else {
+           console.log("Message sent: " + response.message);
+        }
+       mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
+    });
+    // =================== Balanced/STRIPE needs to give money to donation..=====================
+}

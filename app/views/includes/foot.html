@@ -1,6 +1,27 @@
 <!-- JQuery -->
 <script type="text/javascript" src="/lib/jquery/jquery.js"></script>
+<!-- <script src="//code.jquery.com/jquery-1.10.2.js"></script> -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+<script>
 
+  jQuery(function($){
+    var socket = io.connect();
+    var $messageForm = $('#send-message');
+    var $messageBox = $('#message');
+    var $chat = $('#chat');
+
+
+    $messageForm.submit(function(e){
+      e.preventDefault();
+      socket.emit('send message', $messageBox.val());
+      $messageBox.val('');
+    });
+
+    socket.on('new message', function(data){
+      $chat.append(data + "<br/>");
+    });
+  });
+</script>
 <!-- Angular JS -->
 <script type="text/javascript" src="/lib/angular/angular.min.js"></script>
 <script type="text/javascript" src="/lib/angular-cookies/angular-cookies.min.js"></script>
