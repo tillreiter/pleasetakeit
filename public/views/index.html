@@ -1,4 +1,14 @@
-<div data-ng-controller="UsersController">
+ <h1 id="buy">Buy</h1>
+
+<script>
+  $("#buy").click(function(){
+    $.post('/buy', function(result, data, xhr){
+      console.log(result, data, xhr)
+    })
+  })
+</script>
+
+<!-- <div data-ng-controller="UsersController">
   <form method="POST" action="/deposit" data-ng-show="global.authenticated">
     <span class="payment-errors"></span>
     <div class="form-row">
@@ -58,7 +68,7 @@
 
     <button type="submit">Submit Payment</button>
   </form>
-</div>
+</div> -->
 
 <!-- Maybe inclusion of BigVideo with something like this (http://footage.shutterstock.com/clip-3591260-stock-footage-young-fun-party-people-dancing-at-the-beach.html?src=search/FqF0Luk5ZeZWmve-NGECNw:1:45) and login offer. We have to think though if it aint better that people can look through items without logging in. -->
 
@@ -76,3 +86,4 @@
 </form>
 
  -->
+
