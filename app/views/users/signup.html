@@ -3,13 +3,13 @@
 {% block auth %}
     <form class="signin form-horizontal" action="/users" method="post">
         <div class="form-group">
-            <label class="col-md-4 control-label" for="name">First Name:</label>
+            <label class="col-md-4 control-label" for="name">First Name</label>
             <div class="col-md-8">
                 <input id="name" class="form-control" type="text" name="name.first" placeholder="First Name" value="{{user.name.first}}" />
             </div>
         </div>
         <div class="form-group">
-            <label class="col-md-4 control-label" for="name">Last Name:</label>
+            <label class="col-md-4 control-label" for="name">Last Name</label>
             <div class="col-md-8">
                 <input id="name" class="form-control" type="text" name="name.last" placeholder="Last Name" value="{{user.name.last}}" />
             </div>
@@ -20,6 +20,20 @@
                 <input id="email" class="form-control" type="text" name="email" placeholder="Email" value="{{user.email}}" />
             </div>
         </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="phone">Phone</label>
+            <div class="col-md-8">
+                <input id="phone" class="form-control" type="tel" name="phone" placeholder="phone" value="{{user.phone}}" />
+            </div>
+        </div>
+        <!-- Location settting at signup not implemented but after Login -->
+<!--         <div ng-controller="ItemsController" class="form-group">
+            <label class="col-md-4 control-label" for="address">Location</label>
+            <div class="col-md-8">
+                <input name="address" type="text" ng-model="item.address" placeholder="eg. 160 Pearl Street, New York City, New York 10005, USA" typeahead="address for address in getLocation($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations" class="form-control">
+                <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+            </div>
+        </div> -->
         <div class="form-group">
             <label class="col-md-4 control-label" for="username">Username</label>
             <div class="col-md-8">

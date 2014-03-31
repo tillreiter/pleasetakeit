@@ -1,15 +1,10 @@
 <section data-ng-controller="ItemsController" data-ng-init="findAll()">
     <section data-ng-controller="MasonryController" class="main-background" id="search">
 
-        <div class="container">
+        <div class="container" ng-hide="details ">
         <!-- Sorting directive -->
             <div class="col-sm-4 form-group">
-<!--                 <label for="masonryFilter">Sort by:</label>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'Time left'">Time left</button>
-                    <button type="button" class="btn btn-default btn-s" ng-model="masonryFilter" btn-radio="'Distance'">Distance</button> -->
-<!--                 </div>
- -->            </div>
+            </div>
         <!-- Searching directive -->
             <div class="col-sm-4">
                 <input class="form-control input" ng-model="searchText" placeholder="Search the free universe!">
@@ -25,14 +20,14 @@
                 </li>
               </ul> -->
             </div>
-            </div>
-            <br>
+        </div>
+        <br>
 
         <!-- New filtering block -->
-        <div class="container">
+        <div class="container" ng-hide="details">
 
             <div class="col-sm-1">
-                <button type="button" class="btn btn-deal btn-xs" btn-radio="0.5" ng-click="findWanted()">Show wanted items</button>
+                <button type="button" class="btn btn-deal btn-xs" btn-radio="0.5" ng-click="findWanted()">Show wishlist</button>
             </div>
 
             <div class="col-sm-3  col-sm-offset-2 btn-group">
@@ -53,50 +48,53 @@
                 <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Furniture'" ng-click="">Furniture</button>
                 <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Other'" ng-click="">Other</button>
                 <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="" ng-click="">All</button>
-
             </div>
-
-
         </div>
+
         <!-- Masonry brick unit -->
-            <div class="hero-unit col-sm-12">
+        <div class="hero-unit col-sm-12" ng-hide="details">
             <div class="row">
-                <div class="span12">
-                    <div masonry ng-hide="details" >
-                        <div class="masonry-brick loaded normal" ng-repeat="brick in items | filter: searchText | filter:radioCategoryModel " ng-mouseenter="hover(brick)" ng-mouseleave="hover(brick)">
+                <div masonry class="masonry" data-masonry-options='{ "isFitWidth": true }'>
+                    <div class="masonry-brick loaded normal" ng-repeat="brick in items | filter: searchText | filter:radioCategoryModel " ng-mouseenter="hover(brick)" ng-mouseleave="hover(brick)">
                             <!-- Classic Search View -->
-                            <div ng-show="brick.showDeal" class="show-deal">
-                                <button class="btn btn-deal" ng-click="showDetails(brick)">GIMME DATAILS</button>
-                                <p class="dealInfo"><i class="fa fa-map-marker"></i>  {{brick.address}}</p>
-                                <p class="dealInfo"><i class="fa fa-clock-o"></i>  {{brick.startTime}}</p>
-                                <p class="dealInfo"><i class="fa fa-smile-o"></i> {{brick.owned_by.username}}</p>
-                            </div>
-                            <img src="{{brick.picture}}" alt="A masonry brick" class="brick-img" ng-class="{hovered: brick.showDeal}">
-                            <h4>{{brick.title}}</h4>
+                        <div ng-show="brick.showDeal" class="show-deal">
+                            <button class="btn btn-deal" ng-click="showDetails(brick)">Give me details</button>
+                            <p class="dealInfo"><i class="fa fa-map-marker"></i>  {{brick.address}}</p>
+                            <p class="dealInfo"><i class="fa fa-clock-o"></i>  {{brick.startTime}}</p>
+                            <p class="dealInfo"><i class="fa fa-smile-o"></i> {{brick.owned_by.username}}</p>
+                        </div>
+                        <img src="{{brick.picture}}" alt="A masonry brick" class="brick-img" ng-class="{hovered: brick.showDeal}">
+                        <h4>$$ | {{brick.title}}</h4>
 
                             <!-- DetailView -->
 <!--                             <div ng-show="brick.showDetails">
                                 <p>Hello</p>
                             </div> -->
-                        </div>
-                    </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div ng-show="details" class="col-md-12">
+            <h1>What do yo wanna do with this awesome piece?</h1>
+        </div>
+            <div ng-show="details" class="col-md-6 pagination-centered">
+                <img src="{{brick.picture}}" alt="A masonry brick" class="detail-img">
+            </div>
             <div ng-show="details" class="col-md-6">
-                <img src="../img/puppy.jpg" alt="A masonry brick" class="brick-img">
-                <h4>{{brick.title}}</h4>
-                <p class="dealInfo"><i class="fa fa-map-marker"></i>  {{brick.address}}</p>
-                <p class="dealInfo"><i class="fa fa-clock-o"></i>  {{brick.startTime}}</p>
-                <p class="dealInfo"><i class="fa fa-smile-o"></i> {{brick.owned_by.username}}</p>
-                <button class="btn btn-deal" ng-click="showDetails(brick)">BACK TO LIST</button>
-                <button class="btn btn-deal" ng-click="showDetails(brick)">SEND QUESTION</button>
+                <h2>{{brick.title}}</h2>
+                <p><i class="fa fa-map-marker"></i>  {{brick.address}}</p>
+                <p><i class="fa fa-clock-o"></i>  {{brick.startTime}}</p>
+                <p><i class="fa fa-smile-o"></i> {{brick.owned_by.username}}</p>
+                <button class="btn btn-deal" ng-click="showDetails(brick)">Back to list</button>
+                <button class="btn btn-deal" ng-click="showDetails(brick)">Send question</button>
+                <button class="btn btn-deal" ng-click="wantItem(brick)">Save to wishlist</button>
                 <button class="btn btn-deal" ng-click="confirm(brick)">GET IT!</button>
             </div>
             <div ng-show="confirmation" class="col-md-6">
-            <h1>Do you really want this item and pay a 10$ Deposit?</h1>
-            <button class="btn btn-default" ng-click="wantItem(brick)">Hell yeah</button>
-            <button class="btn btn-default" ng-click="confirm(brick)">Ups. Not now really.</button>
+            <br>
+            <button class="btn btn-default" ng-click="payDeposit(brick)">Pay deposit.</button>
+            <button class="btn btn-default" ng-click="showDetails(brick)">Mmmmh. No.</button>
             </div>
 
 <!--                     <div masonry ng-show="details">

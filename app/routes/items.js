@@ -21,6 +21,7 @@ module.exports = function(app) {
     app.get('/items/:itemId', items.show);
     app.put('/items/:itemId', items.update);
 
+
     //Buying item triggers email to Seller and Buyer
     app.post('/buy', items.email);
     // // Giver's response leads to Finish Deal

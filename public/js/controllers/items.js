@@ -66,6 +66,29 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
         });
     };
 
+    $scope.payDeposit = function (brick) {
+    // Items.update(status; bought_by; bought_on)
+    var item = Items.get({
+      itemId: brick._id},
+      function(item){
+        console.log(item)
+      });
+    ;
+
+    // console.log(brick);
+    //   Items.get({
+    //   itemId:brick._id
+    // }, function (item){
+    //   console.log("I am the item youre looking for: ", item[0])
+    // });
+
+    // Items.update({itemId:brick._id}, function() {
+    //   item.status = "bought";
+    //   item.bought_by = req.user._id;
+    //   item.bought_date = Date.now;
+    // })
+  };
+
     $scope.categories = [
       "Household",
       "Outdoor",
@@ -174,7 +197,7 @@ var ModalInstanceCtrl = function ($scope, $http, $modalInstance, item) {
     $modalInstance.dismiss('cancel');
   };
 
-  $scope.rate = 7;
+  $scope.condition = 7;
   $scope.max = 10;
   $scope.isReadonly = false;
 

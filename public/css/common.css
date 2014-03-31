@@ -147,6 +147,10 @@ h3.highlight  {
 
 /*Masonry-styling*/
 
+.masonry {
+    margin: 0 auto;
+}
+
 .masonry-brick {
     margin: 1em;
     display: block;
@@ -157,22 +161,22 @@ h3.highlight  {
     width: 500px;
     background-color: black;
     margin: 0.5em;
-    display: block;
-    float: left;
+/*    display: block;
+*/    float: left;
     padding: 4px;
-    position: relative;
-}
+/*    position: relative;
+*/}
 
 
 .masonry-brick.loaded {
     width: 250px;
     background-color: #FFF;
     margin: 0.5em;
-    display: block;
-    float: left;
+/*    display: block;
+*/    float: left;
     padding: 4px;
-    position: relative;
-}
+/*    position: relative;
+*/}
 
 .show-deal {
     position: absolute;
@@ -215,8 +219,18 @@ h3.highlight  {
   border-color: #fff;
 }
 
+.detail-img {
+    width: 360px;
+    height: auto;
+    margin-top: 20px;
+    border:15px solid #FFF;
 
 
+}
+
+.pagination-centered {
+  text-align: center;
+}
 
 
 /*LOGO Bootstrap modification*/

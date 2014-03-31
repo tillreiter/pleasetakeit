@@ -31,6 +31,10 @@ angular.module('mean').config(['$stateProvider', '$urlRouterProvider',
       .state('home', {
         url: '/home',
         templateUrl: 'views/home.html'
+    })
+      .state('success_deposit', {
+        url: '/success_deposit',
+        templateUrl: 'views/success_deposit.html'
     });
 }
 ]);
