@@ -16,17 +16,19 @@ var UserSchema = new Schema({
         last: {type: String, required: true }
     },
     email: String,
+    phone: String,
     username: {
         type: String,
         unique: true
     },
     address: {
         type: String,
-        default: 'no address assigned'
+        default: '160 Pearl Street, New York City, New York 10038, USA'
     },
     lnglat: {
         type: [Number],
-        index: '2d'
+        index: '2d',
+        default: [-74.0060673,  40.7070458]
     },
     hashed_password: String,
     provider: String,

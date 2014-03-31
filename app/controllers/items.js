@@ -18,6 +18,7 @@ AWS.config.loadFromPath(__dirname + '/aws.json')
  * Find item by id
  */
 exports.item = function(req, res, next, id) {
+    console.log("Helllooooooooooooooooooooooooooooooo")
     Item.load(id, function(err, item) {
         if (err) return next(err);
         if (!item) return next(new Error('Failed to load item ' + id));
@@ -52,50 +53,53 @@ exports.create = function(req, res) {
             Body: data
         }, function() {
             console.log('UPLOADED');
+            //Set file path to URL in ItemSchema (baseURL+file.name)
+            console.log("the filename is", file.name);
+            item.picture = "http://s3.amazonaws.com/PleaseTakeIt/" + file.name;
+
+            // Geocode
+            //1) Change location information into appropriate string to send to GoogleMaps API
+            var itemLocation = item.address.split(" ").join("+");
+            var requestString = "https://maps.googleapis.com/maps/api/geocode/json?address=" + itemLocation + "&sensor=false";
+
+            //2) set function to call geocoding API (translates to lat/long);
+            var geoCodeRequest = function(url) {
+                var deferred = Q.defer();
+                request.get(url, function(err, response, data) {
+                  if (!err) {
+                    var googleResponse = JSON.parse(data);
+                    deferred.resolve(googleResponse);
+                  }
+                  else {
+                    deferred.reject("There was an error! Status code: " + data.status + error);
+                  }
+                });
+                return deferred.promise;
+            };
+
+            //3) Take response and parse it for latlng information
+            geoCodeRequest(requestString).then(function(data){
+                console.log("are we getting here?");
+                var latitude = data.results[0].geometry.location.lat;
+                var longitude = data.results[0].geometry.location.lng;
+
+                item.lnglat = [longitude, latitude];
+                item.save(function(err) {
+                    if (err) {
+                        return res.send('users/signup', {
+                            errors: err.errors,
+                            item: item
+                        });
+                    } else {
+                        res.send(JSON.stringify(item));
+                        console.log(item)
+                    }
+                });
+
+            })
         });
     });
-    //Set file path to URL in ItemSchema (baseURL+file.name)
-    item.picture = "http://s3.amazonaws.com/PleaseTakeIt/" + file.name;
 
-    //1) Change location information into appropriate string to send to GoogleMaps API
-    var itemLocation = item.address.split(" ").join("+");
-    var requestString = "https://maps.googleapis.com/maps/api/geocode/json?address=" + itemLocation + "&sensor=false";
-
-    //2) set function to call geocoding API (translates to lat/long);
-    var geoCodeRequest = function(url) {
-        var deferred = Q.defer();
-        request.get(url, function(err, response, data) {
-          if (!err) {
-            var googleResponse = JSON.parse(data);
-            deferred.resolve(googleResponse);
-          }
-          else {
-            deferred.reject("There was an error! Status code: " + data.status + error);
-          }
-        });
-        return deferred.promise;
-    };
-
-    //3) Take response and parse it for latlng information
-    geoCodeRequest(requestString).then(function(data){
-        console.log("are we getting here?");
-        var latitude = data.results[0].geometry.location.lat;
-        var longitude = data.results[0].geometry.location.lng;
-
-        item.lnglat = [longitude, latitude];
-        item.save(function(err) {
-            if (err) {
-                return res.send('users/signup', {
-                    errors: err.errors,
-                    item: item
-                });
-            } else {
-                res.send(JSON.stringify(item));
-                console.log(item)
-            }
-        });
-
-    })
 };
 
 // Test
@@ -141,6 +145,7 @@ exports.destroy = function(req, res) {
  * Show an item
  */
 exports.show = function(req, res) {
+    console.log("are we here hellloooooooooooooo")
     res.jsonp(req.item);
 };
 
@@ -219,6 +224,9 @@ exports.all = function(req, res) {
     };
 };
 
+exports.deal = function (req, res) {
+    var item = req.body;
+}
 
 //Do not show items that are expired.
 exports.notShowExpired = function(req, res) {

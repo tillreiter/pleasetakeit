@@ -24,6 +24,10 @@ var ItemSchema = new Schema({
         type: String,
         required: true
     },
+    price: {
+        type: String,
+        required: true
+    },
     category: String,
     address: {
         type: String,
@@ -52,18 +56,27 @@ var ItemSchema = new Schema({
         ref: 'User'
     },
     wanted_by: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'User'
+    },
+    bought_by: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    bought_date: {
+        type: Date
     }
 });
 
 
 /**
- * Validations
+ * Statics
  */
-// ItemSchema.path('title').validate(function(title) {
-//     return title.length;
-// }, 'Title cannot be blank');
+ItemSchema.statics.load = function(id, cb) {
+    this.findOne({
+        _id: id
+    }).populate('owned_by').exec(cb);
+};
 
 
 mongoose.model('Item', ItemSchema);

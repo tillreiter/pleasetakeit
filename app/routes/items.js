@@ -19,7 +19,7 @@ module.exports = function(app) {
     app.post('/items', authorization.requiresLogin, items.create);
 
     app.get('/items/:itemId', items.show);
-    app.put('/items/:id', items.update);
+    app.put('/items/:itemId', items.update);
 
 //==================NEW SHIT==============================
     // app.get('/within/:miles', items.nearItems); /** Find items by distance */
