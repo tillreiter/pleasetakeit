@@ -25,6 +25,7 @@ exports.item = function(req, res, next, id) {
         if (err) return next(err);
         if (!item) return next(new Error('Failed to load item ' + id));
         req.item = item;
+        console.log("Yeah ive got item", req.item)
         next();
     });
 };
@@ -280,43 +281,42 @@ exports.wantItem = function(req, res) {
 // Email to buyer and seller
 exports.email = function(req, res) {
     // Email to Buyer
-    // Item.find({_id: req.item._id}).populate("owned_by").exec(function(err, selectedItem){
+    Item.findOne({_id: req.item._id}).populate("owned_by").populate("bought_by").exec(function(err, selectedItem){
+        console.log("this is selectedItem", selectedItem);
         mailer.smtpTransport.sendMail({
-        from: "PleaseTakeIt <pleasetakeitapp@gmail.com>", // sender address.  Must be the same as authenticated user if using Gmail.
-        to: req.user.email, // BUYER EMAIL
-        subject: "Item Purchased",
-        generateTextFromHTML: true,
-        html: "<p>Hi, " +
-        req.user.username + // BUYER USERNAME
-        ". You have purchased " +
-        req.item._id +
-        ". Please contact " +
-        req.user.username + // Seller name
-        " at " +
-        req.user.email + // Seller EMAIL
-        " for more details such as an agreed time and date of pickup. Also, please remind the owner to confirm pickup after you have recieved the item otherwise your deposit will be donated to charity."
-        }, function(error, response){
-            if(error){
-               console.log(error);
-            }
-            else {
-               console.log("Message sent: " + response.message);
-            }
-           mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
+            from: "PleaseTake.It <pleasetakeitapp@gmail.com>", // sender address.  Must be the same as authenticated user if using Gmail.
+            to: selectedItem.bought_by.email, // BUYER EMAIL
+            subject: "Item Purchased",
+            generateTextFromHTML: true,
+            html: "<p>Hi, " +
+            selectedItem.bought_by.username + // BUYER USERNAME
+            ". You have purchased " +
+            selectedItem.title +
+            ". Please contact " +
+            selectedItem.owned_by.username+ // Seller name
+            " at " +
+            selectedItem.owned_by.email + // Seller EMAIL
+            " for more details such as an agreed time and date of pickup. Also, please remind the owner to confirm pickup after you have recieved the item otherwise your deposit will be donated to charity."
+            }, function(error, response){
+                if(error){
+                   console.log(error);
+                }
+                else {
+                   console.log("Message sent: " + response.message);
+                }
+               mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
         });
-    // })
-
     // Email to Seller
-    // Item.find({_id: req.item._id}).populate("owned_by").exec(function(err, selectedItem){
+
         mailer.smtpTransport.sendMail({
-        from: "PleaseTakeIt <pleasetakeitapp@gmail.com>", // sender address.  Must be the same as authenticated user if using Gmail.
-        to: req.user.email, // SELLER EMAIL
+        from: "PleaseTake.It <pleasetakeitapp@gmail.com>", // sender address.  Must be the same as authenticated user if using Gmail.
+        to: selectedItem.owned_by.email, // SELLER EMAIL
         subject: "Congrats, your item was purchased!",
         generateTextFromHTML: true,
         html: "<p>Hi, " +
-        req.user.username + // SELLER USERNAME
+        selectedItem.owned_by.username + // SELLER USERNAME
         " has placed a $10 deposit on your item. Please complete the deal below!</p>" +
-        "<a href='http://localhost:3000/deal/" + req.user.email + "'>Finish Deal</a><br>"
+        "<a href='http://localhost:3000/deal/" + selectedItem._id + "'>Finish Deal</a><br>"
         }, function(error, response){
             if(error){
                console.log(error);
@@ -326,7 +326,9 @@ exports.email = function(req, res) {
             }
            mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
         });
-    // })
+    })
+
+
 }
 
 exports.dealConfirm = function(req, res) {

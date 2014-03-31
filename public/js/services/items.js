@@ -9,4 +9,12 @@ angular.module('mean.items').factory('Items', ['$resource', function($resource) 
             method: 'PUT'
         }
     });
-}]);
+}]).factory('Deal', ['$resource', function($resource) {
+    return $resource('buy/:itemId', {
+        itemId: '@_id'
+    }, {
+        update: {
+            method: 'PUT'
+        }
+    });
+}])
