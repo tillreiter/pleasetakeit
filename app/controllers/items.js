@@ -107,13 +107,50 @@ exports.create = function(req, res) {
 };
 
 // Test
+
+// array unique to make an array of ObjectIds unique
+function arrayUnique(array) {
+    var a = array.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i].toString() === a[j].toString())
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+};
+
 /**
  * Update an item
  */
 exports.update = function(req, res) {
     var updatedItem = req.body;
     Item.findOne({_id: updatedItem._id}, function (err, foundItem){
-        foundItem = _.extend(foundItem, updatedItem);
+        console.log(foundItem);
+        console.log(updatedItem);
+        console.log('======abt to change========');
+
+        if (foundItem.wanted_by && typeof updatedItem.wanted_by == 'string') {
+            updatedItem.wanted_by = _.union([updatedItem.wanted_by], foundItem.wanted_by);
+            foundItem = _.extend(foundItem, updatedItem);
+        }
+
+        // if (typeof updatedItem.wanted_by == "string"){
+        //     console.log("updating foundItem.wanted_by");
+        //     foundItem.wanted_by = _.union([updatedItem.wanted_by], savedFoundItemWanted);
+        //     // foundItem.wanted_by.push(new mongoose.Types.ObjectId(updatedItem.wanted_by));
+        //     console.log('new foundItem.wanted_by');
+        //     console.log(foundItem.wanted_by);
+        //     foundItem.wanted_by = arrayUnique(foundItem.wanted_by);
+        //     console.log('unique foundItem.wanted_by');
+        //     console.log(foundItem.wanted_by);
+
+        // } else {
+        //     console.log("didn't get in, ", typeof updatedItem.wanted_by);
+        // }
+        console.log('founditem:');
+        console.log(foundItem);
 
         foundItem.save(function(err) {
             if (err) {

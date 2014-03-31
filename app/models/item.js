@@ -55,10 +55,10 @@ var ItemSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    wanted_by: {
+    wanted_by: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    },
+    }],
     bought_by: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
