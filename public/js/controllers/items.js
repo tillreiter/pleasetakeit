@@ -70,6 +70,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
     // Items.update(status; bought_by; bought_on)
     var item = Items.get({
       itemId: brick._id},
+      // get payment
       function(item){
         console.log(item);
         item.bought_by = user._id;
