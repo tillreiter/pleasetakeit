@@ -101,6 +101,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
       });
     };
 
+
     $scope.categories = [
       "Household",
       "Outdoor",
@@ -147,22 +148,32 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
 
   $scope.details = false;
   $scope.confirmation = false;
+  $scope.onWishlist = false;
 
   $scope.confirm = function () {
     $scope.confirmation = !$scope.confirmation;
   }
 
+
   $scope.wantItem = function (brick) {
-  var item = Items.get({
-    itemId: $scope.brick._id},
-      function(item){
-        // console.log(item);
-        item.wanted_by = user._id;
-        item.status = "wanted";
-        Items.update({itemId:$scope.brick._id}, item)
-      });
+    $scope.onWishlist = !$scope.onWishlist;
+    var item = Items.get({
+      itemId: $scope.brick._id},
+        function(item){
+          // console.log(item);
+          item.wanted_by = user._id;
+          item.status = "wanted";
+          Items.update({itemId:$scope.brick._id}, item);
+        });
   }
+
+  $scope.unwantItem = function (brick){
+    $scope.onWishlist = !$scope.onWishlist;
+    Items.unwantItem({itemId:$scope.brick._id}, {userId: user._id})
+  }
+
 }])
+
 
 .controller('ModalController', ['$scope', '$modal', '$log', '$rootScope', function ($scope, $modal, $log, $rootScope) {
 

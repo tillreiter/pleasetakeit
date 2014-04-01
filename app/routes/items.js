@@ -20,11 +20,12 @@ module.exports = function(app) {
 
     app.get('/items/:itemId', items.show);
     app.put('/items/:itemId', items.update);
-
+    app.post('/items/:itemId/unwantItem', items.unwant)
 
     //Buying item triggers email to Seller and Buyer
     app.post('/buy/:itemId', items.email);
     app.post('/sold/:itemId', items.dealSuccess)
+
     // // Giver's response leads to Finish Deal
 
     app.post('/deal/fail/:itemId', items.dealFail);

@@ -153,12 +153,25 @@ exports.update = function(req, res) {
     })
 };
 
+/**
+ * Delete an item
+ */
+exports.unwant = function (req, res) {
+    var userId = req.body.userId;
+    console.log("the user id is", userId);
+    var item = req.item;
+    Item.findOneAndUpdate({_id: req.item._id}, {$pull: { wanted_by: userId }}, function (err, res) {
+        console.log(res.title + " removed from wishlist")
+    })
+}
+
+
 
 /**
  * Delete an item
  */
 exports.destroy = function(req, res) {
-    var item = req.wantItem;
+    var item = req.item;
 
     item.remove(function(err) {
         if (err) {

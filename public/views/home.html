@@ -84,7 +84,8 @@
                 <p><i class="fa fa-smile-o"></i> {{brick.owned_by.username}}</p>
                 <button class="btn btn-deal" ng-click="showDetails(brick)">Back to list</button>
                 <button class="btn btn-deal" ng-click="showDetails(brick)">Send question</button>
-                <button class="btn btn-deal" ng-click="wantItem(brick)">Save to wishlist</button>
+                <button ng-show="!onWishlist" class="btn btn-deal" ng-click="wantItem(brick)">Save to wishlist</button>
+                <button ng-hide="!onWishlist" class="btn btn-deal" ng-click="unwantItem(brick)">Remove from wishlist</button>
                 <button class="btn btn-deal" ng-click="confirm(brick)">GET IT!</button>
             </div>
             <div ng-show="confirmation" class="col-md-6">
@@ -93,18 +94,6 @@
             <button class="btn btn-default" ng-click="showDetails(brick)">Mmmmh. No.</button>
             </div>
 
-<!--                     <div masonry ng-show="details">
-                        <div class="masonry-brick">
-                            <button class="btn btn-deal" ng-click="showDetails(brick)">BACK TO LIST</button>
-                            <img src="../img/puppy.jpg" alt="A masonry brick" class="brick-img">
-                            <h4>{{brick.title}}</h4>
-                        </div>
-                        <div class="masonry-brick">
-                            <p class="dealInfo"><i class="fa fa-map-marker"></i>  {{brick.address}}</p>
-                            <p class="dealInfo"><i class="fa fa-clock-o"></i>  {{brick.startTime}}</p>
-                            <p class="dealInfo"><i class="fa fa-smile-o"></i> {{brick.owned_by.username}}</p>
-                        </div>
-                    </div> -->
             </div>
     </section>
 </section>
