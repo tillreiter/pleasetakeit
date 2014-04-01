@@ -8,7 +8,8 @@ var express = require('express'),
     passport = require('passport'),
     nodemailer = require('nodemailer'),
     logger = require('mean-logger');
-
+var http = require('http');
+var sockjs = require('sockjs');
 /**
  * Main application entry file.
  * Please note that the order of loading is important.
@@ -46,12 +47,25 @@ walk(models_path);
 require('./config/passport')(passport);
 
 var app = express();
+
+
+
+var sockjs_opts = {sockjs_url: 'http://cdn.sockjs.org/sockjs-0.3.min.js'};
+var sockjs_echo = sockjs.createServer(sockjs_opts);
+
+
 // Socket.io configuration
-var server = require('http').createServer(app);
-var io = require('socket.io').listen(server);
+
+
+
 
 // Express settings
+
+
 require('./config/express')(app, passport, db);
+
+var port = config.port;
+var server = http.createServer(app);
 
 // Bootstrap routes
 var routes_path = __dirname + '/app/routes';
@@ -72,6 +86,7 @@ var walk = function(path) {
     });
 };
 walk(routes_path);
+
 
 // // Server side chatting
 // io.sockets.on('connection', function(socket){
@@ -106,16 +121,43 @@ walk(routes_path);
 // });
 
 
+var connections = [];
+
+sockjs_echo.on('connection', function(conn) {
+
+    connections.push(conn);
 
 
+    conn.on('data', function(message) {
 
-// Start the app by listening on <port>
-var port = process.env.PORT || config.port;
-// app.listen(port);
-// console.log('Express app started on port ' + port);
-server.listen(port, function(){
-  console.log('Express server listening on port ' + port);
+        for (var ii=0; ii < connections.length; ii++) {
+
+            console.log("hello")
+
+            connections[ii].write(message);
+
+        }
+    });
+
+    conn.on('close', function() {
+
+        for (var ii=0; ii < connections.length; ii++) {
+
+            connections[ii].write("User has disconnected");
+
+        }
+    });
+
 });
+
+server.addListener('upgrade', function(req, res){
+    res.end();
+})
+
+sockjs_echo.installHandlers(server, {prefix:'/echo'});
+server.listen(port, '0.0.0.0');
+
+
 
 // Initializing logger
 logger.init(app, passport, mongoose);

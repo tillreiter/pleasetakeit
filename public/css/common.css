@@ -174,21 +174,37 @@ h3.highlight  {
     margin: 0.5em;
 /*    display: block;
 */    float: left;
-    padding: 4px;
+    padding: 0px;
 /*    position: relative;
 */}
 
 .show-deal {
     position: absolute;
-/*    left: 75%;
-*/
+    padding: 5px;
     z-index:1;
-    }
+}
+
+.deal-title {
+    /*padding-left: 5px;
+    padding-right: 5px;*/
+    padding: 5px;
+    margin: 0px;
+
+}
 
 .btn-deal {
   color: #333333;
   background-color: #ffffff;
   border-color: #cccccc;
+}
+.gimme-detail {
+    margin-left: 135px;
+}
+
+.btn-get-it {
+  color: #fff;
+  background-color: #ff3333;
+  border-color: #fff;
 }
 
 .dealInfo {
@@ -198,7 +214,7 @@ h3.highlight  {
 }
 
 .brick-img {
-    width: 242px;
+    width: 250px;
     height: auto;
     margin: 0 px;
 }
@@ -218,14 +234,18 @@ h3.highlight  {
   background-color: #ff3333;
   border-color: #fff;
 }
+.btn-get-it:hover {
+  color: #fff;
+  background-color: #ff3333;
+  border-color: #ff3333;
+
+}
 
 .detail-img {
     width: 360px;
     height: auto;
     margin-top: 20px;
     border:15px solid #FFF;
-
-
 }
 
 .pagination-centered {

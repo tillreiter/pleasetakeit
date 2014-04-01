@@ -1,0 +1,28 @@
+
+<!-- New filtering block -->
+<div class="container">
+
+    <div class="col-sm-1">
+        <button type="button" class="btn btn-deal btn-xs" btn-radio="0.5" ng-click="findWanted()">Show wishlist</button>
+    </div>
+
+<!--     <div ui-view="home.filters"></div>
+ -->
+    <div class="col-sm-3  col-sm-offset-2 btn-group">
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="0.5" ng-click="findNear(0.5)">1/2 mile</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="2"ng-click="findNear(2)">2 miles</button>
+         <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="5" ng-click="findNear(5)">5 miles</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="10" ng-click="findNear(10)">10 miles</button>
+    </div>
+
+    <div class="col-sm-6 btn-group">
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Household'" ng-click="">Household</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Outdoor'" ng-click="">Outdoor</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Electronics'" ng-click="">Electronics</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Animals'" ng-click="">Animals</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Clothes'" ng-click="">Clothes</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Furniture'" ng-click="">Furniture</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Other'" ng-click="">Other</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="" ng-click="">All</button>
+    </div>
+</div>

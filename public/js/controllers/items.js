@@ -3,6 +3,10 @@
 angular.module('mean.items').controller('ItemsController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Items', 'Deal', 'Sold', function ($scope, $stateParams, $location, $http, Global, Items, Deal, Sold) {
     $scope.global = Global;
 
+    $scope.$on('itemsBroadcast', function (){
+      // $scope.items = SharedService.items;
+    });
+
     $scope.$on('item-added', function(evt, item) {
         var mitem = new Items({
             title: item.title,
@@ -19,6 +23,15 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
         // console.log("this is the new created item", mitem)
         });
     });
+
+    sock.onopen = function(){
+      console.log("sock is open yo");
+    }
+
+    sock.onmessage = function(e){
+      $scope.items = JSON.parse(e.data);
+      $scope.$apply();
+    }
 
     $scope.remove = function(item) {
         if (item) {
@@ -50,13 +63,6 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
         });
       };
 
-    $scope.findWanted = function () {
-      Items.query({
-        wantedItemsUserId: user._id
-      }, function (items){
-        $scope.items = items;
-      });
-    };
 
     $scope.findOne = function() {
         Items.get({
@@ -101,6 +107,15 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
       });
     };
 
+    $scope.findWanted = function () {
+      Items.query({
+        wantedItemsUserId: user._id
+      }, function (items){
+        console.log("sending back users wishlist")
+        $scope.items = items;
+        // SharedService.prepBroadcast(items);
+      });
+    };
 
     $scope.categories = [
       "Household",

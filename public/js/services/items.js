@@ -36,4 +36,20 @@ angular.module('mean.items').factory('Items', ['$resource', function($resource) 
     });
 }])
 
+// .factory('SharedService', ['$rootscope', function($rootscope) {
+//     var SharedService = {};
+
+//     SharedService.items = {};
+
+//     SharedService.prepBroadcast = function (items) {
+//       this.items = items;
+//       this.broadcastItems();
+//     };
+
+//     SharedService.broadcastItems = function () {
+//       rootscope.$broadcast('itemsBroadcast')
+//     }
+// }]);
+
+
 

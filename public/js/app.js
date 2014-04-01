@@ -5,5 +5,6 @@ angular.module('mean', ['ngCookies', 'ngResource', 'ui.bootstrap', 'ui.router', 
 angular.module('mean.system', []);
 angular.module('mean.articles', []);
 angular.module('mean.items', ['ngUpload']);
-angular.module('mean.users', [])
+angular.module('mean.users', []);
+// angular.module('mean.shared', []);
 

@@ -3,68 +3,69 @@
 
         <div class="container" ng-hide="details ">
         <!-- Sorting directive -->
-            <div class="col-sm-4 form-group">
+            <div class="col-sm-3 form-group">
+
             </div>
         <!-- Searching directive -->
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                 <input class="form-control input" ng-model="searchText" placeholder="Search the free universe!">
             </div>
         <!-- Category Filter -->
-            <div class="dropdown col-sm-4">
-<!--               <button class="dropdown-toggle btn btn-default" popover="Select your search category" popover-trigger="mouseenter" popover-placement="bottom">
-                Category
-              </button>
-              <ul class="dropdown-menu">
-                <li ng-repeat="category in categories">
-                  <a>{{category}}</a>
-                </li>
-              </ul> -->
+            <div class="col-sm-1">
+                <button class="btn btn-deal" ng-click="showFilter()">
+                    Filters
+                </button>
             </div>
+            <div class="dropdown col-sm-3">
+            </div>
+
         </div>
+
         <br>
 
-        <!-- New filtering block -->
-        <div class="container" ng-hide="details">
+<!-- New filtering block -->
+<div class="container" ng-hide="details">
 
-            <div class="col-sm-1">
-                <button type="button" class="btn btn-deal btn-xs" btn-radio="0.5" ng-click="findWanted()">Show wishlist</button>
-            </div>
+    <div class="col-sm-1">
+    </div>
 
-            <div class="col-sm-3  col-sm-offset-2 btn-group">
-                <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="0.5" ng-click="findNear(0.5)">1/2 mile</button>
-                <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="2"ng-click="findNear(2)">2 miles</button>
-                 <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="5" ng-click="findNear(5)">5 miles</button>
-                <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="10" ng-click="findNear(10)">10 miles</button>
-            </div>
+<!--     <div ui-view="home.filters"></div>
+ -->
+    <div class="col-sm-3  col-sm-offset-2 btn-group">
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="0.5" ng-click="findNear(0.5)">1/2 mile</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="2"ng-click="findNear(2)">2 miles</button>
+         <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="5" ng-click="findNear(5)">5 miles</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioDistanceModel" btn-radio="10" ng-click="findNear(10)">10 miles</button>
+    </div>
 
-            <div class="col-sm-6 btn-group">
-                <!-- Dont know why the ng-repeat is not binding to categorymodel here -->
-                <!-- <button type="button" ng-repeat="category in categories" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'{{category}}'">{{category}}</button> -->
-                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Household'" ng-click="">Household</button>
-                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Outdoor'" ng-click="">Outdoor</button>
-                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Electronics'" ng-click="">Electronics</button>
-                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Animals'" ng-click="">Animals</button>
-                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Clothes'" ng-click="">Clothes</button>
-                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Furniture'" ng-click="">Furniture</button>
-                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Other'" ng-click="">Other</button>
-                <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="" ng-click="">All</button>
-            </div>
-        </div>
+    <div class="col-sm-6 btn-group">
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Household'" ng-click="">Household</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Outdoor'" ng-click="">Outdoor</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Electronics'" ng-click="">Electronics</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Animals'" ng-click="">Animals</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Clothes'" ng-click="">Clothes</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Furniture'" ng-click="">Furniture</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="'Other'" ng-click="">Other</button>
+        <button type="button" class="btn btn-deal btn-xs" ng-model="radioCategoryModel" btn-radio="" ng-click="">All</button>
+    </div>
+</div>
 
-        <!-- Masonry brick unit -->
+
+<!--         <div ui-view="filters">Hello</div>
+ -->        <!-- Masonry brick unit -->
         <div class="hero-unit col-sm-12" ng-hide="details">
             <div class="row">
                 <div masonry class="masonry" data-masonry-options='{ "isFitWidth": true }'>
                     <div class="masonry-brick loaded normal" ng-repeat="brick in items | filter: searchText | filter:radioCategoryModel " ng-mouseenter="hover(brick)" ng-mouseleave="hover(brick)">
                             <!-- Classic Search View -->
                         <div ng-show="brick.showDeal" class="show-deal">
-                            <button class="btn btn-deal" ng-click="showDetails(brick)">Give me details</button>
+                            <button class="btn btn-deal gimme-detail btn-sm" ng-click="showDetails(brick)">Give me details</button>
                             <p class="dealInfo"><i class="fa fa-map-marker"></i>  {{brick.address}}</p>
                             <p class="dealInfo"><i class="fa fa-clock-o"></i>  {{brick.startTime}}</p>
                             <p class="dealInfo"><i class="fa fa-smile-o"></i> {{brick.owned_by.username}}</p>
                         </div>
                         <img src="{{brick.picture}}" alt="A masonry brick" class="brick-img" ng-class="{hovered: brick.showDeal}">
-                        <h4>${{brick.price}} | {{brick.title}}</h4>
+                        <h4 class="deal-title">${{brick.price}} | {{brick.title}}</h4>
                     </div>
                 </div>
             </div>
@@ -82,18 +83,27 @@
                 <p><i class="fa fa-map-marker"></i>  {{brick.address}}</p>
                 <p><i class="fa fa-clock-o"></i>  {{brick.startTime}}</p>
                 <p><i class="fa fa-smile-o"></i> {{brick.owned_by.username}}</p>
-                <button class="btn btn-deal" ng-click="showDetails(brick)">Back to list</button>
-                <button class="btn btn-deal" ng-click="showDetails(brick)">Send question</button>
-                <button ng-show="!onWishlist" class="btn btn-deal" ng-click="wantItem(brick)">Save to wishlist</button>
-                <button ng-hide="!onWishlist" class="btn btn-deal" ng-click="unwantItem(brick)">Remove from wishlist</button>
-                <button class="btn btn-deal" ng-click="confirm(brick)">GET IT!</button>
+                <button class="btn btn-deal" ng-click="showDetails(brick)"><i class="fa fa-bars"></i>  Back to list</button>
+                <button class="btn btn-deal" ng-click="showDetails(brick)"><i class="fa fa-question"></i>  Send question</button>
+                <button ng-show="!onWishlist" class="btn btn-deal" ng-click="wantItem(brick)"><i class="fa fa-heart"></i>  Save to wishlist</button>
+                <button ng-hide="!onWishlist" class="btn btn-deal" ng-click="unwantItem(brick)"><i class="fa fa-frown-o"></i>  Remove from wishlist</button>
+                <button class="btn btn-get-it inverse " ng-click="confirm(brick)"></i> GET IT!</button>
             </div>
             <div ng-show="confirmation" class="col-md-6">
             <br>
-            <button class="btn btn-default" ng-click="payDeposit(brick)">Pay deposit.</button>
-            <button class="btn btn-default" ng-click="showDetails(brick)">Mmmmh. No.</button>
+<label>Awesome - get your credit card!</label>
+<form action="" method="POST">
+  <script
+    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="pk_test_6pRNASCoBOKtIshFeQd4XMUh"
+    data-amount="1000"
+    data-name="Time to pay your deposit"
+    data-description="Ray Ban Sunglasses for $20"
+  </script>
+</form>
             </div>
 
             </div>
+
     </section>
 </section>

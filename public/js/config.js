@@ -30,8 +30,17 @@ angular.module('mean').config(['$stateProvider', '$urlRouterProvider',
     })
       .state('home', {
         url: '/home',
-        templateUrl: 'views/home.html'
+        templateUrl: 'views/home.html',
     })
+      // .state('home.filters', {
+      //   views: {
+      //     'filters':{
+      //       // url: '/home',
+      //       templateUrl: 'views/home_filters.html',
+      //       controller: 'ItemsController'
+      //     }
+      //   }
+      // })
       .state('success_deposit', {
         url: '/success_deposit',
         templateUrl: 'views/success_deposit.html'
@@ -40,7 +49,7 @@ angular.module('mean').config(['$stateProvider', '$urlRouterProvider',
         url: '/deal_confirmation/:itemId',
         templateUrl: 'views/items/confirm_deal.html',
         controller: 'UsersController'
-  });
+    });
   }
 ]);
 

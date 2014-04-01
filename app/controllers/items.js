@@ -158,10 +158,10 @@ exports.update = function(req, res) {
  */
 exports.unwant = function (req, res) {
     var userId = req.body.userId;
-    console.log("the user id is", userId);
+    // console.log("the user id is", userId);
     var item = req.item;
     Item.findOneAndUpdate({_id: req.item._id}, {$pull: { wanted_by: userId }}, function (err, res) {
-        console.log(res.title + " removed from wishlist")
+        // console.log(res.title + " removed from wishlist")
     })
 }
 
@@ -246,7 +246,20 @@ exports.all = function(req, res) {
                         status: 500
                     });
                 } else {
-                    console.log("Yeah, im sending this back", items )
+                    console.log("Sending wanted user items", items )
+                    res.jsonp(items);
+            }
+        })
+    }
+    else if (req.query.ownedItemsUserId) {
+        var ownedByUser = req.query.ownedItemsUserId;
+        Item.find({owned_by: ownedByUser}).populate('owned_by', 'name.first name.last username _id').exec(function(err, items) {
+                if (err) {
+                    res.render('error', {
+                        status: 500
+                    });
+                } else {
+                    console.log("Sending owned user items")
                     res.jsonp(items);
             }
         })
