@@ -35,11 +35,7 @@ exports.create = function(req, res) {
     var item = new Item(req.body);
     //create endTime
     var timeFinish = Date.now() + 1000*3600*item.duration;
-    console.log("This is time finish " + timeFinish);
-
     item.endTime = new Date(timeFinish);
-
-    console.log("this is the endtime: ",item.endTime);
 
     item.owned_by = req.user;
 
@@ -57,7 +53,7 @@ exports.create = function(req, res) {
         }, function() {
             console.log('UPLOADED');
             //Set file path to URL in ItemSchema (baseURL+file.name)
-            console.log("the filename is", file.name);
+            // console.log("the filename is", file.name);
             item.picture = "http://s3.amazonaws.com/PleaseTakeIt/" + file.name;
 
             // Geocode
@@ -82,7 +78,7 @@ exports.create = function(req, res) {
 
             //3) Take response and parse it for latlng information
             geoCodeRequest(requestString).then(function(data){
-                console.log("are we getting here?");
+                // console.log("are we getting here?");
                 var latitude = data.results[0].geometry.location.lat;
                 var longitude = data.results[0].geometry.location.lng;
 
@@ -95,7 +91,6 @@ exports.create = function(req, res) {
                         });
                     } else {
                         res.send(JSON.stringify(item));
-                        console.log(item)
                     }
                 });
 
@@ -125,36 +120,26 @@ function arrayUnique(array) {
  */
 exports.update = function(req, res) {
     var updatedItem = req.body;
-<<<<<<< HEAD
-    Item.findOne({_id: updatedItem._id}).populate('owned_by').populate('bought_by').exec(function(err, foundItem){
-        foundItem = _.extend(foundItem, updatedItem);
-=======
+
     Item.findOne({_id: updatedItem._id}, function (err, foundItem){
-        console.log(foundItem);
-        console.log(updatedItem);
-        console.log('======abt to change========');
+
+        if (typeof updatedItem.owned_by !== 'String'){
+            updatedItem.owned_by = updatedItem.owned_by._id
+            console.log("founditem is", foundItem);
+            console.log("updatedItem is", updatedItem);
+        };
+        if (!!updatedItem.bought_by && typeof updatedItem.bought_by !== 'String'){
+            updatedItem.bought_by = updatedItem.bought_by._id
+            console.log("founditem is", foundItem);
+            console.log("updatedItem is", updatedItem);
+        };
 
         if (foundItem.wanted_by && typeof updatedItem.wanted_by == 'string') {
             updatedItem.wanted_by = _.union([updatedItem.wanted_by], foundItem.wanted_by);
             foundItem = _.extend(foundItem, updatedItem);
-        }
-
-        // if (typeof updatedItem.wanted_by == "string"){
-        //     console.log("updating foundItem.wanted_by");
-        //     foundItem.wanted_by = _.union([updatedItem.wanted_by], savedFoundItemWanted);
-        //     // foundItem.wanted_by.push(new mongoose.Types.ObjectId(updatedItem.wanted_by));
-        //     console.log('new foundItem.wanted_by');
-        //     console.log(foundItem.wanted_by);
-        //     foundItem.wanted_by = arrayUnique(foundItem.wanted_by);
-        //     console.log('unique foundItem.wanted_by');
-        //     console.log(foundItem.wanted_by);
-
-        // } else {
-        //     console.log("didn't get in, ", typeof updatedItem.wanted_by);
-        // }
-        console.log('founditem:');
-        console.log(foundItem);
->>>>>>> 6815eac7f6e5c7e6fa2856b8cff5a967d06379e8
+        } else {
+            foundItem = _.extend(foundItem, updatedItem);
+        };
 
         foundItem.save(function(err) {
             if (err) {
@@ -167,23 +152,6 @@ exports.update = function(req, res) {
         });
     })
 };
-
-
-
-//     , function (err, foundItem){
-//         foundItem = _.extend(foundItem, updatedItem);
-
-//         foundItem.save(function(err) {
-//             if (err) {
-//                 return res.send('not updating item', {
-//                     errors: err.errors,
-//                 });
-//             } else {
-//                 res.jsonp(foundItem);
-//             }
-//         });
-//     })
-// };
 
 
 /**
@@ -208,7 +176,16 @@ exports.destroy = function(req, res) {
  * Show an item
  */
 exports.show = function(req, res) {
-    res.jsonp(req.item);
+    Item.findOne({_id: req.item._id}).populate('owned_by').populate('bought_by').exec(function(err, item) {
+                if (err) {
+                    res.render('error', {
+                        status: 500
+                    });
+                } else {
+                    console.log("show function successful")
+                    res.jsonp(item);
+            }
+        })
 };
 
 //Find items by distance
@@ -224,7 +201,7 @@ exports.nearItems = function(req, res) {
        {$near: userCoord,
         $maxDistance:miles/69.17}
     }).exec(function(err, items){
-        console.log(err, items);
+        // console.log(err, items);
         res.jsonp(items);
     });
 };
@@ -245,7 +222,6 @@ exports.all = function(req, res) {
            {$near: userCoord,
             $maxDistance:miles/69.17}
         }).populate('owned_by', 'name.first name.last username _id').exec(function(err, items){
-            console.log(err, items);
             res.jsonp(items);
         });
     }
@@ -275,50 +251,14 @@ exports.all = function(req, res) {
     };
 };
 
-// exports.deal = function (req, res) {
-//     var item = req.body;
-// }
-
-//Do not show items that are expired.
-// exports.notShowExpired = function(req, res) {
-//     var today = Date.now()
-
-//     var existingItems = [];
-//     Item.find({}, function(err, allItems){
-//         for (var i = 0; i < allItems.length; i ++) {
-//             if (allItems[i].startTime + 1000*3600*allItems[i].duration < today) {
-//                 existingItems.push(allItems[i]);
-//             }
-//         }
-//         res.jsonp(existingItems);
-//     });
-// };
-
-// //Show wanted items
-// exports.showWantedItems = function(req, res) {
-//     var userID = req.user._id;
-//     Item.find({ status: "wanted", wanted_by: userID }, function(err, wantItems){
-//         res.jsonp(wantItems);
-//     });
-// };
-
-
-// Change status of item when wanted by a user
-// exports.wantItem = function(req, res) {
-//     var itemID = req.item;
-//     var userID = req.user._id;
-
-//     Item.findByIdAndUpdate(itemId, { status: "wanted", wanted_by: userID }, function(err, items){
-//         res.redirect('/home');
-//     });
-// };
 
 // Email to buyer and seller
 exports.email = function(req, res) {
     console.log("in the email function")
+    console.log("this is the req-item", req.item)
     // Email to Buyer
     Item.findOne({_id: req.item._id}).populate("owned_by").populate("bought_by").exec(function(err, selectedItem){
-        console.log("this is selectedItem", selectedItem);
+        console.log("this is selectedItem in emailf", selectedItem);
         mailer.smtpTransport.sendMail({
             from: "PleaseTake.It <pleasetakeitapp@gmail.com>", // sender address.  Must be the same as authenticated user if using Gmail.
             to: selectedItem.bought_by.email, // BUYER EMAIL
@@ -374,9 +314,6 @@ exports.dealSuccess = function(req, res) {
 
     Item.findOne({_id: req.item._id}).populate("bought_by").exec(function(err, selectedItem){
 
-        console.log("this is the selected item" + selectedItem)
-        console.log("this is the bought_by object" + selectedItem.bought_by)
-
         mailer.smtpTransport.sendMail({
             from: "PleaseTake.It <pleasetakeitapp@gmail.com>",
             to: selectedItem.bought_by.email, // BUYER EMIAL
@@ -400,11 +337,8 @@ exports.dealSuccess = function(req, res) {
 
 //Deal Failed so money goes to charity
 exports.dealFail = function(req, res) {
-    console.log("are we even getting into the fail function?")
-    Item.findOne({_id: req.item._id}).populate("bought_by").exec(function(err, selectedItem){
 
-        console.log("this is the selected item" + selectedItem)
-        console.log("this is the bought_by object" + selectedItem.bought_by)
+    Item.findOne({_id: req.item._id}).populate("bought_by").exec(function(err, selectedItem){
 
         mailer.smtpTransport.sendMail({
             from: "PleaseTake.It <pleasetakeitapp@gmail.com>",

@@ -16,7 +16,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
         });
         mitem.$save(function(response) {
             $location.path('items/' + response._id);
-        console.log("this is the new created item", mitem)
+        // console.log("this is the new created item", mitem)
         });
     });
 
@@ -63,20 +63,19 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
             itemId: $stateParams.itemId
         }, function(item) {
             $scope.item = item;
-            console.log("got it + ",item)
         });
     };
 
     $scope.payDeposit = function (brick) {
-    // Items.update(status; bought_by; bought_on)
     var item = Items.get({
       itemId: brick._id},
       // get payment
       function(item){
-        console.log(item);
+        console.log("Hellooooo there, the item in paydeposit",item);
         item.bought_by = user._id;
         item.status = "reserved";
         Items.update({itemId:brick._id}, item, function(item){
+          console.log("this should be the updated crap", item)
         //send email to buyer and seller
           Deal.save({itemId: item._id}, item, function(dealItem){
             console.log("dealitem is", dealItem)
@@ -91,7 +90,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
       itemId: item._id},
       // get payment
       function(item){
-        console.log(item);
+        // console.log(item);
         item.status = "sold";
         Items.update({itemId:item._id}, item, function(item){
         //send email to buyer and seller
@@ -157,7 +156,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
   var item = Items.get({
     itemId: $scope.brick._id},
       function(item){
-        console.log(item);
+        // console.log(item);
         item.wanted_by = user._id;
         item.status = "wanted";
         Items.update({itemId:$scope.brick._id}, item)
@@ -186,7 +185,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
     modalInstance.result.then(function (item) {
       $scope.item = item;
       $rootScope.$broadcast('item-added', item);
-      console.log("broadcasting: ", item);
+      // console.log("broadcasting: ", item);
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });
