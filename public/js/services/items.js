@@ -34,7 +34,7 @@ angular.module('mean.items').factory('Items', ['$resource', function($resource) 
             method: 'PUT'
         }
     });
-}])
+}]);
 
 // .factory('SharedService', ['$rootscope', function($rootscope) {
 //     var SharedService = {};

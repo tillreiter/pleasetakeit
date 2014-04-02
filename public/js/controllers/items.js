@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mean.items').controller('ItemsController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Items', 'Deal', 'Sold', function ($scope, $stateParams, $location, $http, Global, Items, Deal, Sold) {
+angular.module('mean.items').controller('ItemsController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Items', 'Deal', 'Sold', 'Payment', function ($scope, $stateParams, $location, $http, Global, Items, Deal, Sold, Payment) {
     $scope.global = Global;
 
     $scope.$on('itemsBroadcast', function (){
@@ -55,6 +55,36 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
         });
     };
 
+
+
+
+    $scope.makePayment = function(brick){
+      var payload = {
+        name: this.name,
+        number: this.number,
+        expiration_month: this.expiration_month,
+        expiration_year: this.expiration_year,
+        security_code: this.security_code
+      }
+
+      var someFunction = function(payload, brick){
+        balanced.card.create(payload, function(card){
+          var payment = new Payment({
+            item: brick,
+            balancedToken: card.cards[0].id,
+          })
+
+          payment.$save(function(response){
+            console.log(response);
+          })
+        });
+      }
+
+      someFunction(payload, brick);
+      // there will be a form that will give us the value of the new payment
+      // this should first link to campaign and then save to the user object as well
+    };
+
     $scope.findNear = function (radius) {
         Items.query({
           itemRadius: radius
@@ -63,6 +93,11 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
         });
       };
 
+    $scope.filter = false;
+
+    $scope.showFilter = function () {
+      $scope.filter = !scope.filter;
+    }
 
     $scope.findOne = function() {
         Items.get({

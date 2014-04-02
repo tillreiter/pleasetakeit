@@ -41,7 +41,8 @@
     "aws-sdk": "~2.0.0-rc13",
     "socket.io": "~0.9.16",
     "nodemailer": "~0.6.1",
-    "sockjs": "~0.3.8"
+    "sockjs": "~0.3.8",
+    "balanced-official": "~1.0.6"
   },
   "devDependencies": {
     "grunt-env": "~0.4.1",

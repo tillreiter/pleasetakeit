@@ -49,7 +49,7 @@ require('./config/passport')(passport);
 var app = express();
 
 
-
+// CREATE THIS AGAIN, RENAME
 var sockjs_opts = {sockjs_url: 'http://cdn.sockjs.org/sockjs-0.3.min.js'};
 var sockjs_echo = sockjs.createServer(sockjs_opts);
 
@@ -121,31 +121,19 @@ walk(routes_path);
 // });
 
 
-var connections = [];
+// var connections = [];
 
 sockjs_echo.on('connection', function(conn) {
 
-    connections.push(conn);
+    // connections.push(conn);
 
 
     conn.on('data', function(message) {
-
-        for (var ii=0; ii < connections.length; ii++) {
-
-            console.log("hello")
-
-            connections[ii].write(message);
-
-        }
+        conn.write(message);
     });
 
     conn.on('close', function() {
-
-        for (var ii=0; ii < connections.length; ii++) {
-
-            connections[ii].write("User has disconnected");
-
-        }
+        conn.write("User has disconnected");
     });
 
 });

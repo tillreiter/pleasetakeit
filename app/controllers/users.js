@@ -8,16 +8,32 @@ var mongoose = require('mongoose'),
     Item = mongoose.model('Item'),
     _ = require('lodash'),
     Q = require('q'),
-    request = require('request');
+    request = require('request'),
+    balanced = require('balanced-official');
 
 
 
 /**
  * Auth callback
  */
+
+balanced.configure('ak-test-2B1Zd2gzYJW70r7bd4nYfW2LCIG9qt9KI');
+
+
 exports.authCallback = function(req, res) {
-    res.redirect('/');
+  // create the balanced customer here
+  var customer = balanced.marketplace.customers.create({
+    "name": req.user.username,
+    "email": req.user.email
+  }).then(function(data){
+    User.findOne({_id: req.user._id}, function(err, user){
+      user.balancedId = data.toJSON().id;
+      user.save();
+      res.redirect('/');
+    });
+  });
 };
+
 
 /**
  * Show login form

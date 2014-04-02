@@ -65,7 +65,9 @@ var ItemSchema = new Schema({
     },
     bought_date: {
         type: Date
-    }
+    },
+    payment: {type: Schema.ObjectId,
+            ref: 'Payment'}
 });
 
 

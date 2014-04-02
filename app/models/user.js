@@ -21,6 +21,8 @@ var UserSchema = new Schema({
         type: String,
         unique: true
     },
+    balancedToken: String,
+    balancedId: String,
     address: {
         type: String,
         default: '160 Pearl Street, New York City, New York 10038, USA'
@@ -30,6 +32,10 @@ var UserSchema = new Schema({
         index: '2d',
         default: [-74.0060673,  40.7070458]
     },
+    paymentsMade: [{type: Schema.ObjectId,
+                ref: 'Payment'}],
+    paymentsReceived: [{type: Schema.ObjectId,
+                ref: 'Payment'}],
     hashed_password: String,
     provider: String,
     salt: String,

@@ -11,7 +11,9 @@ var mongoose = require('mongoose'),
     request = require('request'),
     fs = require('fs'),
     AWS = require('aws-sdk'),
-    mailer = require('../lib/mail');
+    mailer = require('../lib/mail'),
+    balanced = require('balanced-official');
+
 
 //loading access S3 access keys
 AWS.config.loadFromPath(__dirname + '/aws.json')
@@ -333,6 +335,108 @@ exports.email = function(req, res) {
         });
     })
 }
+
+
+
+var paymentAction = function(paymentObject, done){
+  console.log("inside paymentaction")
+  var paymentOptions = {
+      "appears_on_statement_as": paymentObject.statement,
+      "amount": parseInt(paymentObject.amount)
+    // create orders later
+    // https://docs.balancedpayments.com/1.1/api/orders/#create-an-order
+  };
+  balanced.get('/cards/'+paymentObject.balancedToken).debit(paymentOptions).then(function(debit){
+    done(debit.toJSON());
+  })
+};
+
+exports.makePayment = function(req, res){
+    /*
+    - credit card number
+    - cvc
+    - expiration date
+    - name on card
+
+
+
+
+    - the below is in req.body.item
+    - customer (req.user._id);
+    - merchant (req.on)
+
+    */
+    console.log("user")
+    User.findOne({_id: req.user._id}, function(err, user){
+        // user needs to have a balanced token
+      Item.findOne({_id: req.body.item._id}, function(err, item){
+        req.body.balancedToken = user.balancedToken;
+        paymentAction(req.body, function(debitObject){
+          var payment = new Payment({
+            amount: parseInt('10'),
+            giver: req.body.item.bought_by._id,
+            taker: req.user._id,
+            item: req.body.item._id,
+            balancedId: debitObject.id,
+            status: debitObject.status,
+            type: 'debit'
+          });
+          item.status = 'reserved';
+          item.payment = payment;
+          user.save();
+            item.save(function(err){
+                res.jsonp(item);
+            })
+        })
+      })
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //Deal Success so money goes back to buyer
