@@ -15,7 +15,7 @@ var hasAuthorization = function(req, res, next) {
 module.exports = function(app) {
 
 
-    app.post('/payment', items.makePayment);
+    app.post('/payments', items.makePayment);
 
     app.get('/items', items.all);
 

@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
     Item = mongoose.model('Item'),
     User = mongoose.model('User'),
+    Payment = mongoose.model('Payment'),
     _ = require('lodash'),
     Q = require('q'),
     request = require('request'),
@@ -339,15 +340,16 @@ exports.email = function(req, res) {
 
 
 var paymentAction = function(paymentObject, done){
-  console.log("inside paymentaction")
+  console.log("inside paymentaction, object is", paymentObject)
   var paymentOptions = {
       "appears_on_statement_as": paymentObject.statement,
-      "amount": parseInt(paymentObject.amount)
+      "amount": parseInt(paymentObject.amount),
     // create orders later
     // https://docs.balancedpayments.com/1.1/api/orders/#create-an-order
   };
   balanced.get('/cards/'+paymentObject.balancedToken).debit(paymentOptions).then(function(debit){
     done(debit.toJSON());
+    console.log("are we here and have the debit?_", debit)
   })
 };
 
@@ -370,26 +372,30 @@ exports.makePayment = function(req, res){
     User.findOne({_id: req.user._id}, function(err, user){
         // user needs to have a balanced token
       Item.findOne({_id: req.body.item._id}, function(err, item){
-        req.body.balancedToken = user.balancedToken;
+        // req.body.balancedToken = user.balancedToken;
         paymentAction(req.body, function(debitObject){
           var payment = new Payment({
             amount: parseInt('10'),
-            giver: req.body.item.bought_by._id,
-            taker: req.user._id,
+            giver: req.user._id,
+            taker: req.body.item.owned_by._id,
             item: req.body.item._id,
             balancedId: debitObject.id,
             status: debitObject.status,
             type: 'debit'
           });
+          console.log("Finishing payment")
           item.status = 'reserved';
+          item.bought_by = req.user._id;
           item.payment = payment;
-          user.save();
-            item.save(function(err){
+          user.save(item.save(function(err){
                 res.jsonp(item);
+                console.log(user, item);
+                console.log("payment done")
             })
-        })
+        )
       })
     })
+})
 }
 
 

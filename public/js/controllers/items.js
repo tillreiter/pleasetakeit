@@ -69,9 +69,19 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
 
       var someFunction = function(payload, brick){
         balanced.card.create(payload, function(card){
+          // console.log("We are in balanced");
+          console.log("payload is", payload);
+          // console.log("BalItem is", brick);
+          // console.log("this is card", card);
+          console.log("Token is", card.cards[0].id)
+          // console.log("this is user", user);
+
           var payment = new Payment({
             item: brick,
             balancedToken: card.cards[0].id,
+            user: user,
+            amount: 1000,
+            statement: "Deposit for " + brick.title + " on pleasetake.it"
           })
 
           payment.$save(function(response){

@@ -7,5 +7,3 @@ angular.module('mean.articles', []);
 angular.module('mean.items', ['ngUpload']);
 angular.module('mean.users', []);
 angular.module('mean.payments', []);
-// angular.module('mean.shared', []);
-

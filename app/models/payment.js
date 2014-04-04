@@ -9,9 +9,6 @@ var PaymentSchema = new Schema({
           ref: "User"},
   item: {type: Schema.ObjectId,
             ref: "Item"},
-            // doesn't hurt to have the campaign property here
-            // at the same time since the payment is going to be stored
-            // in the campaign instances, there may not be a point
   amount: Number,
   balancedId: String,
   created: {type: Date,
