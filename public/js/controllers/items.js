@@ -73,7 +73,7 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
           console.log("payload is", payload);
           // console.log("BalItem is", brick);
           // console.log("this is card", card);
-          console.log("Token is", card.cards[0].id)
+          console.log("Token ishttp://maps.google.com/maps?oe=utf-8&rls=org.mozilla:de:official&client=firefox-a&channel=fflb&um=1&ie=UTF-8&q=bookstore+new+york&fb=1&gl=us&hq=bookstore&hnear=0x89c24fa5d33f083b:0xc80b8f06e177fe62,New+York,+NY&sa=X&ei=YFxAU8_ICsLJsQS0m4L4Cw&ved=0CNIBELYD", card.cards[0].id)
           // console.log("this is user", user);
 
           var payment = new Payment({

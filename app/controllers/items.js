@@ -398,53 +398,7 @@ exports.makePayment = function(req, res){
 })
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//Those mails need to be updated with payment
 //Deal Success so money goes back to buyer
 exports.dealSuccess = function(req, res) {
 

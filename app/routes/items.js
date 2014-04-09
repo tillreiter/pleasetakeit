@@ -34,18 +34,8 @@ module.exports = function(app) {
     app.post('/deal/fail/:itemId', items.dealFail);
     app.post('/deal/success/:itemId', items.dealSuccess);
 
-//==================NEW SHIT==============================
-    // app.get('/within/:miles', items.nearItems); /** Find items by distance */
-    // app.get('/validitems', items.notShowExpired); /** Show only non-expired items */
-    // app.get('items/want', items.showWantedItems); /** Show wanted items only*/
-
-
-    // app.post('/item/want/:itemId', items.wantItem) /** Want Item by Id **/
-    // app.post('/items', authorization.requiresLogin, items.create); /** Create items */
-//==================NEW SHIT==============================
-
-    app.put('/items/:itemId', authorization.requiresLogin, hasAuthorization, items.update);
-    app.del('/items/:itemId', authorization.requiresLogin, hasAuthorization, items.destroy);
+    // app.put('/items/:itemId', authorization.requiresLogin, hasAuthorization, items.update);
+    // app.del('/items/:itemId', authorization.requiresLogin, hasAuthorization, items.destroy);
 
     // Finish with setting up the itemId param
     app.param('itemId', items.item);
