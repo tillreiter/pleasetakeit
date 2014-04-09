@@ -88,59 +88,48 @@
             <div ng-show="confirmation" class="col-md-6">
             <br>
                 <label>Awesome - get your credit card!</label>
-    <!--  Stripe for presentation -->
-<!--     <form action="" method="POST">
-          <script
-            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-            data-key="pk_test_6pRNASCoBOKtIshFeQd4XMUh"
-            data-amount="1000"
-            data-name="Facebook Glasses"
-            data-description="Deposit for 7 days ($10.00)"
-            >
-          </script>
-        </form> -->
-<fieldset>
-      <div class="row">
-            <div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Tokenize Credit Card</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form role="form" class="form-horizontal" data-ng-submit="makePayment(brick)">
-                            <div class="form-group">
-                                <label class="col-lg-5 control-label">Name</label>
-                                <div class="col-lg-5">
-                                    <input type="text" data-ng-model="name" class="form-control" autocomplete="off" placeholder="Johnathon Doe" maxlength="16" required/>
+                <fieldset>
+                      <div class="row">
+                            <div>
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Tokenize Credit Card</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <form role="form" class="form-horizontal" data-ng-submit="makePayment(brick)">
+                                            <div class="form-group">
+                                                <label class="col-lg-5 control-label">Name</label>
+                                                <div class="col-lg-5">
+                                                    <input type="text" data-ng-model="name" class="form-control" autocomplete="off" placeholder="Johnathon Doe" maxlength="16" required/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-5 control-label">Card Number</label>
+                                                <div class="col-lg-5">
+                                                    <input type="text" data-ng-model="number" class="form-control" autocomplete="off" placeholder="4111111111111111" maxlength="16" required/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-5 control-label">Expiration</label>
+                                                <div class="col-lg-2">
+                                                    <input type="text" id="cc-ex-month" data-ng-model="expiration_month" class="form-control" autocomplete="off" placeholder="01" maxlength="2" />
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <input type="text" id="cc-ex-year" class="form-control" data-ng-model="expiration_year" autocomplete="off" placeholder="2013" maxlength="4" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-5 control-label">Security Code (CVV)</label>
+                                                <div class="col-lg-2">
+                                                    <input type="text" id="ex-cvv" data-ng-model="security_code" class="form-control" autocomplete="off" placeholder="453" maxlength="4" required/>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-large btn-primary pull-right">Tokenize</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-lg-5 control-label">Card Number</label>
-                                <div class="col-lg-5">
-                                    <input type="text" data-ng-model="number" class="form-control" autocomplete="off" placeholder="4111111111111111" maxlength="16" required/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-lg-5 control-label">Expiration</label>
-                                <div class="col-lg-2">
-                                    <input type="text" id="cc-ex-month" data-ng-model="expiration_month" class="form-control" autocomplete="off" placeholder="01" maxlength="2" />
-                                </div>
-                                <div class="col-lg-2">
-                                    <input type="text" id="cc-ex-year" class="form-control" data-ng-model="expiration_year" autocomplete="off" placeholder="2013" maxlength="4" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-lg-5 control-label">Security Code (CVV)</label>
-                                <div class="col-lg-2">
-                                    <input type="text" id="ex-cvv" data-ng-model="security_code" class="form-control" autocomplete="off" placeholder="453" maxlength="4" required/>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-large btn-primary pull-right">Tokenize</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-    </fieldset>
+                    </fieldset>
 <!--   </form>
  -->            </div>
     </section>
