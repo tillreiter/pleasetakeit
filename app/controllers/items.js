@@ -103,21 +103,6 @@ exports.create = function(req, res) {
 
 };
 
-// Test
-
-// array unique to make an array of ObjectIds unique
-function arrayUnique(array) {
-    var a = array.concat();
-    for(var i=0; i<a.length; ++i) {
-        for(var j=i+1; j<a.length; ++j) {
-            if(a[i].toString() === a[j].toString())
-                a.splice(j--, 1);
-        }
-    }
-
-    return a;
-};
-
 /**
  * Update an item
  */
@@ -128,19 +113,15 @@ exports.update = function(req, res) {
 
         if (typeof updatedItem.owned_by !== 'String'){
             updatedItem.owned_by = updatedItem.owned_by._id
-            console.log("founditem is", foundItem);
-            console.log("updatedItem is", updatedItem);
         };
         if (!!updatedItem.bought_by && typeof updatedItem.bought_by !== 'String'){
             updatedItem.bought_by = updatedItem.bought_by._id
-            console.log("founditem is", foundItem);
-            console.log("updatedItem is", updatedItem);
         };
-
         if (foundItem.wanted_by && typeof updatedItem.wanted_by == 'string') {
             updatedItem.wanted_by = _.union([updatedItem.wanted_by], foundItem.wanted_by);
             foundItem = _.extend(foundItem, updatedItem);
-        } else {
+        }
+        else {
             foundItem = _.extend(foundItem, updatedItem);
         };
 

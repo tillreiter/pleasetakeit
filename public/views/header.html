@@ -1,12 +1,11 @@
 <div data-ng-controller="HeaderController">
+
     <ul class="navbar-nav nav" data-ng-show="global.user">
         <li popover="Jump to the search bar" popover-trigger="mouseenter" popover-placement="bottom" data-ng-controller="MasonryController" alt="Search"><a href="" ng-click="gotoSearch()"><i class="fa fa-search fa-lg"></i></a></li>
         <li popover="Select your search area" popover-trigger="mouseenter" popover-placement="bottom" alt="Location" data-ng-controller="AreaSelectModalController" ng-click="open()"><a href="#"><i class="fa fa-map-marker fa-lg"></i></a></li>
         <li popover="See the items you showed interest in" popover-trigger="mouseenter" popover-placement="bottom" alt="I want that" ng-click="findWanted()"><a href=""><i class="fa fa-eye fa-lg"></i></a></li>
         <li popover="Check your offerings and messages" popover-trigger="mouseenter" popover-placement="bottom" alt="Offerings and messages" ng-click="findOwned()"><a href="#"><i class="fa fa-list fa-lg"></i></a></li>
-<!--         <li data-ng-repeat="item in menu"  ui-route="/{{item.link}}" ng-class="{active: $uiRoute}">
-            <a href="#!/{{item.link}}">{{item.title}}</a>
-        </li> -->
+
         <li ng-click="findAll()"><a class="navbar-inner" href="#!/home"><img src="../img/PleaseTakeItSketch.png"></a></li>
     </ul>
 
@@ -21,6 +20,7 @@
         <li><a href="signin">Signin</a>
         </li>
     </ul>
+
     <ul class="navbar-nav nav pull-right" data-ng-show="global.authenticated">
         <li data-ng-controller="ModalController" ng-click="open()"><a href="#"><i class="fa fa-plus-square fa-lg"></i></a></li>
         <li class="dropdown">
