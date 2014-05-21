@@ -3,13 +3,15 @@
 /**
  * Module dependencies.
  */
+
 var express = require('express'),
     fs = require('fs'),
     passport = require('passport'),
     nodemailer = require('nodemailer'),
-    logger = require('mean-logger');
-var http = require('http');
-var sockjs = require('sockjs');
+    logger = require('mean-logger'),
+    http = require('http'),
+    sockjs = require('sockjs');
+
 /**
  * Main application entry file.
  * Please note that the order of loading is important.
@@ -49,19 +51,12 @@ require('./config/passport')(passport);
 var app = express();
 
 
-// CREATE THIS AGAIN, RENAME
+// Set up sock.js
 var sockjs_opts = {sockjs_url: 'http://cdn.sockjs.org/sockjs-0.3.min.js'};
 var sockjs_echo = sockjs.createServer(sockjs_opts);
 
 
-// Socket.io configuration
-
-
-
-
 // Express settings
-
-
 require('./config/express')(app, passport, db);
 
 var port = config.port;
@@ -86,14 +81,6 @@ var walk = function(path) {
     });
 };
 walk(routes_path);
-
-
-// // Server side chatting
-// io.sockets.on('connection', function(socket){
-//     socket.on('send message', function(data){
-//         io.sockets.emit('new message', data);
-//     })
-// })
 
 
 // var smtpTransport = nodemailer.createTransport("SMTP",{
@@ -127,7 +114,6 @@ sockjs_echo.on('connection', function(conn) {
 
     // connections.push(conn);
 
-
     conn.on('data', function(message) {
         conn.write(message);
     });
@@ -144,7 +130,6 @@ server.addListener('upgrade', function(req, res){
 
 sockjs_echo.installHandlers(server, {prefix:'/echo'});
 server.listen(port, '0.0.0.0');
-
 
 
 // Initializing logger
