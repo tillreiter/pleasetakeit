@@ -83,45 +83,15 @@ var walk = function(path) {
 walk(routes_path);
 
 
-// var smtpTransport = nodemailer.createTransport("SMTP",{
-//    service: "Gmail",  // sets automatically host, port and connection security settings
-//    auth: {
-//        user: "pleasetakeitapp@gmail.com",
-//        pass: "fullstack14"
-//    }
-// });
-
-// smtpTransport.sendMail({  //email options
-//    from: "PleaseTakeIt <pleasetakeitapp@gmail.com>", // sender address.  Must be the same as authenticated user if using Gmail.
-//    to: "Kelvin Yu <kyu1012@gmail.com>", // receiver
-//    subject: "Congrats, your item was purchased!", // subject
-//    text: "Email Example with nodemailer" // body
-// }, function(error, response){  //callback
-//    if(error){
-//        console.log(error);
-//    }else{
-//        console.log("Message sent: " + response.message);
-//    }
-
-//    smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
-
-// });
-
-
 // var connections = [];
-
 sockjs_echo.on('connection', function(conn) {
-
     // connections.push(conn);
-
     conn.on('data', function(message) {
         conn.write(message);
     });
-
     conn.on('close', function() {
         conn.write("User has disconnected");
     });
-
 });
 
 server.addListener('upgrade', function(req, res){
@@ -137,7 +107,3 @@ logger.init(app, passport, mongoose);
 
 // Expose app
 exports = module.exports = app;
-
-
-
-
