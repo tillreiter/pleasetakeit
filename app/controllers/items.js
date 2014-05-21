@@ -131,21 +131,29 @@ exports.update = function(req, res) {
                     errors: err.errors,
                 });
             } else {
+                console.log('updating item');
                 res.jsonp(foundItem);
             }
         });
     })
 };
 
-/**
- * Delete an item
- */
+//Save an item to wishlist
+exports.want = function (req, res) {
+    var userId = req.body.userId;
+    var item = req.item;
+    Item.findOneAndUpdate({_id: req.item._id}, {$push: { wanted_by: userId }}, function (err, res) {
+        console.log(res.title + "added to wishlist")
+    })
+}
+
+
+//Delete an item from wishlist
 exports.unwant = function (req, res) {
     var userId = req.body.userId;
-    // console.log("the user id is", userId);
     var item = req.item;
     Item.findOneAndUpdate({_id: req.item._id}, {$pull: { wanted_by: userId }}, function (err, res) {
-        // console.log(res.title + " removed from wishlist")
+        console.log(res.title + " removed from wishlist")
     })
 }
 
@@ -169,9 +177,8 @@ exports.destroy = function(req, res) {
     });
 };
 
-/**
- * Show an item
- */
+
+// Show one item
 exports.show = function(req, res) {
     Item.findOne({_id: req.item._id}).populate('owned_by').populate('bought_by').exec(function(err, item) {
                 if (err) {
@@ -179,36 +186,16 @@ exports.show = function(req, res) {
                         status: 500
                     });
                 } else {
-                    console.log("show function successful")
+                    console.log("sending single item")
                     res.jsonp(item);
             }
         })
 };
 
-//Find items by distance
-exports.nearItems = function(req, res) {
-    var miles = req.params.miles;
 
-    var userLng = req.user.latlng.latitude;
-    var userLat = req.user.latlng.longitude;
-
-    var userCoord = [userLng, userLat]
-
-    Item.find({lnglat:
-       {$near: userCoord,
-        $maxDistance:miles/69.17}
-    }).exec(function(err, items){
-        // console.log(err, items);
-        res.jsonp(items);
-    });
-};
-
-
-/**
- * List of all items
- */
-
+// Exporting items according to certain request criteria
 exports.all = function(req, res) {
+    // find items by distance
     if (req.query.itemRadius) {
         var miles = req.query.itemRadius;
         var userLng = req.user.lnglat[0];
@@ -219,9 +206,11 @@ exports.all = function(req, res) {
            {$near: userCoord,
             $maxDistance:miles/69.17}
         }).populate('owned_by', 'name.first name.last username _id').exec(function(err, items){
-            res.jsonp(items);
-        });
+                console.log('sending back items in certain radius');
+                res.jsonp(items);
+            });
     }
+    // find items on wishlist
     else if (req.query.wantedItemsUserId) {
         var wantedByUser = req.query.wantedItemsUserId;
         Item.find({wanted_by: wantedByUser}).populate('owned_by', 'name.first name.last username _id').exec(function(err, items) {
@@ -230,11 +219,12 @@ exports.all = function(req, res) {
                         status: 500
                     });
                 } else {
-                    console.log("Sending wanted user items", items )
+                    console.log("Sending items on user's wishlist")
                     res.jsonp(items);
             }
         })
     }
+    // find owned (to sell) items by user
     else if (req.query.ownedItemsUserId) {
         var ownedByUser = req.query.ownedItemsUserId;
         Item.find({owned_by: ownedByUser}).populate('owned_by', 'name.first name.last username _id').exec(function(err, items) {
@@ -248,6 +238,7 @@ exports.all = function(req, res) {
             }
         })
     }
+    // find all items
     else {
     Item.find().sort('-created').populate('owned_by', 'name.first name.last username _id').exec(function(err, items) {
         if (err) {
@@ -255,6 +246,7 @@ exports.all = function(req, res) {
                 status: 500
             });
         } else {
+            console.log("Sending all items w/o certain criteria")
             res.jsonp(items);
         }
     });
@@ -335,20 +327,6 @@ var paymentAction = function(paymentObject, done){
 };
 
 exports.makePayment = function(req, res){
-    /*
-    - credit card number
-    - cvc
-    - expiration date
-    - name on card
-
-
-
-
-    - the below is in req.body.item
-    - customer (req.user._id);
-    - merchant (req.on)
-
-    */
     console.log("user")
     User.findOne({_id: req.user._id}, function(err, user){
         // user needs to have a balanced token

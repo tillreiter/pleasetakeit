@@ -11,11 +11,12 @@ angular.module('mean.system').controller('HeaderController', ['$scope', 'Global'
         'link': 'articles/create'
     }];
 
+    // Search for items on wishlist
     $scope.findWanted = function () {
       Items.query({
         wantedItemsUserId: user._id
       }, function (items){
-        console.log("sending back users wishlist")
+        console.log("sending back users wishlist");
         sock.send(JSON.stringify(items));
         // SharedService.prepBroadcast(items);
       });

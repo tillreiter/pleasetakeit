@@ -10,30 +10,40 @@ angular.module('mean.items').factory('Items', ['$resource', function($resource) 
         update: {
             method: 'PUT'
         },
+
+        // save item to wishlist
+        wantItem: {
+            method: 'POST',
+            params: {
+                docController: 'wantItem'
+            }
+        },
+        // delete item from wishlist
         unwantItem: {
             method: 'POST',
             params: {
                 docController: 'unwantItem'
             }
         }
-
     });
-}]).factory('Deal', ['$resource', function($resource) {
-    return $resource('buy/:itemId', {
-        itemId: '@_id'
-    }, {
-        update: {
-            method: 'PUT'
-        }
-    });
-}]).factory('Sold', ['$resource', function($resource) {
-    return $resource('sold/:itemId', {
-        itemId: '@_id'
-    }, {
-        update: {
-            method: 'PUT'
-        }
-    });
+}])
+    .factory('Deal', ['$resource', function($resource) {
+        return $resource('buy/:itemId', {
+            itemId: '@_id'
+        }, {
+            update: {
+                method: 'PUT'
+            }
+        });
+}])
+    .factory('Sold', ['$resource', function($resource) {
+        return $resource('sold/:itemId', {
+            itemId: '@_id'
+        }, {
+            update: {
+                method: 'PUT'
+            }
+        });
 }]);
 
 // .factory('SharedService', ['$rootscope', function($rootscope) {
