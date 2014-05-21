@@ -14,7 +14,6 @@ var hasAuthorization = function(req, res, next) {
 
 module.exports = function(app) {
 
-
     app.post('/payments', items.makePayment);
 
     app.get('/items', items.all);
@@ -22,23 +21,18 @@ module.exports = function(app) {
     app.post('/items', authorization.requiresLogin, items.create);
 
     app.get('/items/:itemId', items.show);
-    app.put('/items/:itemId', items.update);
     app.post('/items/:itemId/wantItem', items.want);
     app.post('/items/:itemId/unwantItem', items.unwant);
 
-    //Buying item triggers email to Seller and Buyer
+    // Buying item triggers email to Seller and Buyer
     app.post('/buy/:itemId', items.email);
+    // // Giver's response leads to Finish Deal
     app.post('/sold/:itemId', items.dealSuccess)
 
-    // // Giver's response leads to Finish Deal
-
+    //services need to be set up according to what payment mechanism is getting used
     app.post('/deal/fail/:itemId', items.dealFail);
     app.post('/deal/success/:itemId', items.dealSuccess);
 
-    // app.put('/items/:itemId', authorization.requiresLogin, hasAuthorization, items.update);
-    // app.del('/items/:itemId', authorization.requiresLogin, hasAuthorization, items.destroy);
-
     // Finish with setting up the itemId param
     app.param('itemId', items.item);
-
 };

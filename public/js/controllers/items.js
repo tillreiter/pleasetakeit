@@ -214,17 +214,9 @@ angular.module('mean.items').controller('ItemsController', ['$scope', '$statePar
     $scope.confirmation = !$scope.confirmation;
   }
 
-
   $scope.wantItem = function (brick) {
     $scope.onWishlist = !$scope.onWishlist;
-    var item = Items.get({
-      itemId: $scope.brick._id},
-        function(item){
-          // console.log(item);
-          item.wanted_by = user._id;
-          item.status = "wanted";
-          Items.update({itemId:$scope.brick._id}, item);
-        });
+    Items.wantItem({itemId:$scope.brick._id}, {userId: user._id})
   }
 
   $scope.unwantItem = function (brick){

@@ -103,47 +103,12 @@ exports.create = function(req, res) {
 
 };
 
-/**
- * Update an item
- */
-exports.update = function(req, res) {
-    var updatedItem = req.body;
-
-    Item.findOne({_id: updatedItem._id}, function (err, foundItem){
-
-        if (typeof updatedItem.owned_by !== 'String'){
-            updatedItem.owned_by = updatedItem.owned_by._id
-        };
-        if (!!updatedItem.bought_by && typeof updatedItem.bought_by !== 'String'){
-            updatedItem.bought_by = updatedItem.bought_by._id
-        };
-        if (foundItem.wanted_by && typeof updatedItem.wanted_by == 'string') {
-            updatedItem.wanted_by = _.union([updatedItem.wanted_by], foundItem.wanted_by);
-            foundItem = _.extend(foundItem, updatedItem);
-        }
-        else {
-            foundItem = _.extend(foundItem, updatedItem);
-        };
-
-        foundItem.save(function(err) {
-            if (err) {
-                return res.send('not updating item', {
-                    errors: err.errors,
-                });
-            } else {
-                console.log('updating item');
-                res.jsonp(foundItem);
-            }
-        });
-    })
-};
-
 //Save an item to wishlist
 exports.want = function (req, res) {
     var userId = req.body.userId;
     var item = req.item;
     Item.findOneAndUpdate({_id: req.item._id}, {$push: { wanted_by: userId }}, function (err, res) {
-        console.log(res.title + "added to wishlist")
+        console.log(res.title + " added to wishlist")
     })
 }
 
@@ -258,6 +223,7 @@ exports.all = function(req, res) {
 exports.email = function(req, res) {
     console.log("in the email function")
     console.log("this is the req-item", req.item)
+
     // Email to Buyer
     Item.findOne({_id: req.item._id}).populate("owned_by").populate("bought_by").exec(function(err, selectedItem){
         console.log("this is selectedItem in emailf", selectedItem);
@@ -284,7 +250,6 @@ exports.email = function(req, res) {
                 }
                mailer.smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
         });
-
 
     // Email to Seller
         mailer.smtpTransport.sendMail({
